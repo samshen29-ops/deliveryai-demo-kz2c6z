@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="本文件定义 AC-01..AC-12 到单元测试、E2E、静态检查和过程证据的映射，以及命令、报告格式与 PASS/FAIL/BLOCKED 判定。" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'" />
+<title>研发需求与缺陷看板 · 测试计划 · SDLC 能力演示</title>
+<style>
+:root{--rice-50:#fffdf8;--rice-100:#fbf5ea;--rice-200:#f3e6d0;--chili-50:#fff1ef;--chili-100:#ffddd8;--chili-500:#e13b2b;--chili-600:#c92f21;--chili-700:#a9231a;--amber-100:#fff2c7;--amber-400:#f5b83f;--charcoal-500:#5f5b55;--charcoal-700:#34312d;--charcoal-900:#211f1c;--line:rgba(33,31,28,.09);--font:"Inter","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;color:var(--charcoal-900);background-color:var(--rice-100);background-image:radial-gradient(rgba(170,110,60,.075) .7px,transparent .7px);background-size:12px 12px;font-family:var(--font);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased} ::selection{background:var(--chili-100);color:var(--chili-700)} a{color:var(--chili-700);text-decoration-thickness:1px;text-underline-offset:3px} a:hover{color:var(--chili-500)} .top{background:var(--charcoal-900);color:var(--rice-100);padding:10px 28px;font-size:11.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap} .top strong{color:var(--amber-400)} .shell{max-width:1220px;margin:0 auto;padding:30px 24px 70px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:34px;align-items:start} .toc{position:sticky;top:20px;background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 8px 26px rgba(70,45,25,.05);max-height:calc(100vh - 40px);overflow:auto} .toc h2{margin:0 0 9px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--charcoal-500)} .toc ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2px} .toc a{display:block;padding:3px 6px;border-radius:7px;color:var(--charcoal-700);font-size:11px;text-decoration:none;line-height:1.45} .toc a:hover{background:var(--chili-50);color:var(--chili-700)} .toc-l2{padding-left:10px} .doc{min-width:0;background:rgba(255,253,248,.82);border:1px solid var(--line);border-radius:24px;padding:38px 42px 52px;box-shadow:0 12px 38px rgba(70,45,25,.07)} .doc-head{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:26px} .eyebrow{margin:0 0 7px;color:var(--chili-600);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase} .doc h1{margin:0;font-size:clamp(30px,4vw,44px);line-height:1.12;letter-spacing:-.035em} .doc-head p{margin:12px 0 0;color:var(--charcoal-500);font-size:13px;line-height:1.75;max-width:820px} .badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px} .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:10.5px;font-weight:800} .badge-amber{background:var(--amber-100);color:#6d4a00;border:1px solid rgba(230,155,24,.22)} .badge-neutral{background:white;color:var(--charcoal-700);border:1px solid var(--line)} .docnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)} .docnav a{font-size:11px;font-weight:700;text-decoration:none;padding:4px 8px;border-radius:999px;background:white;border:1px solid var(--line)} .doc h1:not(:first-child){font-size:25px;letter-spacing:-.025em;margin:44px 0 14px;padding-top:8px;border-top:1px solid rgba(33,31,28,.06)} .doc h1:first-of-type{font-size:clamp(28px,3.5vw,38px);border-top:0;padding-top:0;margin:0 0 8px} .doc h2{font-size:19px;line-height:1.35;letter-spacing:-.015em;margin:30px 0 10px} .doc h3{font-size:15px;margin:22px 0 8px} .doc h4{font-size:13.5px;margin:18px 0 6px} .doc p{margin:10px 0;color:var(--charcoal-700);font-size:13.5px} .doc ul,.doc ol{margin:10px 0;padding-left:21px;color:var(--charcoal-700);font-size:13.5px} .doc li{margin:4px 0} .doc li::marker{color:var(--chili-500)} .doc strong{color:var(--charcoal-900)} .doc code{padding:1px 5px;border-radius:5px;background:rgba(33,31,28,.065);font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace} .doc pre{margin:14px 0;padding:14px 16px;overflow:auto;border-radius:13px;background:var(--charcoal-900);color:var(--rice-100);font-size:12px;line-height:1.65} .doc pre code{padding:0;background:transparent;color:inherit;font-size:inherit} .doc blockquote{margin:14px 0;padding:11px 14px;border-left:3px solid var(--chili-500);border-radius:0 10px 10px 0;background:var(--chili-50);color:var(--charcoal-700);font-size:13px} .doc hr{border:0;border-top:1px solid var(--line);margin:28px 0} .table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:13px;background:white} table{width:100%;border-collapse:collapse;min-width:560px;font-size:12px} th,td{padding:9px 11px;border-bottom:1px solid rgba(33,31,28,.06);text-align:left;vertical-align:top} th{background:var(--rice-100);color:var(--charcoal-500);font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap} tr:last-child td{border-bottom:0} td{color:var(--charcoal-700);line-height:1.6} .doc-footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:#918a82;font-size:11px;line-height:1.65} .backtop{position:fixed;right:22px;bottom:22px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:white;color:var(--charcoal-700);font-size:11px;font-weight:700;text-decoration:none;box-shadow:0 6px 20px rgba(70,45,25,.08)} @media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 50px;gap:14px} .toc{position:static;max-height:none} .toc ol{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px} .doc{padding:24px 20px 38px;border-radius:18px} .top{padding:9px 16px} .backtop{display:none}} @media print{body{background:white} .top,.toc,.backtop{display:none} .shell{display:block;max-width:none;padding:0} .doc{border:0;box-shadow:none;padding:0;background:white} .table-wrap{break-inside:avoid}}
+</style>
+</head>
+<body id="top">
+<div class="top"><span><strong>SDLC 能力演示</strong> · 产品与技术 Spec 节点产物</span><span>演示合成数据 · 不合并 / 不公开发布</span></div>
+<div class="shell">
+<nav class="toc" aria-label="文档目录"><h2>目录</h2><ol><li class="toc-l1"><a href="#测试计划-研发需求与缺陷看板">测试计划: 研发需求与缺陷看板</a></li><li class="toc-l1"><a href="#1-目标与范围">1. 目标与范围</a></li><li class="toc-l2"><a href="#11-目标">1.1 目标</a></li><li class="toc-l2"><a href="#12-不在本计划">1.2 不在本计划</a></li><li class="toc-l2"><a href="#13-基线">1.3 基线</a></li><li class="toc-l1"><a href="#2-测试策略与分层">2. 测试策略与分层</a></li><li class="toc-l1"><a href="#3-测试数据与隔离">3. 测试数据与隔离</a></li><li class="toc-l2"><a href="#31-数据">3.1 数据</a></li><li class="toc-l2"><a href="#32-e2e-隔离">3.2 E2E 隔离</a></li><li class="toc-l2"><a href="#33-断言定位">3.3 断言定位</a></li><li class="toc-l1"><a href="#4-ac-测试映射">4. AC → 测试映射</a></li><li class="toc-l1"><a href="#5-单元测试用例">5. 单元测试用例</a></li><li class="toc-l2"><a href="#51-种子modeltestts">5.1 种子（<code>model.test.ts</code>）</a></li><li class="toc-l2"><a href="#52-校验rulestestts">5.2 校验（<code>rules.test.ts</code>）</a></li><li class="toc-l2"><a href="#53-筛选querytestts">5.3 筛选（<code>query.test.ts</code>）</a></li><li class="toc-l2"><a href="#54-统计querytestts">5.4 统计（<code>query.test.ts</code>）</a></li><li class="toc-l2"><a href="#55-状态机rulestestts">5.5 状态机（<code>rules.test.ts</code>）</a></li><li class="toc-l2"><a href="#56-存储storagetestts">5.6 存储（<code>storage.test.ts</code>）</a></li><li class="toc-l2"><a href="#57-证据常量modeltestts">5.7 证据常量（<code>model.test.ts</code>）</a></li><li class="toc-l1"><a href="#6-e2e-用例">6. E2E 用例</a></li><li class="toc-l2"><a href="#61-主流程">6.1 主流程</a></li><li class="toc-l2"><a href="#62-持久化与异常">6.2 持久化与异常</a></li><li class="toc-l2"><a href="#63-安全键盘与响应式">6.3 安全、键盘与响应式</a></li><li class="toc-l2"><a href="#64-路由回归">6.4 路由回归</a></li><li class="toc-l1"><a href="#7-静态与安全检查">7. 静态与安全检查</a></li><li class="toc-l1"><a href="#8-执行命令与顺序">8. 执行命令与顺序</a></li><li class="toc-l2"><a href="#81-节点-3开发与自测">8.1 节点 3（开发与自测）</a></li><li class="toc-l2"><a href="#82-节点-4沙箱预览与冒烟">8.2 节点 4（沙箱预览与冒烟）</a></li><li class="toc-l2"><a href="#83-节点-5真实-e2e">8.3 节点 5（真实 E2E）</a></li><li class="toc-l2"><a href="#84-禁止">8.4 禁止</a></li><li class="toc-l1"><a href="#9-报告格式与证据">9. 报告格式与证据</a></li><li class="toc-l2"><a href="#91-机器可读摘要">9.1 机器可读摘要</a></li><li class="toc-l2"><a href="#92-人类可读证据">9.2 人类可读证据</a></li><li class="toc-l2"><a href="#93-失败复现">9.3 失败复现</a></li><li class="toc-l1"><a href="#10-pass-fail-blocked-判定">10. PASS / FAIL / BLOCKED 判定</a></li><li class="toc-l2"><a href="#101-pass">10.1 PASS</a></li><li class="toc-l2"><a href="#102-fail">10.2 FAIL</a></li><li class="toc-l2"><a href="#103-blocked">10.3 BLOCKED</a></li><li class="toc-l2"><a href="#104-0-测试全跳过超时">10.4 0 测试/全跳过/超时</a></li><li class="toc-l2"><a href="#105-失败处理与停止规则">10.5 失败处理与停止规则</a></li><li class="toc-l2"><a href="#106-pr-与发布边界检查">10.6 PR 与发布边界检查</a></li><li class="toc-l1"><a href="#11-节点准入与准出">11. 节点准入与准出</a></li><li class="toc-l1"><a href="#12-未覆盖与风险">12. 未覆盖与风险</a></li><li class="toc-l1"><a href="#13-版本">13. 版本</a></li><li class="toc-l2"><a href="#131-变更记录">13.1 变更记录</a></li></ol></nav>
+<main class="doc">
+<header class="doc-head">
+<p class="eyebrow">测试计划 · 待评审</p>
+<h1>研发需求与缺陷看板 · 测试计划</h1>
+<p>本文件定义 AC-01..AC-12 到单元测试、E2E、静态检查和过程证据的映射，以及命令、报告格式与 PASS/FAIL/BLOCKED 判定。</p>
+<div class="badges"><span class="badge badge-amber">单元 + E2E</span><span class="badge badge-neutral">AC 追溯</span><span class="badge badge-neutral">revision 1</span><span class="badge badge-neutral">本节点未执行</span></div>
+<div class="docnav" aria-label="Spec 包导航"><a href="./requirements-defect-board.spec.html">产品 Spec</a><a href="./requirements-defect-board.design.html">技术 Design</a><a href="./requirements-defect-board.test-plan.html">测试计划</a><a href="./requirements-defect-board.tagging.html">需求打标</a><a href="./README.md">索引</a></div>
+</header>
+<h1 id="测试计划-研发需求与缺陷看板">测试计划: 研发需求与缺陷看板</h1>
+<blockquote><p>本计划定义节点 3-6 如何证明 AC-01..AC-12。测试编号稳定，报告必须引用同一编号。 本节点只生成计划，不执行实现测试；不得把“计划通过”写成“已通过”。</p></blockquote>
+<hr />
+<h1 id="1-目标与范围">1. 目标与范围</h1>
+<h2 id="11-目标">1.1 目标</h2>
+<ul><li>每条 AC 至少有一个可执行验证；纯逻辑 AC 同时有单元测试与真实浏览器 E2E。</li><li>单元测试覆盖校验、筛选、统计、状态机、持久化核心逻辑及异常分支。</li><li>真实浏览器 E2E 覆盖关键成功路径和失败路径，使用真实 DOM 与真实 localStorage。</li><li>报告可核对：revision、命令、退出码、执行数、PASS/FAIL/BLOCKED、截图、失败复现、未覆盖项。</li><li>证明未合并、未发布、未触碰 main 与公开站点。</li></ul>
+<h2 id="12-不在本计划">1.2 不在本计划</h2>
+<ul><li>后端接口、数据库、登录、权限、多人协作、外部系统同步测试。</li><li>生产环境、真实用户/客户数据、公开发布验证。</li><li>像素级视觉回归、跨浏览器全矩阵、屏幕阅读器人工认证。</li><li>平台流程/Agent/Skill 配置验证。</li></ul>
+<h2 id="13-基线">1.3 基线</h2>
+<div class="table-wrap"><table><thead><tr><th>项目</th><th>值</th></tr></thead><tbody><tr><td>仓库</td><td><code>samshen29-ops/deliveryai-demo-kz2c6z</code></td></tr><tr><td>基线 main</td><td><code>1f47ad864fb9b97835cb8a453e6ed41d132f56e1</code></td></tr><tr><td>工作分支</td><td><code>demo/sam-sdlc-capability</code></td></tr><tr><td>本节点起点</td><td><code>2ca14e0bcfb9e8273e75e31d67db71c0aacc6d7d</code></td></tr><tr><td>原型验收</td><td><code>docs/prototype/requirements-board/evidence/browser-acceptance.json</code>（14/14 checks PASS，0 console/page error，测试 revision <code>b10ccbe</code>）</td></tr><tr><td>Node/npm</td><td>Node v22.21.0 / npm 10.9.4（当前沙箱实测）</td></tr><tr><td>浏览器</td><td>Playwright Chromium，<code>/opt/chromium.org/chromium/chrome</code>（环境预装，禁止 <code>playwright install</code>）</td></tr></tbody></table></div>
+<hr />
+<h1 id="2-测试策略与分层">2. 测试策略与分层</h1>
+<div class="table-wrap"><table><thead><tr><th>层级</th><th>工具</th><th>覆盖</th><th>执行节点</th><th>证据</th></tr></thead><tbody><tr><td>静态检查</td><td>ESLint、TypeScript、<code>rg</code> 安全扫描</td><td>类型、lint、危险 API、敏感信息</td><td>3</td><td>终端输出/命令退出码</td></tr><tr><td>单元测试</td><td>Vitest（新增 devDependency）</td><td>种子、校验、筛选、统计、状态机、存储、证据常量</td><td>3</td><td>Vitest 输出 + JSON 摘要</td></tr><tr><td>构建</td><td><code>tsc -b &amp;&amp; vite build</code></td><td>类型、产物、依赖完整性</td><td>3</td><td>退出码 + <code>dist/</code></td></tr><tr><td>冒烟</td><td>沙箱 dev server + curl + 浏览器</td><td>首屏、静态资源、核心入口</td><td>4</td><td>URL、HTTP 状态、截图</td></tr><tr><td>E2E</td><td>Playwright（现有）</td><td>AC-01..AC-11 成功/失败路径、键盘、窄屏、console</td><td>3 编写，5 正式执行</td><td>HTML 报告 + 截图 + JSON</td></tr><tr><td>过程证据</td><td>Git/PR/平台记录</td><td>AC-12</td><td>3-6</td><td>commit、PR、review、报告路径</td></tr></tbody></table></div>
+<p>原则：</p>
+<ul><li><strong>先纯函数后 UI</strong>：逻辑缺陷在单测阶段暴露，E2E 只验证集成行为。</li><li><strong>正反成对</strong>：每个边界至少 1 个接受 + 1 个拒绝用例。</li><li><strong>同源断言</strong>：统计断言必须同时读取卡片数量、列计数和统计值，不能只断言其中一个。</li><li><strong>真实存储</strong>：E2E 使用真实 <code>localStorage</code>，通过 <code>addInitScript</code> 注入损坏/不可用场景，不 mock 应用内部函数。</li><li><strong>不伪造</strong>：没有执行的测试、没有生成的截图、没有创建的 PR 不得出现在 PASS 列表。</li></ul>
+<hr />
+<h1 id="3-测试数据与隔离">3. 测试数据与隔离</h1>
+<h2 id="31-数据">3.1 数据</h2>
+<ul><li>只使用 12 条合成种子与测试中创建的合成工作项。</li><li>负责人仅使用 <code>示例产品/示例研发/示例测试/示例设计</code>。</li><li>XSS 用例使用无害 payload（<code>window.__xss</code> 标记），不访问外部网络。</li><li>不使用真实姓名、邮箱、手机号、token、Cookie、私钥、客户数据。</li></ul>
+<h2 id="32-e2e-隔离">3.2 E2E 隔离</h2>
+<p>每个用例开始前通过 <code>page.addInitScript</code>：</p>
+<pre><code class="language-ts">localStorage.removeItem('sdlc-demo-board:v1')
+localStorage.setItem('i18nextLng', 'zh')
+localStorage.setItem('elderly-mode', 'false')
+localStorage.setItem('unrelated-key', 'keep-me')</code></pre>
+<ul><li>不调用 <code>localStorage.clear()</code> 作为应用行为；测试清理也只移除本应用 key，避免掩盖“误清其他 key”的缺陷。</li><li>损坏用例：<code>localStorage.setItem('sdlc-demo-board:v1', 'not-json')</code>。</li><li>不可用用例：覆盖 <code>Storage.prototype.setItem/getItem</code> 抛错（在 <code>addInitScript</code> 内），并收集 <code>pageerror</code>。</li><li>每个用例独立、可乱序执行；不依赖上一个用例的数据。</li></ul>
+<h2 id="33-断言定位">3.3 断言定位</h2>
+<p>优先级：<code>getByRole</code>（可访问名）&gt; <code>getByLabel</code>/<code>getByText</code> &gt; 语义 locator（<code>article</code>、<code>heading</code>）&gt; CSS。避免依赖易变 DOM 层级；确需 nth 时注释原因。</p>
+<hr />
+<h1 id="4-ac-测试映射">4. AC → 测试映射</h1>
+<div class="table-wrap"><table><thead><tr><th>AC</th><th>验收点</th><th>单元测试</th><th>E2E</th><th>其他证据</th></tr></thead><tbody><tr><td>AC-01</td><td>12 条、5 分组、合成标识、默认入口</td><td>UT-SEED-01/02</td><td>E2E-AC-01</td><td>截图 <code>board-desktop.png</code></td></tr><tr><td>AC-02</td><td>新增/编辑/取消</td><td>UT-VALID-01..03</td><td>E2E-AC-02</td><td>截图 <code>create-success.png</code>、<code>edit-cancel.png</code></td></tr><tr><td>AC-03</td><td>空/超长标题、超长描述</td><td>UT-VALID-04..12</td><td>E2E-AC-03</td><td>截图 <code>validation-error.png</code></td></tr><tr><td>AC-04</td><td>关键词/组合筛选/清空/空态</td><td>UT-FILTER-01..08</td><td>E2E-AC-04</td><td>截图 <code>filters-empty.png</code></td></tr><tr><td>AC-05</td><td>合法/非法流转、历史、只读</td><td>UT-SM-01..12</td><td>E2E-AC-05</td><td>截图 <code>transition-rejected.png</code>、<code>completed-readonly.png</code></td></tr><tr><td>AC-06</td><td>刷新保留、损坏/不可用</td><td>UT-STORAGE-01..12</td><td>E2E-AC-06a/b/c</td><td>截图 <code>persist-reload.png</code>、<code>storage-corrupt.png</code>、<code>storage-unavailable.png</code></td></tr><tr><td>AC-07</td><td>计数/完成率/空集合</td><td>UT-STATS-01..06</td><td>E2E-AC-07</td><td>截图 <code>stats-filtered.png</code></td></tr><tr><td>AC-08</td><td>详情/证据类型/无 PASS</td><td>UT-EVID-01..03</td><td>E2E-AC-08</td><td>截图 <code>detail-evidence.png</code></td></tr><tr><td>AC-09</td><td>复位取消/确认/隔离</td><td>UT-STORAGE-10</td><td>E2E-AC-09</td><td>截图 <code>reset-step1.png</code>、<code>reset-step2.png</code></td></tr><tr><td>AC-10</td><td>XSS/凭据/身份</td><td>静态扫描</td><td>E2E-AC-10</td><td>截图 <code>xss-safe.png</code> + <code>rg</code> 输出</td></tr><tr><td>AC-11</td><td>键盘/390px/console</td><td>—</td><td>E2E-AC-11</td><td>截图 <code>mobile-board.png</code>、<code>mobile-detail.png</code></td></tr><tr><td>AC-12</td><td>全流程证据</td><td>全量</td><td>全量</td><td>commit、报告、PR、review、main 校验</td></tr></tbody></table></div>
+<hr />
+<h1 id="5-单元测试用例">5. 单元测试用例</h1>
+<blockquote><p>工具：Vitest；命令：<code>npm run test:unit</code>；环境：Node（无 jsdom，存储用 fake <code>StorageLike</code>）。 所有用例必须实际执行；<code>test.skip</code>/<code>test.todo</code> 不计 PASS。</p></blockquote>
+<h2 id="51-种子modeltestts">5.1 种子（<code>model.test.ts</code>）</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>前置/步骤</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>UT-SEED-01</td><td>种子数量与状态分布</td><td>调用 <code>createSeedState()</code></td><td>12 条；计数 2/3/2/2/3；已完成 3；ID 唯一；完成率 25%</td><td>AC-01</td></tr><tr><td>UT-SEED-02</td><td>种子字段与真实性</td><td>遍历 items</td><td>必填字段齐全；<code>assignee</code> 在 4 个示例值内；每条 ≥1 sample 证据、≥1 success 历史；无真实身份模式</td><td>AC-01/AC-10</td></tr></tbody></table></div>
+<h2 id="52-校验rulestestts">5.2 校验（<code>rules.test.ts</code>）</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>输入</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>UT-VALID-01</td><td>合法草稿与 trim</td><td><code>title='  合法标题  '</code></td><td>无错误；<code>normalizeDraft</code> 后为 <code>合法标题</code></td><td>AC-02</td></tr><tr><td>UT-VALID-02</td><td>新 ID</td><td>items 最大 <code>DEMO-112</code></td><td><code>DEMO-113</code>；非 DEMO 项不影响；无 DEMO 项时 <code>DEMO-101</code></td><td>AC-02</td></tr><tr><td>UT-VALID-03</td><td>枚举非法</td><td>type/priority/assignee 非法</td><td>对应字段错误；不返回合法草稿</td><td>AC-02</td></tr><tr><td>UT-VALID-04</td><td>空标题</td><td><code>''</code></td><td><code>标题不能为空。</code></td><td>AC-03</td></tr><tr><td>UT-VALID-05</td><td>纯空格标题</td><td><code>'   '</code></td><td>同空标题</td><td>AC-03</td></tr><tr><td>UT-VALID-06</td><td>80 标题</td><td>80 个汉字</td><td>无错误</td><td>AC-03</td></tr><tr><td>UT-VALID-07</td><td>81 标题</td><td>81 个汉字</td><td>错误含 <code>81</code> 与 <code>80</code></td><td>AC-03</td></tr><tr><td>UT-VALID-08</td><td>emoji 码点</td><td>80 个 <code>😀</code> / 81 个 <code>😀</code></td><td>80 接受；81 拒绝；不按 UTF-16 计 160</td><td>AC-03</td></tr><tr><td>UT-VALID-09</td><td>描述 2000</td><td>2000 字符</td><td>无错误</td><td>AC-03</td></tr><tr><td>UT-VALID-10</td><td>描述 2001</td><td>2001 字符</td><td>错误含 <code>2001</code> 与 <code>2000</code></td><td>AC-03</td></tr><tr><td>UT-VALID-11</td><td>验收 2001</td><td>2001 字符</td><td>错误含 <code>2001</code> 与 <code>2000</code></td><td>AC-03</td></tr><tr><td>UT-VALID-12</td><td>多错误与修正</td><td>空标题 + 超长描述 + 非法枚举</td><td>同时返回多个字段错误；修正后对应错误消失</td><td>AC-03</td></tr></tbody></table></div>
+<h2 id="53-筛选querytestts">5.3 筛选（<code>query.test.ts</code>）</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>输入</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>UT-FILTER-01</td><td>无筛选</td><td><code>EMPTY_FILTERS</code></td><td>返回全部 12 条；<code>hasActiveFilters=false</code></td><td>AC-04</td></tr><tr><td>UT-FILTER-02</td><td>标题子串</td><td><code>q='筛选'</code></td><td>命中标题含“筛选”的项</td><td>AC-04</td></tr><tr><td>UT-FILTER-03</td><td>描述子串</td><td><code>q='验收清单'</code>（仅描述）</td><td>命中描述含关键词的项</td><td>AC-04</td></tr><tr><td>UT-FILTER-04</td><td>拉丁大小写</td><td><code>q='FILTER'</code> vs <code>filter</code></td><td>结果一致；大小写不敏感</td><td>AC-04</td></tr><tr><td>UT-FILTER-05</td><td>中文子串</td><td><code>q='状态'</code></td><td>中文子串命中</td><td>AC-04</td></tr><tr><td>UT-FILTER-06</td><td>类型筛选</td><td><code>type='defect'</code></td><td>只返回缺陷</td><td>AC-04</td></tr><tr><td>UT-FILTER-07</td><td>组合 AND</td><td>type+priority+status+q</td><td>只返回同时满足的项；与逐项交集一致</td><td>AC-04</td></tr><tr><td>UT-FILTER-08</td><td>空白关键词/清空</td><td><code>q='   '</code>；随后 <code>EMPTY_FILTERS</code></td><td>空白视为无关键词；清空恢复 12 条；不修改 items</td><td>AC-04</td></tr></tbody></table></div>
+<h2 id="54-统计querytestts">5.4 统计（<code>query.test.ts</code>）</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>输入</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>UT-STATS-01</td><td>种子统计</td><td>12 条种子</td><td>total=12；2/3/2/2/3；completed=3；rate=25</td><td>AC-07</td></tr><tr><td>UT-STATS-02</td><td>空集合</td><td><code>[]</code></td><td>total=0；各状态 0；rate=null；无 NaN/Infinity</td><td>AC-07</td></tr><tr><td>UT-STATS-03</td><td>取整</td><td>1 完成/3 总数</td><td>rate=33</td><td>AC-07</td></tr><tr><td>UT-STATS-04</td><td>全部完成</td><td>3/3</td><td>rate=100</td><td>AC-07</td></tr><tr><td>UT-STATS-05</td><td>无完成</td><td>0/3</td><td>rate=0</td><td>AC-07</td></tr><tr><td>UT-STATS-06</td><td>同源一致性</td><td>任一筛选集合</td><td><code>sum(counts)=total</code>；分列长度=对应 counts</td><td>AC-07</td></tr></tbody></table></div>
+<h2 id="55-状态机rulestestts">5.5 状态机（<code>rules.test.ts</code>）</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>输入</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>UT-SM-01</td><td>允许矩阵</td><td>5×5 全组合</td><td>仅 6 个允许：待规划→进行中；进行中→审核中/阻塞中；阻塞中→进行中；审核中→已完成/进行中</td><td>AC-05</td></tr><tr><td>UT-SM-02</td><td>合法流转</td><td>待规划→进行中</td><td>ok；status 更新；updatedAt 更新；success 事件；reason 非空</td><td>AC-05</td></tr><tr><td>UT-SM-03</td><td>跨级拒绝</td><td>待规划→已完成</td><td>!ok；status 不变；rejected 事件；reason 含当前/目标/允许目标</td><td>AC-05</td></tr><tr><td>UT-SM-04</td><td>完成只读</td><td>已完成→任意</td><td>!ok；status 不变；reason 含“只读/不会自动重开”；写历史</td><td>AC-05</td></tr><tr><td>UT-SM-05</td><td>自流转</td><td>进行中→进行中</td><td>!ok；写 rejected 历史</td><td>AC-05</td></tr><tr><td>UT-SM-06</td><td>历史顺序</td><td>连续两次流转</td><td>新事件在数组头部；时间倒序展示</td><td>AC-05</td></tr><tr><td>UT-SM-07</td><td>不可变</td><td>调用前后原对象</td><td>原 item 不被修改；返回新对象</td><td>AC-05</td></tr><tr><td>UT-SM-08</td><td>历史累积</td><td>多次合法/非法</td><td>历史条数递增；成功/拒绝均保留</td><td>AC-05</td></tr><tr><td>UT-SM-09</td><td>阻塞中拒绝</td><td>阻塞中→审核中</td><td>!ok；reason 允许目标仅“进行中”</td><td>AC-05</td></tr><tr><td>UT-SM-10</td><td>拒绝更新时间</td><td>非法流转</td><td>updatedAt 更新；status 不变</td><td>AC-05</td></tr><tr><td>UT-SM-11</td><td>事件 ID</td><td>连续流转</td><td>每个事件 ID 唯一</td><td>AC-05</td></tr><tr><td>UT-SM-12</td><td>全矩阵穷尽</td><td>5×5 参数化</td><td>25 个组合结果与 Spec §6.2 表完全一致</td><td>AC-05</td></tr></tbody></table></div>
+<h2 id="56-存储storagetestts">5.6 存储（<code>storage.test.ts</code>）</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>前置/步骤</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>UT-STORAGE-01</td><td>无 key</td><td>fake storage 为空</td><td>mode=<code>empty</code>；12 条种子；raw=null</td><td>AC-06</td></tr><tr><td>UT-STORAGE-02</td><td>合法往返</td><td>save 后 load</td><td>mode=<code>ok</code>；items/状态/历史/证据一致</td><td>AC-06</td></tr><tr><td>UT-STORAGE-03</td><td>非 JSON</td><td><code>not-json</code></td><td>mode=<code>corrupt</code>；raw 原样；种子；保存被阻断；显式覆盖后成功</td><td>AC-06</td></tr><tr><td>UT-STORAGE-04</td><td>版本不匹配</td><td><code>version: 2</code></td><td>corrupt；raw 保留</td><td>AC-06</td></tr><tr><td>UT-STORAGE-05</td><td>items 非数组</td><td><code>items: {}</code></td><td>corrupt；raw 保留</td><td>AC-06</td></tr><tr><td>UT-STORAGE-06</td><td>缺字段</td><td>缺 <code>title</code></td><td>corrupt；raw 保留</td><td>AC-06</td></tr><tr><td>UT-STORAGE-07</td><td>枚举非法</td><td><code>status: '未知'</code></td><td>corrupt；raw 保留</td><td>AC-06</td></tr><tr><td>UT-STORAGE-08</td><td>重复 ID</td><td>两个 <code>DEMO-101</code></td><td>corrupt；不静默去重</td><td>AC-06</td></tr><tr><td>UT-STORAGE-09</td><td>未知字段</td><td>顶层/工作项含 <code>x-extra</code></td><td>加载成功；保存后字段仍在</td><td>AC-06</td></tr><tr><td>UT-STORAGE-10</td><td>复位隔离</td><td>fake storage 含其他 key</td><td>仅 <code>sdlc-demo-board:v1</code> 变为 12 条种子；其他 key 原值不变</td><td>AC-09</td></tr><tr><td>UT-STORAGE-11</td><td>读取抛错</td><td><code>getItem</code> 抛错</td><td>mode=<code>unavailable</code>；种子；不抛未处理错误</td><td>AC-06</td></tr><tr><td>UT-STORAGE-12</td><td>写入抛错/重试</td><td><code>setItem</code> 抛错后恢复</td><td>mode=<code>write-error</code>；内存态保留；重试成功</td><td>AC-06</td></tr></tbody></table></div>
+<h2 id="57-证据常量modeltestts">5.7 证据常量（<code>model.test.ts</code>）</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>UT-EVID-01</td><td>7 节点状态</td><td>节点 1=<code>已通过</code>；节点 2=<code>已生成 · 待评审</code>；节点 3-6=<code>未执行/未创建</code>；节点 7=<code>待确认</code></td><td>AC-08</td></tr><tr><td>UT-EVID-02</td><td>无伪造</td><td><code>pending</code> 项状态不含 <code>PASS/成功/已合并</code>；无 <code>github.com/.../pull/</code> 虚构链接</td><td>AC-08</td></tr><tr><td>UT-EVID-03</td><td>标签与路径</td><td><code>sample</code> 仅示例；<code>real</code> 均有仓库相对路径；<code>pending</code> 均有未执行说明</td><td>AC-08</td></tr></tbody></table></div>
+<hr />
+<h1 id="6-e2e-用例">6. E2E 用例</h1>
+<blockquote><p>工具：Playwright（现有配置）；命令见 §8；每个用例独立，使用 §3.2 隔离。 视口默认 1280×720；窄屏用例显式 <code>setViewportSize({width:390,height:844})</code>。</p></blockquote>
+<h2 id="61-主流程">6.1 主流程</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>步骤</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>E2E-AC-01</td><td>首屏种子</td><td><code>goto('/')</code></td><td>URL <code>#/board</code>；12 张卡片；5 列；列计数 2/3/2/2/3；合成数据条可见；完成率 25%</td><td>AC-01</td></tr><tr><td>E2E-AC-02</td><td>新增/编辑/取消</td><td>打开新增→填合法标题→保存；打开详情→编辑标题→保存；再次编辑→取消；再次新增→取消</td><td>新增后 13 张；详情标题更新；取消后标题不变、数量不变；刷新后新增/编辑仍在</td><td>AC-02</td></tr><tr><td>E2E-AC-03</td><td>校验失败</td><td>空标题提交；81 字标题提交；2001 字描述提交</td><td>字段错误可见；标题/描述输入保留；焦点在首个错误；修正后可保存</td><td>AC-03</td></tr><tr><td>E2E-AC-04</td><td>搜索/组合/清空/空态</td><td>搜索“筛选”；类型=缺陷+状态=已完成；点击清空；构造 0 结果</td><td>搜索 4 张；组合 1 张；清空恢复 12 张；0 结果显示空态与清空入口</td><td>AC-04</td></tr><tr><td>E2E-AC-05</td><td>流转成功/拒绝/只读</td><td>打开 DEMO-103；选“已完成”提交；选“审核中”提交；打开 DEMO-110</td><td>第一次拒绝+拒绝历史+状态仍进行中；第二次成功+成功历史+列变化；已完成无编辑/流转、显示只读</td><td>AC-05</td></tr><tr><td>E2E-AC-07</td><td>统计同源</td><td>对搜索/组合/已完成/空集合分别读取统计与卡片</td><td>total/各状态/列计数=卡片数；完成率正确；空集合显示“无数据”，无 NaN</td><td>AC-07</td></tr><tr><td>E2E-AC-08</td><td>详情证据</td><td>打开种子详情；查看证据区与能力证据页</td><td>示例记录≥2；真实产物区存在；未执行项存在；无 PASS、无虚构 PR 链接</td><td>AC-08</td></tr></tbody></table></div>
+<h2 id="62-持久化与异常">6.2 持久化与异常</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>步骤</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>E2E-AC-06a</td><td>刷新保留</td><td>新增→编辑→合法流转→<code>reload()</code></td><td>新增项、编辑标题、新状态、历史均保留</td><td>AC-06</td></tr><tr><td>E2E-AC-06b</td><td>损坏数据</td><td>预置 <code>not-json</code>；打开；检查 raw；点击“用当前数据覆盖”</td><td>警告可见；导出按钮可见；覆盖前 raw 仍为 <code>not-json</code>；覆盖后为合法 version 1 且 12 条</td><td>AC-06</td></tr><tr><td>E2E-AC-06c</td><td>存储不可用</td><td>覆盖 <code>Storage.prototype.setItem/getItem</code> 抛错；打开；新增</td><td>警告“仅在本次页面保留”；新增在内存生效；刷新回种子；无 pageerror</td><td>AC-06</td></tr><tr><td>E2E-AC-09</td><td>复位</td><td>先修改数据；打开复位→取消；再次打开→继续→取消；再次→确认</td><td>两次取消均无变化；确认后 12 条种子、筛选清空；<code>i18nextLng</code>/<code>elderly-mode</code>/<code>unrelated-key</code> 保留</td><td>AC-09</td></tr></tbody></table></div>
+<h2 id="63-安全键盘与响应式">6.3 安全、键盘与响应式</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>步骤</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>E2E-AC-10</td><td>XSS/文本安全</td><td>新增标题 <code>&lt;img src=x onerror="window.__xss=1"&gt;</code>、描述 <code>&lt;script&gt;window.__xss=2&lt;/script&gt;</code>；保存并打开详情</td><td>文本原样可见；无 <code>img</code> 元素；<code>window.__xss === undefined</code>；无 console error</td><td>AC-10</td></tr><tr><td>E2E-AC-11a</td><td>键盘闭环</td><td>仅用键盘：Tab 到新增→Enter→输入→Tab 保存→Tab 搜索→输入→Tab 打开卡片→Enter→Tab 流转→Enter→Esc</td><td>全流程可完成；焦点可见；Esc 关闭并返回触发元素</td><td>AC-11</td></tr><tr><td>E2E-AC-11b</td><td>390px</td><td><code>setViewportSize(390,844)</code>；打开看板与详情</td><td><code>document.documentElement.scrollWidth &lt;= innerWidth + 1</code>；列容器可横向滚动；详情/表单不超宽；核心按钮可点</td><td>AC-11</td></tr><tr><td>E2E-AC-11c</td><td>Console</td><td>执行核心操作，收集 <code>console.error</code>/<code>pageerror</code></td><td>本次引入的 error 为 0；环境噪声单独记录</td><td>AC-11</td></tr></tbody></table></div>
+<h2 id="64-路由回归">6.4 路由回归</h2>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>用例</th><th>步骤</th><th>期望</th><th>AC</th></tr></thead><tbody><tr><td>E2E-ROUTE-01</td><td>根地址</td><td><code>goto('/')</code></td><td><code>#/board</code> + 看板可见</td><td>AC-01/REQ-013</td></tr><tr><td>E2E-ROUTE-02</td><td>火锅入口</td><td><code>goto('/#/home')</code></td><td>火锅首页可见，A08 可绑定</td><td>REQ-013</td></tr><tr><td>E2E-ROUTE-03</td><td>深链接</td><td><code>goto('/#/menu')</code></td><td>自动绑定桌台，菜单可见</td><td>REQ-013</td></tr><tr><td>E2E-ROUTE-04</td><td>非法 hash</td><td><code>goto('/#/not-a-view')</code></td><td>回落 <code>#/board</code></td><td>REQ-013</td></tr><tr><td>E2E-ROUTE-05</td><td>既有回归</td><td>运行既有 <code>super-spicy.spec.ts</code>、<code>view-routing.spec.ts</code></td><td>仅导航 helper/入口断言调整；业务断言全部通过</td><td>AC-12</td></tr></tbody></table></div>
+<hr />
+<h1 id="7-静态与安全检查">7. 静态与安全检查</h1>
+<div class="table-wrap"><table><thead><tr><th>检查</th><th>命令</th><th>期望</th><th>失败处理</th></tr></thead><tbody><tr><td>Lint</td><td><code>npm run lint</code></td><td>exit 0，0 warning</td><td>修复后重跑</td></tr><tr><td>类型/构建</td><td><code>npm run build</code></td><td>exit 0，生成 <code>dist/</code></td><td>修复类型/构建错误</td></tr><tr><td>危险 API</td><td><code>rg -n "dangerouslySetInnerHTML|innerHTML|eval\(" src</code></td><td>0 命中（或仅注释且说明）</td><td>改为纯文本渲染</td></tr><tr><td>敏感信息</td><td><code>rg -n "(ghp_|github_pat_|AKIA|BEGIN [A-Z ]*PRIVATE KEY|password\s*=|secret\s*=)" src docs/spec</code></td><td>0 命中</td><td>删除/脱敏并报告</td></tr><tr><td>身份/客户数据</td><td><code>rg -n "示例产品|示例研发|示例测试|示例设计" src/board</code></td><td>仅示例名称</td><td>替换为示例值</td></tr><tr><td>Diff 卫生</td><td><code>git diff --check</code></td><td>无空白错误</td><td>修正</td></tr><tr><td>变更范围</td><td><code>git diff --stat main...HEAD</code></td><td>仅本需求文件</td><td>拆分无关变更</td></tr></tbody></table></div>
+<blockquote><p><code>rg</code> 的敏感信息扫描只是辅助，不替代人工 review；命中测试用无害字符串时必须注明。</p></blockquote>
+<hr />
+<h1 id="8-执行命令与顺序">8. 执行命令与顺序</h1>
+<h2 id="81-节点-3开发与自测">8.1 节点 3（开发与自测）</h2>
+<pre><code class="language-bash"># 1. 安装依赖（首次或 lockfile 变化后）
+npm ci
+
+# 2. 静态检查
+npm run lint
+
+# 3. 单元测试（节点 3 新增脚本）
+npm run test:unit
+
+# 4. 构建/类型
+npm run build
+
+# 5. 新增 E2E 与既有回归（单次命令，避免重复启动）
+PLAYWRIGHT_CHROMIUM_PATH=/opt/chromium.org/chromium/chrome npx playwright test e2e/board.spec.ts e2e/view-routing.spec.ts e2e/super-spicy.spec.ts</code></pre>
+<h2 id="82-节点-4沙箱预览与冒烟">8.2 节点 4（沙箱预览与冒烟）</h2>
+<pre><code class="language-bash">npm run dev -- --port 4174 --strictPort
+curl -fsSI http://127.0.0.1:4174/ | head -5
+curl -fsS http://127.0.0.1:4174/ | head -20</code></pre>
+<ul><li>用浏览器工具访问 <code>http://127.0.0.1:4174/#/board</code>，确认首屏、静态资源、无白屏。</li><li>若平台端口暴露返回 409：记录“无公开 URL”，使用沙箱内地址与截图；不得拼接或声称公开预览。</li></ul>
+<h2 id="83-节点-5真实-e2e">8.3 节点 5（真实 E2E）</h2>
+<pre><code class="language-bash">git rev-parse HEAD
+git status --porcelain
+PLAYWRIGHT_CHROMIUM_PATH=/opt/chromium.org/chromium/chrome npx playwright test</code></pre>
+<ul><li>必须记录 revision、命令、退出码、实际执行数。</li><li>报告默认输出 <code>playwright-report/</code>；截图在 <code>test-results/</code>；选取关键截图复制到 <code>docs/evidence/board/&lt;revision&gt;/</code>。</li><li>若跨节点无法访问 localhost：在同一 revision 的测试沙箱重现应用；不得改测旧 Pages/main；失败记 BLOCKED。</li></ul>
+<h2 id="84-禁止">8.4 禁止</h2>
+<ul><li>禁止 <code>npx playwright install chromium</code>（浏览器已预装）。</li><li>禁止在命令行覆盖 <code>--reporter</code>/<code>--viewport</code> 等默认配置；窄屏用 <code>setViewportSize</code>。</li><li>禁止用 <code>sleep</code>/<code>waitForTimeout</code> 代替自动等待。</li><li>禁止删除失败用例或改断言以“通过”。</li></ul>
+<hr />
+<h1 id="9-报告格式与证据">9. 报告格式与证据</h1>
+<h2 id="91-机器可读摘要">9.1 机器可读摘要</h2>
+<p>每个测试轮次生成 <code>docs/evidence/board/&lt;revision&gt;/test-report.json</code>：</p>
+<pre><code class="language-json">{
+  "title": "研发需求与缺陷看板测试报告",
+  "generated_at": "2026-11-27T00:00:00.000Z",
+  "revision": "&lt;git rev-parse HEAD&gt;",
+  "base_revision": "1f47ad864fb9b97835cb8a453e6ed41d132f56e1",
+  "branch": "demo/sam-sdlc-capability",
+  "worktree_clean": true,
+  "commands": [
+    { "command": "npm run test:unit", "exit_code": 0, "duration_ms": 0 },
+    { "command": "npx playwright test", "exit_code": 0, "duration_ms": 0 }
+  ],
+  "summary": { "total": 0, "passed": 0, "failed": 0, "skipped": 0, "blocked": 0 },
+  "ac": [
+    { "id": "AC-01", "status": "PASS", "tests": ["UT-SEED-01", "E2E-AC-01"], "evidence": ["board-desktop.png"] }
+  ],
+  "failures": [],
+  "uncovered": []
+}</code></pre>
+<p>约束：</p>
+<ul><li><code>revision</code> 必须是实际执行代码的 commit；工作区有未提交改动时 <code>worktree_clean=false</code>，不得把该轮当作最终证据。</li><li><code>summary.total</code> 必须等于实际执行数；0 测试不得记 PASS。</li><li><code>status</code> 只能是 <code>PASS/FAIL/BLOCKED/NOT_RUN</code>；未执行用 <code>NOT_RUN</code>，不得省略。</li><li>每个 AC 必须出现在 <code>ac</code> 数组；没有测试的 AC 标 <code>NOT_RUN</code> 并写入 <code>uncovered</code>。</li></ul>
+<h2 id="92-人类可读证据">9.2 人类可读证据</h2>
+<div class="table-wrap"><table><thead><tr><th>证据</th><th>路径/形式</th><th>说明</th></tr></thead><tbody><tr><td>Vitest 输出</td><td>终端 + <code>test-report.json</code></td><td>执行数、通过/失败、失败堆栈</td></tr><tr><td>Playwright HTML</td><td><code>playwright-report/index.html</code></td><td>人工复核；不作为 PASS 唯一依据</td></tr><tr><td>截图</td><td><code>docs/evidence/board/&lt;revision&gt;/*.png</code></td><td>桌面/窄屏/校验/筛选/详情/存储/复位/XSS</td></tr><tr><td>E2E JSON</td><td><code>test-report.json</code></td><td>AC 映射、失败复现、未覆盖</td></tr><tr><td>构建日志</td><td>终端/摘要</td><td>命令、退出码、产物路径</td></tr><tr><td>Git/PR</td><td>commit、PR URL</td><td>AC-12；PR 必须 open/unmerged</td></tr><tr><td>main 未变</td><td><code>git rev-parse origin/main</code> 对比基线</td><td>AC-12</td></tr><tr><td>Pages 未变</td><td>检查 workflow 仅 main 触发；不改站点</td><td>AC-12</td></tr></tbody></table></div>
+<h2 id="93-失败复现">9.3 失败复现</h2>
+<p>失败时必须记录：</p>
+<ol><li>失败用例 ID、AC、预期/实际。</li><li>复现命令与 revision。</li><li>截图/trace 路径。</li><li>是否为环境问题（浏览器路径、端口、网络、字体）。</li><li>下一步：修复、重跑、或标 BLOCKED；不得静默跳过。</li></ol>
+<hr />
+<h1 id="10-pass-fail-blocked-判定">10. PASS / FAIL / BLOCKED 判定</h1>
+<h2 id="101-pass">10.1 PASS</h2>
+<p>同时满足：</p>
+<ul><li>命令退出码 0。</li><li>实际执行数 &gt; 0；<code>failed=0</code>；<code>skipped=0</code>；无超时。</li><li>每个 AC 至少有一个对应测试通过；AC-12 的过程证据齐全。</li><li>revision 与 HEAD 一致，工作区干净（或明确记录非最终轮）。</li><li>UI AC 有对应截图；统计 AC 有同源断言。</li><li>无本次引入的 console error / pageerror。</li></ul>
+<h2 id="102-fail">10.2 FAIL</h2>
+<p>任一：</p>
+<ul><li>断言失败、退出码非 0、超时、页面崩溃。</li><li>测试通过但证据缺失（截图/报告/AC 映射）。</li><li>发现伪造 PASS、虚构 PR/日志/截图。</li><li>破坏既有火锅演示或既有 E2E。</li><li>违反授权边界（改 main、合并、发布、真实数据）。</li></ul>
+<h2 id="103-blocked">10.3 BLOCKED</h2>
+<p>任一：</p>
+<ul><li>浏览器/环境缺失且无法用既有路径解决。</li><li>沙箱 localhost 不可达，且无法在同一 revision 重现。</li><li>端口/网络策略阻塞，导致无法执行目标测试。</li><li>依赖安装失败且非代码原因。</li></ul>
+<p>BLOCKED 必须记录具体命令、错误、影响和下一步负责人；不得用“跳过”代替。</p>
+<h2 id="104-0-测试全跳过超时">10.4 0 测试/全跳过/超时</h2>
+<ul><li><code>total=0</code>：不记 PASS，记 FAIL/BLOCKED（视原因）。</li><li><code>skipped=total</code>：不记 PASS。</li><li>超时：记 FAIL；保留 trace；修复后重跑，不无限重试。</li></ul>
+<hr />
+<h2 id="105-失败处理与停止规则">10.5 失败处理与停止规则</h2>
+<ul><li>任一依赖步骤失败：停止后续依赖步骤，保留已产生的资源与证据；记录命令、revision、退出码、错误摘要、影响范围。</li><li>可恢复环境错误（网络抖动、端口占用、浏览器路径、依赖下载）最多修正重试 2 次；每次记录命令与结果。</li><li>权限、凭据、业务拒绝、协议不兼容或仓库保护规则不得盲目重试；标记 BLOCKED 并报告具体原因。</li><li>禁止自动跳过失败用例、删除失败证据、覆盖失败报告、无界重试或扩大授权范围。</li><li>修复后先跑受影响用例，再全量回归；报告只记录实际执行结果，不把计划或推断写成 PASS。</li><li>失败保留的资源（分支、服务、截图、报告）不得为“干净”而删除；由人工决定后续处理。</li></ul>
+<h2 id="106-pr-与发布边界检查">10.6 PR 与发布边界检查</h2>
+<p>推送分支或创建 PR 前必须：</p>
+<ol><li>检查 Actions 触发器：运行 <code>rg -n "on:|push:|branches:|workflow_dispatch|deploy-pages|pages" .github/workflows</code>，确认仅 <code>main</code> 触发 Pages；若当前分支/PR 会触发公开部署或创建收费资源，停止并报告，不绕过保护。</li><li>确认 <code>origin/main</code> 仍为基线 <code>1f47ad8...</code>，<code>git status --porcelain</code> 干净，<code>git diff --stat main...HEAD</code> 只含本需求文件。</li><li>PR 的 base 为 <code>main</code>，head 为 <code>demo/sam-sdlc-capability</code>；保持 open/unmerged，不启用 auto-merge。</li><li>不合并、不发布、不更新 GitHub Pages、不修改空间默认流程/Agent/权限/集成。</li></ol>
+<p>PR 正文必须包含：</p>
+<ol><li>关联需求、PRD、Spec、Design、Test Plan 的链接或路径。</li><li>变更摘要、范围与非目标。</li><li>AC-01..AC-12 证据表：测试 ID、命令、退出码、实际执行数、报告/截图路径、状态。</li><li>实际 revision、分支、单元/E2E 执行数与构建结果。</li><li>风险、未覆盖项、回滚建议。</li><li>授权边界声明：未合并、未发布、<code>main</code> 与公开站点未变。</li><li>人工发布决策待办：不代用户审批，不设置超时自动决策。</li></ol>
+<p>PR 正文模板：</p>
+<pre><code class="language-md">## 关联
+- 需求：SDLC 能力演示｜研发需求与缺陷看板
+- Spec：docs/spec/requirements-defect-board.spec.md
+- Design：docs/spec/requirements-defect-board.design.md
+- Test Plan：docs/spec/requirements-defect-board.test-plan.md
+
+## 变更
+- ...
+
+## 验收证据
+| AC | 测试 | 命令 | 退出码 | 结果 | 证据 |
+| --- | --- | --- | --- | --- | --- |
+| AC-01 | UT-SEED-01/02、E2E-AC-01 | ... | 0 | PASS | ... |
+
+## 风险与未覆盖
+- ...
+
+## 回滚
+- 回退本分支提交或关闭 PR；不触碰 main；演示数据可用复位恢复。
+
+## 边界
+- open / unmerged；未启用 auto-merge；未发布；main 与 GitHub Pages 未变。
+- 发布决策待人工确认。</code></pre>
+<h1 id="11-节点准入与准出">11. 节点准入与准出</h1>
+<div class="table-wrap"><table><thead><tr><th>节点</th><th>准入</th><th>准出</th><th>不满足时</th></tr></thead><tbody><tr><td>3 开发、自测与用例</td><td>Spec/Design/Test Plan 已评审；分支可写</td><td>单测/ lint / build 通过；E2E 用例已编写；实现提交</td><td>记录失败，不进入 4</td></tr><tr><td>4 沙箱预览与冒烟</td><td>节点 3 通过</td><td>沙箱首屏可用；核心入口可操作；截图/URL 记录</td><td>端口 409 记限制，不声称公开</td></tr><tr><td>5 真实 E2E 与证据</td><td>节点 4 通过</td><td>全量 E2E 通过；报告/截图/AC 映射齐全</td><td>失败/阻塞记录，不进入 6</td></tr><tr><td>6 代码评审与 PR</td><td>节点 5 通过</td><td>代码审查完成；PR open/unmerged；正文关联需求与证据</td><td>不合并、不 auto-merge</td></tr><tr><td>7 人工发布决策</td><td>节点 6 完成</td><td>用户决策</td><td>不代审批、不超时自动决策</td></tr></tbody></table></div>
+<hr />
+<h1 id="12-未覆盖与风险">12. 未覆盖与风险</h1>
+<div class="table-wrap"><table><thead><tr><th>项</th><th>说明</th><th>处理</th></tr></thead><tbody><tr><td>跨浏览器全矩阵</td><td>仅 Chromium 自动化</td><td>Firefox/Safari 人工抽检，记录未覆盖</td></tr><tr><td>屏幕阅读器</td><td>无 NVDA/VoiceOver 自动化</td><td>语义/焦点/键盘自动化 + 人工走查</td></tr><tr><td>多标签页并发</td><td>明确不支持</td><td>文档记录“最后写入获胜”</td></tr><tr><td>生产/发布</td><td>未授权</td><td>不测试、不发布</td></tr><tr><td>真实 PR/CI</td><td>节点 6 才有</td><td>届时补证据，不预填</td></tr><tr><td>端口暴露 409</td><td>平台限制</td><td>沙箱内预览；不称公开发布</td></tr><tr><td>字体外链失败</td><td>既有 Google Fonts</td><td>记录网络噪声，不误判 console error</td></tr><tr><td>像素级视觉</td><td>非目标</td><td>仅结构与关键布局断言</td></tr></tbody></table></div>
+<hr />
+<h1 id="13-版本">13. 版本</h1>
+<div class="table-wrap"><table><thead><tr><th>项目</th><th>值</th></tr></thead><tbody><tr><td>测试计划版本</td><td>v1.0（revision 1）</td></tr><tr><td>生成时间</td><td>2026-11-27</td></tr><tr><td>关联 Spec</td><td><code>SDLC-BOARD-SPEC-001</code> v1.0</td></tr><tr><td>关联 Design</td><td><code>requirements-defect-board.design.md</code> v1.0</td></tr><tr><td>基线</td><td><code>main</code> @ <code>1f47ad8</code>；分支 <code>demo/sam-sdlc-capability</code> @ <code>2ca14e0</code></td></tr><tr><td>本轮状态</td><td>计划已生成；未执行任何实现测试；AC-12 仍为部分覆盖</td></tr></tbody></table></div>
+<h2 id="131-变更记录">13.1 变更记录</h2>
+<div class="table-wrap"><table><thead><tr><th>版本</th><th>日期</th><th>变更</th><th>作者</th></tr></thead><tbody><tr><td>v1.0</td><td>2026-11-27</td><td>首次测试计划：AC 映射、单测/E2E 用例、命令、报告格式、PASS 判定</td><td>产品经理 Agent</td></tr></tbody></table></div>
+<footer class="doc-footer">本文件由 SDLC 能力演示“产品与技术 Spec”节点生成。所有工作项、人员与示例证据均为合成数据；未执行项不得标记为成功。分支、PR 与发布状态以仓库和平台记录为准。</footer>
+</main>
+</div>
+<a class="backtop" href="#top">回到顶部</a>
+</body>
+</html>

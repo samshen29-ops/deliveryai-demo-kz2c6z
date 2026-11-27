@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="本文件描述如何把 Spec 接入现有 React SPA：路由、模块、函数签名、存储状态机、证据快照、实施顺序与回滚。" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'" />
+<title>研发需求与缺陷看板 · 技术 Design · SDLC 能力演示</title>
+<style>
+:root{--rice-50:#fffdf8;--rice-100:#fbf5ea;--rice-200:#f3e6d0;--chili-50:#fff1ef;--chili-100:#ffddd8;--chili-500:#e13b2b;--chili-600:#c92f21;--chili-700:#a9231a;--amber-100:#fff2c7;--amber-400:#f5b83f;--charcoal-500:#5f5b55;--charcoal-700:#34312d;--charcoal-900:#211f1c;--line:rgba(33,31,28,.09);--font:"Inter","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;color:var(--charcoal-900);background-color:var(--rice-100);background-image:radial-gradient(rgba(170,110,60,.075) .7px,transparent .7px);background-size:12px 12px;font-family:var(--font);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased} ::selection{background:var(--chili-100);color:var(--chili-700)} a{color:var(--chili-700);text-decoration-thickness:1px;text-underline-offset:3px} a:hover{color:var(--chili-500)} .top{background:var(--charcoal-900);color:var(--rice-100);padding:10px 28px;font-size:11.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap} .top strong{color:var(--amber-400)} .shell{max-width:1220px;margin:0 auto;padding:30px 24px 70px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:34px;align-items:start} .toc{position:sticky;top:20px;background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 8px 26px rgba(70,45,25,.05);max-height:calc(100vh - 40px);overflow:auto} .toc h2{margin:0 0 9px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--charcoal-500)} .toc ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2px} .toc a{display:block;padding:3px 6px;border-radius:7px;color:var(--charcoal-700);font-size:11px;text-decoration:none;line-height:1.45} .toc a:hover{background:var(--chili-50);color:var(--chili-700)} .toc-l2{padding-left:10px} .doc{min-width:0;background:rgba(255,253,248,.82);border:1px solid var(--line);border-radius:24px;padding:38px 42px 52px;box-shadow:0 12px 38px rgba(70,45,25,.07)} .doc-head{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:26px} .eyebrow{margin:0 0 7px;color:var(--chili-600);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase} .doc h1{margin:0;font-size:clamp(30px,4vw,44px);line-height:1.12;letter-spacing:-.035em} .doc-head p{margin:12px 0 0;color:var(--charcoal-500);font-size:13px;line-height:1.75;max-width:820px} .badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px} .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:10.5px;font-weight:800} .badge-amber{background:var(--amber-100);color:#6d4a00;border:1px solid rgba(230,155,24,.22)} .badge-neutral{background:white;color:var(--charcoal-700);border:1px solid var(--line)} .docnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)} .docnav a{font-size:11px;font-weight:700;text-decoration:none;padding:4px 8px;border-radius:999px;background:white;border:1px solid var(--line)} .doc h1:not(:first-child){font-size:25px;letter-spacing:-.025em;margin:44px 0 14px;padding-top:8px;border-top:1px solid rgba(33,31,28,.06)} .doc h1:first-of-type{font-size:clamp(28px,3.5vw,38px);border-top:0;padding-top:0;margin:0 0 8px} .doc h2{font-size:19px;line-height:1.35;letter-spacing:-.015em;margin:30px 0 10px} .doc h3{font-size:15px;margin:22px 0 8px} .doc h4{font-size:13.5px;margin:18px 0 6px} .doc p{margin:10px 0;color:var(--charcoal-700);font-size:13.5px} .doc ul,.doc ol{margin:10px 0;padding-left:21px;color:var(--charcoal-700);font-size:13.5px} .doc li{margin:4px 0} .doc li::marker{color:var(--chili-500)} .doc strong{color:var(--charcoal-900)} .doc code{padding:1px 5px;border-radius:5px;background:rgba(33,31,28,.065);font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace} .doc pre{margin:14px 0;padding:14px 16px;overflow:auto;border-radius:13px;background:var(--charcoal-900);color:var(--rice-100);font-size:12px;line-height:1.65} .doc pre code{padding:0;background:transparent;color:inherit;font-size:inherit} .doc blockquote{margin:14px 0;padding:11px 14px;border-left:3px solid var(--chili-500);border-radius:0 10px 10px 0;background:var(--chili-50);color:var(--charcoal-700);font-size:13px} .doc hr{border:0;border-top:1px solid var(--line);margin:28px 0} .table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:13px;background:white} table{width:100%;border-collapse:collapse;min-width:560px;font-size:12px} th,td{padding:9px 11px;border-bottom:1px solid rgba(33,31,28,.06);text-align:left;vertical-align:top} th{background:var(--rice-100);color:var(--charcoal-500);font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap} tr:last-child td{border-bottom:0} td{color:var(--charcoal-700);line-height:1.6} .doc-footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:#918a82;font-size:11px;line-height:1.65} .backtop{position:fixed;right:22px;bottom:22px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:white;color:var(--charcoal-700);font-size:11px;font-weight:700;text-decoration:none;box-shadow:0 6px 20px rgba(70,45,25,.08)} @media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 50px;gap:14px} .toc{position:static;max-height:none} .toc ol{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px} .doc{padding:24px 20px 38px;border-radius:18px} .top{padding:9px 16px} .backtop{display:none}} @media print{body{background:white} .top,.toc,.backtop{display:none} .shell{display:block;max-width:none;padding:0} .doc{border:0;box-shadow:none;padding:0;background:white} .table-wrap{break-inside:avoid}}
+</style>
+</head>
+<body id="top">
+<div class="top"><span><strong>SDLC 能力演示</strong> · 产品与技术 Spec 节点产物</span><span>演示合成数据 · 不合并 / 不公开发布</span></div>
+<div class="shell">
+<nav class="toc" aria-label="文档目录"><h2>目录</h2><ol><li class="toc-l1"><a href="#design-研发需求与缺陷看板">Design: 研发需求与缺陷看板</a></li><li class="toc-l1"><a href="#1-方案概述">1. 方案概述</a></li><li class="toc-l2"><a href="#11-影响范围">1.1 影响范围</a></li><li class="toc-l2"><a href="#12-关键决策">1.2 关键决策</a></li><li class="toc-l1"><a href="#2-实现设计">2. 实现设计</a></li><li class="toc-l2"><a href="#21-文件清单">2.1 文件清单</a></li><li class="toc-l2"><a href="#22-数据模型">2.2 数据模型</a></li><li class="toc-l2"><a href="#23-数据库变更">2.3 数据库变更</a></li><li class="toc-l2"><a href="#24-接口变更">2.4 接口变更</a></li><li class="toc-l2"><a href="#25-核心流程">2.5 核心流程</a></li><li class="toc-l2"><a href="#26-状态变化">2.6 状态变化</a></li><li class="toc-l2"><a href="#27-异步处理">2.7 异步处理</a></li><li class="toc-l2"><a href="#28-外部依赖">2.8 外部依赖</a></li><li class="toc-l2"><a href="#29-配置">2.9 配置</a></li><li class="toc-l1"><a href="#3-兼容性与迁移">3. 兼容性与迁移</a></li><li class="toc-l1"><a href="#4-上线与回滚">4. 上线与回滚</a></li><li class="toc-l1"><a href="#5-风险">5. 风险</a></li><li class="toc-l1"><a href="#6-测试要点">6. 测试要点</a></li><li class="toc-l1"><a href="#7-实施顺序节点-3">7. 实施顺序（节点 3）</a></li><li class="toc-l1"><a href="#8-验收映射">8. 验收映射</a></li><li class="toc-l1"><a href="#9-未覆盖与未知">9. 未覆盖与未知</a></li><li class="toc-l1"><a href="#10-版本">10. 版本</a></li><li class="toc-l2"><a href="#101-变更记录">10.1 变更记录</a></li></ol></nav>
+<main class="doc">
+<header class="doc-head">
+<p class="eyebrow">技术 Design · 待评审</p>
+<h1>研发需求与缺陷看板 · 技术设计</h1>
+<p>本文件描述如何把 Spec 接入现有 React SPA：路由、模块、函数签名、存储状态机、证据快照、实施顺序与回滚。</p>
+<div class="badges"><span class="badge badge-amber">纯前端</span><span class="badge badge-neutral">localStorage</span><span class="badge badge-neutral">Vitest + Playwright</span><span class="badge badge-neutral">不合并 / 不发布</span></div>
+<div class="docnav" aria-label="Spec 包导航"><a href="./requirements-defect-board.spec.html">产品 Spec</a><a href="./requirements-defect-board.design.html">技术 Design</a><a href="./requirements-defect-board.test-plan.html">测试计划</a><a href="./requirements-defect-board.tagging.html">需求打标</a><a href="./README.md">索引</a></div>
+</header>
+<h1 id="design-研发需求与缺陷看板">Design: 研发需求与缺陷看板</h1>
+<blockquote><p>Spec 回答 What/Why，Design 回答 How。标识符沿用 Spec 的 REQ/AC/D-/B-/U- 编号，不重新编号。 如果 Design 与 Spec 冲突，以 Spec 为准。本节点只写设计，不落地实现代码。</p></blockquote>
+<hr />
+<h1 id="1-方案概述">1. 方案概述</h1>
+<p>在现有 React SPA 中新增独立的 <code>BoardView</code>，以 <code>#/board</code> 作为默认入口；保留既有火锅演示的 <code>#/home</code> 到 <code>#/checkout</code> 路由与组件。看板的所有业务规则拆为 <code>src/board/</code> 下的纯函数模块，UI 只负责渲染和事件转发；持久化通过可注入的 <code>StorageLike</code> 适配器隔离，便于单测损坏、不可用和写入失败分支；证据页使用构建期静态快照，不联网读取 PR/CI/平台状态。</p>
+<p>核心思路：</p>
+<ol><li><strong>领域与 UI 分离</strong>：种子、校验、筛选、统计、状态机、存储、证据快照均为纯函数/常量；React 组件只消费结果。</li><li><strong>单一数据源</strong>：<code>BoardState</code> 是唯一可变数据源；所有派生数据（筛选集合、统计、列计数、完成率）由同一份 <code>filteredItems</code> 计算。</li><li><strong>显式失败</strong>：状态流转、存储损坏、写入失败都返回结构化结果，UI 显示可解释原因，不静默吞错。</li><li><strong>最小依赖</strong>：运行时零新增依赖；仅新增开发依赖 <code>vitest</code> 用于纯函数单测；E2E 复用现有 Playwright。</li><li><strong>可回滚</strong>：新代码集中在 <code>src/board/</code>、<code>src/components/board/</code>、<code>e2e/board.spec.ts</code>；数据使用独立 key；不改 <code>main</code>。</li></ol>
+<h2 id="11-影响范围">1.1 影响范围</h2>
+<div class="table-wrap"><table><thead><tr><th>模块 / 层</th><th>文件或目录</th><th>改动说明</th><th>关联需求</th></tr></thead><tbody><tr><td>路由</td><td><code>src/types.ts</code>、<code>src/hooks/useViewRoute.ts</code>、<code>src/App.tsx</code></td><td>新增 <code>board</code> 视图；根地址默认 <code>board</code>；非法 hash 回落 <code>board</code>；看板无需桌台</td><td>REQ-013</td></tr><tr><td>看板 UI</td><td><code>src/components/board/*</code></td><td>主页、统计、筛选、列、卡片、详情、表单、复位、证据、指南</td><td>REQ-001..REQ-012</td></tr><tr><td>领域逻辑</td><td><code>src/board/*.ts</code></td><td>类型、种子、校验、筛选、统计、状态机、存储、证据快照、copy</td><td>REQ-001..REQ-011</td></tr><tr><td>状态管理</td><td><code>src/board/useBoard.ts</code></td><td>加载、保存、派生数据、操作封装</td><td>REQ-002..REQ-010</td></tr><tr><td>既有首页</td><td><code>src/components/HomeView.tsx</code></td><td>增加“SDLC 看板”入口，不改点单逻辑</td><td>REQ-013</td></tr><tr><td>全局样式</td><td><code>src/index.css</code>（仅在必要时）</td><td>复用现有 <code>paper-noise</code>、过渡；不新增设计系统</td><td>REQ-012</td></tr><tr><td>测试</td><td><code>src/board/__tests__/*.test.ts</code>、<code>e2e/board.spec.ts</code>、<code>e2e/view-routing.spec.ts</code>、<code>e2e/super-spicy.spec.ts</code></td><td>新增单测/E2E；调整既有导航 helper</td><td>AC-01..AC-12</td></tr><tr><td>配置</td><td><code>package.json</code>、<code>package-lock.json</code>、<code>vite.config.ts</code></td><td>新增 <code>vitest</code> devDependency、<code>test:unit</code> 脚本与 test 配置</td><td>D-04</td></tr><tr><td>文档</td><td><code>docs/spec/*</code>、<code>AGENTS.md</code>、<code>README.md</code></td><td>Spec/Design/Test Plan；后续节点同步命令与入口说明</td><td>AC-12</td></tr></tbody></table></div>
+<h2 id="12-关键决策">1.2 关键决策</h2>
+<div class="table-wrap"><table><thead><tr><th>编号</th><th>决策</th><th>选择</th><th>理由</th><th>影响</th></tr></thead><tbody><tr><td>D-01</td><td>默认入口</td><td>根地址 → <code>#/board</code>，火锅 → <code>#/home</code></td><td>用户已确认默认看板入口；演示第一步即看板</td><td>既有路由 E2E 需调整 helper</td></tr><tr><td>D-02</td><td>看板文案</td><td>独立 <code>src/board/copy.ts</code>，中文单页</td><td>需求明确中文；避免为演示新增大量 en 文案</td><td>不接入 i18n 双语；在 README 说明</td></tr><tr><td>D-03</td><td>逻辑组织</td><td><code>src/board/</code> 纯函数 + <code>src/components/board/</code> UI</td><td>可单测、可复用、降低组件耦合</td><td>文件数增加，但边界清晰</td></tr><tr><td>D-04</td><td>单测框架</td><td><code>vitest</code>（devDependency），<code>npm run test:unit</code></td><td>与 Vite 同栈、零运行时依赖、配置最小</td><td>新增 lockfile 变更</td></tr><tr><td>D-05</td><td>状态目标下拉</td><td>列出全部非当前状态，允许尝试非法流转</td><td>AC-05 需要可演示、可 E2E 的拒绝路径</td><td>用户可能先选到非法目标，需清晰提示</td></tr><tr><td>D-06</td><td>证据数据</td><td><code>src/board/evidence.ts</code> 静态快照</td><td>无后端、CSP 友好、不伪造平台状态</td><td>每次节点交付需手动更新快照</td></tr><tr><td>D-07</td><td>存储适配</td><td><code>StorageLike</code> 注入，默认真实 localStorage</td><td>单测可覆盖损坏/不可用/配额分支</td><td>组件需通过 hook 使用适配器</td></tr><tr><td>D-08</td><td>既有 E2E</td><td>helper 改 <code>page.goto('/#/home')</code>，保留业务断言</td><td>默认入口变化的最小兼容改动</td><td>需回归 17 条既有用例</td></tr></tbody></table></div>
+<hr />
+<h1 id="2-实现设计">2. 实现设计</h1>
+<h2 id="21-文件清单">2.1 文件清单</h2>
+<h3 id="新增">新增</h3>
+<div class="table-wrap"><table><thead><tr><th>文件路径</th><th>职责</th></tr></thead><tbody><tr><td><code>src/board/model.ts</code></td><td>类型、枚举常量、12 条种子、<code>createSeedState()</code>、<code>nextItemId()</code>、证据快照类型</td></tr><tr><td><code>src/board/rules.ts</code></td><td>表单校验、Unicode 计数、存储结构校验、状态机 <code>TRANSITIONS/canTransition/transitionItem</code></td></tr><tr><td><code>src/board/query.ts</code></td><td><code>filterItems()</code>、<code>computeStats()</code>、筛选描述、空筛选常量</td></tr><tr><td><code>src/board/storage.ts</code></td><td><code>StorageLike</code>、<code>loadBoard()</code>、<code>saveBoard()</code>、<code>resetBoard()</code>、<code>exportRaw()</code></td></tr><tr><td><code>src/board/evidence.ts</code></td><td>7 节点能力快照、真实产物条目、AC 追溯数据</td></tr><tr><td><code>src/board/copy.ts</code></td><td>中文文案常量（标签、提示、错误、指南）</td></tr><tr><td><code>src/board/useBoard.ts</code></td><td>React hook：加载、持久化状态、操作、派生数据</td></tr><tr><td><code>src/components/board/BoardView.tsx</code></td><td>看板壳、顶部导航、标题/合成数据条、统计、筛选、存储警告、Toast、视图切换</td></tr><tr><td><code>src/components/board/BoardColumns.tsx</code></td><td>5 列状态泳道、列计数、工作项卡片、空态</td></tr><tr><td><code>src/components/board/ItemDetail.tsx</code></td><td>详情侧栏、状态流转、历史、证据、元数据</td></tr><tr><td><code>src/components/board/ItemFormDialog.tsx</code></td><td>新增/编辑表单、字段错误、焦点管理</td></tr><tr><td><code>src/components/board/ResetDialog.tsx</code></td><td>两步复位确认</td></tr><tr><td><code>src/components/board/EvidenceView.tsx</code></td><td>能力证据 7 节点 + AC 追溯</td></tr><tr><td><code>src/components/board/GuideView.tsx</code></td><td>5 分钟演示脚本、角色、边界</td></tr><tr><td><code>src/board/__tests__/model.test.ts</code></td><td>种子数量/状态分布/ID/示例证据/证据常量</td></tr><tr><td><code>src/board/__tests__/rules.test.ts</code></td><td>校验边界/枚举/trim/Unicode/状态机 25 组合/拒绝原因/历史</td></tr><tr><td><code>src/board/__tests__/query.test.ts</code></td><td>关键词/大小写/组合/清空/统计/空集合/取整</td></tr><tr><td><code>src/board/__tests__/storage.test.ts</code></td><td>空/合法/损坏/不可用/写入失败/未知字段/复位隔离</td></tr><tr><td><code>e2e/board.spec.ts</code></td><td>AC-01..AC-11 真实浏览器 E2E（可拆 keyboard 文件）</td></tr></tbody></table></div>
+<h3 id="修改">修改</h3>
+<div class="table-wrap"><table><thead><tr><th>文件路径</th><th>改动</th></tr></thead><tbody><tr><td><code>src/types.ts</code></td><td><code>ViewName</code> 增加 <code>'board'</code></td></tr><tr><td><code>src/hooks/useViewRoute.ts</code></td><td><code>VIEWS</code> 增加 <code>board</code>；非法/不可达回落 <code>board</code></td></tr><tr><td><code>src/App.tsx</code></td><td>增加 <code>BoardView</code> 分支；<code>createInitialState</code> 默认 <code>board</code>；<code>canView</code> 允许 <code>board</code></td></tr><tr><td><code>src/components/HomeView.tsx</code></td><td>增加返回 <code>#/board</code> 的入口（不改点单行为）</td></tr><tr><td><code>package.json</code></td><td>新增 <code>test:unit</code> 脚本与 <code>vitest</code> devDependency</td></tr><tr><td><code>vite.config.ts</code></td><td>增加 <code>test</code> 配置（environment: node，include <code>src/board/**/*.test.ts</code>）</td></tr><tr><td><code>e2e/view-routing.spec.ts</code></td><td>导航 helper 改 <code>/#/home</code>；ROUTE-001/006 断言调整；新增 <code>#/home</code> 与 <code>#/board</code> 用例</td></tr><tr><td><code>e2e/super-spicy.spec.ts</code></td><td><code>goToBrothSpec</code> 改 <code>page.goto('/#/home')</code></td></tr><tr><td><code>AGENTS.md</code></td><td>补充看板目录、命令、localStorage key、默认路由</td></tr><tr><td><code>README.md</code></td><td>补充看板启动/演示入口与测试命令</td></tr></tbody></table></div>
+<blockquote><p>预估实现涉及 19 个新增代码/测试文件 + 10 个修改文件（其中 4 个 src、2 个配置、2 个既有测试、2 个文档）；不包含 lockfile 与截图等生成物。该规模对应需求打标 scope WARN，整体 B 类，见 <code>requirements-defect-board.tagging.md</code>。</p></blockquote>
+<h2 id="22-数据模型">2.2 数据模型</h2>
+<p>数据模型以 Spec §6.1 为准。实现补充：</p>
+<ul><li><code>STATUS_META</code>：状态顺序、展示名、颜色 key，固定 <code>待规划/进行中/审核中/阻塞中/已完成</code>。</li><li><code>TYPE_LABELS</code>：<code>requirement → 需求</code>、<code>defect → 缺陷</code>。</li><li><code>PRIORITIES</code>：<code>['P0','P1','P2','P3']</code>。</li><li><code>ASSIGNEES</code>：<code>['示例产品','示例研发','示例测试','示例设计']</code>。</li><li><code>APP_VERSION = 1</code>、<code>STORAGE_KEY = 'sdlc-demo-board:v1'</code>。</li><li><code>EMPTY_FILTERS = { q: '', type: 'all', priority: 'all', status: 'all' }</code>。</li><li>未知字段：<code>WorkItem</code>/<code>BoardState</code> 允许索引签名；加载时保留原始对象，编辑时用 <code>{...item, ...knownFields}</code> 回写。</li></ul>
+<h2 id="23-数据库变更">2.3 数据库变更</h2>
+<p>无。纯前端 localStorage，无数据库、无迁移、无 DDL。</p>
+<h2 id="24-接口变更">2.4 接口变更</h2>
+<p>无后端接口。新增内部模块契约如下（供节点 3 实现与单测使用）：</p>
+<pre><code class="language-ts">// rules.ts
+export interface WorkItemDraft {
+  type: string
+  title: string
+  description: string
+  priority: string
+  assignee: string
+  acceptance: string
+}
+export type FieldErrors = Partial&lt;Record&lt;keyof WorkItemDraft, string&gt;&gt;
+
+export function countChars(value: string): number
+export function validateDraft(draft: WorkItemDraft): FieldErrors
+export function normalizeDraft(draft: WorkItemDraft): WorkItemDraft // trim title only
+export function validateBoardState(value: unknown):
+  | { ok: true; state: BoardState }
+  | { ok: false; reason: string }
+
+// query.ts
+export interface BoardFilters {
+  q: string
+  type: 'all' | WorkItemType
+  priority: 'all' | Priority
+  status: 'all' | Status
+}
+export function filterItems(items: WorkItem[], filters: BoardFilters): WorkItem[]
+export function hasActiveFilters(filters: BoardFilters): boolean
+export function describeFilters(filters: BoardFilters): string
+
+// query.ts
+export interface BoardStats {
+  total: number
+  counts: Record&lt;Status, number&gt;
+  completed: number
+  rate: number | null
+}
+export function computeStats(items: WorkItem[]): BoardStats
+
+// rules.ts
+export const TRANSITIONS: Record&lt;Status, Status[]&gt;
+export function canTransition(from: Status, to: Status): boolean
+export interface TransitionResult {
+  ok: boolean
+  item: WorkItem
+  reason: string
+  event: HistoryEvent
+}
+export function transitionItem(item: WorkItem, target: Status, now: string, actor?: string): TransitionResult
+
+// storage.ts
+export interface StorageLike {
+  getItem(key: string): string | null
+  setItem(key: string, value: string): void
+}
+export type LoadMode = 'ok' | 'empty' | 'corrupt' | 'unavailable'
+export interface LoadResult {
+  mode: LoadMode
+  state: BoardState
+  raw: string | null
+  reason: string
+}
+export function loadBoard(storage: StorageLike | null): LoadResult
+export function saveBoard(storage: StorageLike | null, state: BoardState, options?: { allowCorruptOverwrite?: boolean }): SaveResult
+export function resetBoard(storage: StorageLike | null, seed: BoardState): SaveResult
+export function exportRaw(raw: string): void // Blob 下载；单测不调用
+
+// model.ts
+export function createSeedState(): BoardState
+export function nextItemId(items: WorkItem[]): string
+
+// evidence.ts
+export interface EvidenceSnapshot {
+  generatedAt: string
+  branch: string
+  commit: string
+  stages: CapabilityStage[]
+  acRows: AcRow[]
+}
+export const EVIDENCE_SNAPSHOT: EvidenceSnapshot</code></pre>
+<p>组件契约：</p>
+<pre><code class="language-ts">// BoardView.tsx
+interface BoardViewProps { onExit: () =&gt; void } // 进入火锅演示 #/home
+
+// ItemDetail.tsx
+interface ItemDetailProps {
+  item: WorkItem
+  open: boolean
+  onClose: () =&gt; void
+  onEdit: (id: string) =&gt; void
+  onTransition: (id: string, target: Status) =&gt; void
+  transitionNotice: string | null
+}
+
+// ItemFormDialog.tsx
+interface ItemFormDialogProps {
+  open: boolean
+  mode: 'create' | 'edit'
+  initial?: WorkItem
+  onCancel: () =&gt; void
+  onSubmit: (draft: WorkItemDraft) =&gt; void
+}</code></pre>
+<h2 id="25-核心流程">2.5 核心流程</h2>
+<h3 id="251-启动与路由">2.5.1 启动与路由</h3>
+<ol><li><code>main.tsx</code> 挂载 <code>App</code>。</li><li><code>createInitialState()</code> 读取 <code>initialViewFromHash()</code>：<ul><li>无 hash → <code>view: 'board'</code>。</li><li>hash 为 <code>#/home</code>/<code>#/welcome</code>/<code>#/menu</code>/<code>#/order</code>/<code>#/checkout</code> → 保持既有逻辑；非 <code>home</code> 自动绑定示例桌台。</li><li>hash 为 <code>#/board</code> → <code>view: 'board'</code>，不绑定桌台。</li><li>非法 hash → <code>view: 'board'</code>（由 <code>useViewRoute</code> 规范化）。</li></ul></li><li><code>App</code> 渲染分支顺序：先判断 <code>board</code> 返回 <code>BoardView</code>；再判断 <code>home</code> 或无桌台返回 <code>HomeView</code>；其余进入既有 welcome/menu/order/checkout。</li><li><code>canView(view)</code> 改为 <code>view === 'board' || view === 'home' || !!state.table</code>。</li><li><code>useViewRoute</code> 的 <code>VIEWS</code> 增加 <code>'board'</code>；<code>hashToView</code> 识别 <code>board</code>；不可达/非法回落 <code>board</code>。</li><li>看板侧栏“火锅演示”使用 <code>&lt;a href="#/home"&gt;</code> 或 <code>onExit</code>；火锅首页增加 <code>&lt;a href="#/board"&gt;SDLC 看板&lt;/a&gt;</code>。</li></ol>
+<h3 id="252-加载与持久化">2.5.2 加载与持久化</h3>
+<ol><li><code>useBoard()</code> 初始化时调用 <code>loadBoard(getStorage())</code>。</li><li><code>getStorage()</code> 用 try/catch 访问 <code>window.localStorage</code>；异常返回 <code>null</code>。</li><li><code>loadBoard</code>：<ul><li><code>storage === null</code> → <code>unavailable</code> + 种子 + 原因。</li><li><code>getItem</code> 抛错 → <code>unavailable</code> + 种子。</li><li><code>raw === null</code> → <code>empty</code> + 种子（不立即写入，首次操作再写）。</li><li><code>JSON.parse</code> 失败或 <code>validateBoardState</code> 失败 → <code>corrupt</code> + 种子 + 原始 raw + 原因。</li><li>合法 → <code>ok</code> + 解析后的 state。</li></ul></li><li>保存入口统一为 <code>commit(nextState, options)</code>：<ul><li><code>mode === 'corrupt'</code> 且未显式覆盖 → 保留内存态，标记 dirty，显示警告，不写 raw。</li><li>否则调用 <code>saveBoard</code>；成功 → 清除警告；失败 → <code>write-error</code> + 内存态 + 重试入口。</li></ul></li><li>损坏恢复：<ul><li>“导出原始数据”：将 raw 作为 <code>sdlc-demo-board-corrupt.json</code> Blob 下载；不改存储。</li><li>“用当前数据覆盖”：用户显式确认后写入当前 12 条种子或当前内存态；这是唯一允许覆盖损坏 raw 的路径（复位确认也算）。</li></ul></li><li>不调用 <code>localStorage.removeItem</code> 清除其他 key；复位使用 <code>setItem(STORAGE_KEY, seed)</code>。</li></ol>
+<h3 id="253-新增编辑">2.5.3 新增/编辑</h3>
+<ol><li>打开新增：<code>mode='create'</code>，默认 <code>{type:'requirement', title:'', description:'', priority:'P2', assignee:'示例产品', acceptance:''}</code>。</li><li>打开编辑：复制当前工作项字段；不传 <code>status</code>。</li><li>提交：<ul><li><code>normalizeDraft</code> 只 trim 标题。</li><li><code>validateDraft</code> 返回 <code>FieldErrors</code>；非空则设置 <code>aria-invalid</code>、聚焦第一个错误、保留输入、Toast 错误。</li><li>合法：<ul><li>create：<code>nextItemId</code>、<code>createdAt/updatedAt = now</code>、<code>status='待规划'</code>、创建历史、sample 证据、<code>items=[newItem, ...items]</code>。</li><li>edit：<code>{...item, ...draft, title: trimmed, updatedAt: now}</code>；保留 status/history/evidence/createdAt/id 与未知字段。</li></ul></li><li><code>commit(nextState)</code>；成功关闭对话框；失败仍关闭但显示持久化警告。</li></ul></li><li>取消：直接关闭，不调用 <code>commit</code>，不修改 <code>state</code>。</li></ol>
+<h3 id="254-状态流转">2.5.4 状态流转</h3>
+<ol><li>详情侧栏目标下拉：<code>allTargets = STATUS.filter(s =&gt; s !== item.status)</code>；允许项排在前面并标注“允许”；已完成不渲染下拉。</li><li>提交：<ul><li><code>transitionItem(item, target, now)</code> 纯函数返回 <code>{ok,item,reason,event}</code>。</li><li><code>ok</code>：用返回的新 item 替换数组项；<code>commit</code>；Toast 成功；清空 transitionNotice。</li><li><code>!ok</code>：用返回的新 item（含拒绝历史）替换；<code>commit</code>；设置 <code>transitionNotice=reason</code>；Toast 错误。</li></ul></li><li>拒绝历史也持久化；刷新后仍可见。</li><li>已完成：不渲染编辑/流转；若通过过期 UI 调用，<code>transitionItem</code> 仍返回拒绝 + 历史。</li></ol>
+<h3 id="255-筛选与统计">2.5.5 筛选与统计</h3>
+<ol><li><code>useBoard</code> 维护 <code>filters</code>（内存态，不持久化）。</li><li><code>filteredItems = filterItems(state.items, filters)</code>。</li><li><code>stats = computeStats(filteredItems)</code>。</li><li><code>BoardColumns</code> 对 <code>filteredItems</code> 按状态分列，列计数取 <code>stats.counts[status]</code> 或同源 <code>filter</code> 长度；二者必须一致。</li><li>清空：<code>setFilters(EMPTY_FILTERS)</code>；不调用 commit，不改 items。</li></ol>
+<h3 id="256-复位">2.5.6 复位</h3>
+<ol><li>打开复位：<code>step=1</code>，焦点到“继续复位”。</li><li>取消/Esc/遮罩：关闭，<code>step</code> 丢弃，不 commit。</li><li>继续：<code>step=2</code>，焦点到“确认重置”。</li><li>确认：<code>createSeedState()</code>；清空 filters；关闭详情；<code>resetBoard</code> 写入本应用 key；Toast 成功/失败提示；不改其他 key。</li></ol>
+<h3 id="257-证据与指南">2.5.7 证据与指南</h3>
+<ol><li><code>EVIDENCE_SNAPSHOT</code> 在构建期包含：<code>generatedAt</code>、<code>branch</code>、<code>commit</code>、7 个 stage、AC 行。</li><li>节点 1：<code>已通过</code>（PRD/原型/浏览器验收/用户评审）。</li><li>节点 2：<code>已生成 · 待评审</code>（Spec/Design/Test Plan）；不得写 <code>已通过</code>。</li><li>节点 3-6：<code>未执行</code>/<code>未创建</code>；节点 7：<code>待确认</code>。</li><li>真实产物链接只使用仓库相对路径（<code>../prd/...</code>、<code>./requirements-defect-board.spec.html</code> 等）；不链接 PR/CI。</li><li><code>GuideView</code> 展示 5 步脚本、四角色、边界说明。</li></ol>
+<h2 id="26-状态变化">2.6 状态变化</h2>
+<div class="table-wrap"><table><thead><tr><th>操作</th><th>前置</th><th>目标</th><th>说明</th></tr></thead><tbody><tr><td>新增</td><td>无</td><td>待规划</td><td>表单不可选状态</td></tr><tr><td>合法流转</td><td>见矩阵</td><td>见矩阵</td><td>写 success 历史</td></tr><tr><td>非法流转</td><td>任意</td><td>不变</td><td>写 rejected 历史；更新 updatedAt</td></tr><tr><td>编辑</td><td>非已完成</td><td>状态不变</td><td>保留历史/证据</td></tr><tr><td>复位</td><td>任意</td><td>12 条种子</td><td>只重置本应用 key</td></tr><tr><td>存储损坏</td><td>corrupt</td><td>内存种子</td><td>原始 raw 保留，显式覆盖前不写</td></tr><tr><td>存储不可用</td><td>unavailable</td><td>内存种子</td><td>操作可用，刷新丢失</td></tr></tbody></table></div>
+<h2 id="27-异步处理">2.7 异步处理</h2>
+<p>无后端请求、无定时任务、无异步队列。仅浏览器下载（导出原始数据）使用 Blob + <code>&lt;a download&gt;</code>，同步触发。</p>
+<h2 id="28-外部依赖">2.8 外部依赖</h2>
+<div class="table-wrap"><table><thead><tr><th>依赖</th><th>用途</th><th>超时/重试</th><th>降级</th></tr></thead><tbody><tr><td><code>@radix-ui/react-dialog</code>（已有）</td><td>表单/复位对话框、详情侧栏焦点陷阱</td><td>无网络</td><td>已有依赖，不新增</td></tr><tr><td><code>lucide-react</code>（已有）</td><td>图标</td><td>无</td><td>已有</td></tr><tr><td><code>vitest</code>（新增 devDependency）</td><td>纯函数单测</td><td>本地执行</td><td>仅开发期；不进产物</td></tr><tr><td>Playwright（已有）</td><td>E2E</td><td>本地/沙箱</td><td>已有</td></tr></tbody></table></div>
+<p>不新增运行时依赖；不新增外部 API、字体、图片、脚本或分析服务。既有 Google Fonts <code>@import</code> 为仓库现状，不在本需求新增，E2E 允许其网络噪声但需记录。</p>
+<h2 id="29-配置">2.9 配置</h2>
+<div class="table-wrap"><table><thead><tr><th>配置项</th><th>默认值</th><th>用途</th><th>生效范围</th></tr></thead><tbody><tr><td><code>STORAGE_KEY</code></td><td><code>sdlc-demo-board:v1</code></td><td>本应用存储 key</td><td>浏览器 localStorage</td></tr><tr><td><code>APP_VERSION</code></td><td><code>1</code></td><td>存储结构版本</td><td>加载校验</td></tr><tr><td><code>TITLE_MAX</code></td><td><code>80</code></td><td>标题上限</td><td>校验/计数器</td></tr><tr><td><code>TEXT_MAX</code></td><td><code>2000</code></td><td>描述/验收上限</td><td>校验/计数器</td></tr><tr><td><code>npm run test:unit</code></td><td><code>vitest run</code></td><td>单测</td><td>开发/CI</td></tr><tr><td><code>PLAYWRIGHT_CHROMIUM_PATH</code></td><td><code>/opt/chromium.org/chromium/chrome</code></td><td>浏览器路径</td><td>E2E</td></tr></tbody></table></div>
+<hr />
+<h1 id="3-兼容性与迁移">3. 兼容性与迁移</h1>
+<div class="table-wrap"><table><thead><tr><th>影响对象</th><th>兼容策略</th><th>迁移步骤</th></tr></thead><tbody><tr><td>既有火锅路由</td><td>保留 <code>#/home</code>..<code>#/checkout</code>；仅默认入口与非法回落改为 <code>board</code></td><td>无数据迁移；更新导航 helper</td></tr><tr><td>既有 17 条 E2E</td><td>helper 改 <code>/#/home</code>；保留业务断言；新增 board 用例</td><td>节点 3 一次性调整并全量回归</td></tr><tr><td>既有 localStorage key</td><td>不读取、不写入、不清空 <code>i18nextLng</code>、<code>elderly-mode</code></td><td>无</td></tr><tr><td>新 key <code>sdlc-demo-board:v1</code></td><td>新装为空 → 种子；旧版本无此 key</td><td>无需迁移；版本不匹配按损坏处理</td></tr><tr><td>既有 UI 组件</td><td>复用 Button/Dialog/色板；不引入 UI 库</td><td>无</td></tr><tr><td>既有 <code>server/</code></td><td>不改</td><td>无</td></tr></tbody></table></div>
+<ul><li>不修改 <code>main</code>；所有变更在 <code>demo/sam-sdlc-capability</code>。</li><li>不更新 GitHub Pages；Actions 仅 <code>main</code> 触发，分支推送与 PR 不触发公开部署。</li><li>若未来发布，需另行走人工发布决策；本 Design 不包含发布步骤。</li></ul>
+<hr />
+<h1 id="4-上线与回滚">4. 上线与回滚</h1>
+<div class="table-wrap"><table><thead><tr><th>步骤</th><th>动作</th><th>备注</th></tr></thead><tbody><tr><td>1</td><td>节点 3 实现并提交到独立分支</td><td>不合并</td></tr><tr><td>2</td><td>节点 4 沙箱预览与冒烟</td><td>端口暴露 409 时用沙箱内 URL</td></tr><tr><td>3</td><td>节点 5 真实 E2E 与证据</td><td>同一 revision</td></tr><tr><td>4</td><td>节点 6 代码评审与 open/unmerged PR</td><td>不启用 auto-merge</td></tr><tr><td>5</td><td>节点 7 人工发布决策</td><td>不代用户审批</td></tr></tbody></table></div>
+<p><strong>回滚预案</strong>：</p>
+<ul><li>代码：回退 <code>demo/sam-sdlc-capability</code> 上的看板提交，或关闭 PR；不触碰 <code>main</code>。</li><li>数据：用户可执行演示复位恢复 12 条种子；损坏数据先导出再显式覆盖；不调用 <code>localStorage.clear()</code>。</li><li>发布：本需求不发布、不合并，无生产回滚动作。</li><li>若默认入口变更导致既有演示不可用：将 <code>createInitialState</code> 默认值改回 <code>home</code>，保留 <code>#/board</code> 入口，作为最小回滚。</li></ul>
+<hr />
+<h1 id="5-风险">5. 风险</h1>
+<div class="table-wrap"><table><thead><tr><th>风险</th><th>影响</th><th>缓解</th></tr></thead><tbody><tr><td>默认入口改为 board 破坏既有 E2E</td><td>17 条回归失败</td><td>统一 helper 到 <code>/#/home</code>；节点 3 全量回归；保留业务断言</td></tr><tr><td>原型与 React 实现行为差异</td><td>评审结论不一致</td><td>以 Spec/AC 为准；纯函数单测覆盖边界；E2E 复核</td></tr><tr><td>存储损坏处理不当导致数据丢失</td><td>用户数据被覆盖</td><td>raw 保留、显式覆盖、导出、单测覆盖</td></tr><tr><td>证据页被误读为平台结果</td><td>演示可信度受损</td><td>静态快照 + 三类标签 + 未执行项无 PASS</td></tr><tr><td>非法流转下拉让用户困惑</td><td>误操作</td><td>允许项优先并标注；拒绝原因清晰；历史可见</td></tr><tr><td>390px 看板横向滚动不易发现</td><td>核心内容看似缺失</td><td>列容器滚动提示；页面级无溢出；截图验收</td></tr><tr><td>Vitest 新增依赖与锁文件变化</td><td>构建/安装风险</td><td>仅 devDependency；<code>npm ci</code> 验证；不进产物</td></tr><tr><td>沙箱端口暴露 409</td><td>无公开预览 URL</td><td>沙箱内预览 + 截图/报告；不声称公开发布</td></tr><tr><td>多标签页并发写入</td><td>后写覆盖</td><td>明确不支持；文档记录；不作为 AC</td></tr><tr><td>已有 Google Fonts 外链失败</td><td>字体回退</td><td>既有行为；E2E 记录网络噪声，不误判为 console error</td></tr></tbody></table></div>
+<hr />
+<h1 id="6-测试要点">6. 测试要点</h1>
+<div class="table-wrap"><table><thead><tr><th>场景</th><th>方法</th><th>关联 REQ/AC</th></tr></thead><tbody><tr><td>种子与状态分布</td><td>Vitest <code>model.test.ts</code></td><td>REQ-001 / AC-01</td></tr><tr><td>新增/编辑/取消</td><td>Vitest rules + Playwright</td><td>REQ-002/003 / AC-02</td></tr><tr><td>标题/描述/验收边界</td><td>Vitest 参数化边界 + E2E</td><td>REQ-004 / AC-03</td></tr><tr><td>搜索/组合筛选/清空/空态</td><td>Vitest query + E2E</td><td>REQ-005 / AC-04</td></tr><tr><td>状态机 25 组合/拒绝/只读</td><td>Vitest 全矩阵 + E2E</td><td>REQ-006 / AC-05</td></tr><tr><td>存储合法/损坏/不可用/写入失败/未知字段</td><td>Vitest fake storage + E2E</td><td>REQ-009 / AC-06</td></tr><tr><td>统计与卡片同源/空集合</td><td>Vitest query + E2E</td><td>REQ-007 / AC-07</td></tr><tr><td>详情/证据标签/无 PASS</td><td>Vitest model/evidence 常量 + E2E</td><td>REQ-008/011 / AC-08</td></tr><tr><td>复位取消/确认/其他 key</td><td>Vitest storage + E2E</td><td>REQ-010 / AC-09</td></tr><tr><td>XSS/凭据/身份</td><td>E2E + 静态检索</td><td>REQ-012 / AC-10</td></tr><tr><td>键盘/390px/console</td><td>E2E 专项</td><td>REQ-012 / AC-11</td></tr><tr><td>默认入口/火锅回归</td><td>Playwright 路由用例</td><td>REQ-013 / AC-12</td></tr></tbody></table></div>
+<p>详细用例、命令、报告格式与 PASS 判定见 <code>requirements-defect-board.test-plan.md</code>。</p>
+<hr />
+<h1 id="7-实施顺序节点-3">7. 实施顺序（节点 3）</h1>
+<ol><li>新建 <code>src/board/model.ts</code>、<code>copy.ts</code>、<code>evidence.ts</code>，从原型逐字迁移 12 条种子；先写 <code>model.test.ts</code> 锁定数量/状态分布/ID。</li><li>实现 <code>rules.ts</code> 中的校验与边界单测（空/80/81/emoji/2000/2001/枚举/trim）。</li><li>实现 <code>query.ts</code> 与单测（大小写/子串/AND/空集合/取整）。</li><li>实现 <code>rules.ts</code> 中的状态机与 25 组合矩阵单测（含拒绝原因/历史/不可变）。</li><li>实现 <code>storage.ts</code> 与 fake storage 单测（空/合法/损坏/不可用/写入失败/未知字段/复位隔离）。</li><li>实现 <code>useBoard.ts</code>，串联加载、提交、派生数据、操作。</li><li>实现 <code>BoardView</code> 及子组件，复用 Button/Dialog/lucide/Tailwind token；完成桌面与 390px 布局。</li><li>调整 <code>types.ts</code>、<code>useViewRoute.ts</code>、<code>App.tsx</code>、<code>HomeView.tsx</code> 路由；补 <code>#/board</code> 与 <code>#/home</code> 入口。</li><li>新增 <code>e2e/board.spec.ts</code>；调整既有 E2E helper；跑 <code>npm run lint</code>、<code>npm run build</code>、<code>npm run test:unit</code>、<code>npx playwright test</code>。</li><li>更新 <code>README.md</code>、<code>AGENTS.md</code> 与 <code>evidence.ts</code> 快照；提交独立分支，不建 PR（PR 属节点 6）。</li></ol>
+<hr />
+<h1 id="8-验收映射">8. 验收映射</h1>
+<div class="table-wrap"><table><thead><tr><th>AC</th><th>主要模块</th><th>单测</th><th>E2E</th></tr></thead><tbody><tr><td>AC-01</td><td><code>model.ts</code>、<code>BoardColumns</code>、<code>BoardView</code></td><td>UT-SEED-01/02</td><td>E2E-AC-01</td></tr><tr><td>AC-02</td><td><code>ItemFormDialog</code>、<code>useBoard</code></td><td>UT-VALID-01..03</td><td>E2E-AC-02</td></tr><tr><td>AC-03</td><td><code>rules.ts</code>、<code>ItemFormDialog</code></td><td>UT-VALID-04..12</td><td>E2E-AC-03</td></tr><tr><td>AC-04</td><td><code>query.ts</code>、<code>BoardView</code></td><td>UT-FILTER-01..08</td><td>E2E-AC-04</td></tr><tr><td>AC-05</td><td><code>rules.ts</code>、<code>ItemDetail</code></td><td>UT-SM-01..12</td><td>E2E-AC-05</td></tr><tr><td>AC-06</td><td><code>storage.ts</code>、<code>useBoard</code>、<code>BoardView</code></td><td>UT-STORAGE-01..12</td><td>E2E-AC-06a/b/c</td></tr><tr><td>AC-07</td><td><code>query.ts</code>、<code>BoardView</code>、<code>BoardColumns</code></td><td>UT-STATS-01..06</td><td>E2E-AC-07</td></tr><tr><td>AC-08</td><td><code>evidence.ts</code>、<code>ItemDetail</code>、<code>EvidenceView</code></td><td>UT-EVID-01..03</td><td>E2E-AC-08</td></tr><tr><td>AC-09</td><td><code>ResetDialog</code>、<code>storage.ts</code></td><td>UT-STORAGE-10</td><td>E2E-AC-09</td></tr><tr><td>AC-10</td><td>全局渲染/输入</td><td>静态扫描</td><td>E2E-AC-10</td></tr><tr><td>AC-11</td><td>全局布局/交互</td><td>—</td><td>E2E-AC-11</td></tr><tr><td>AC-12</td><td>全流程</td><td>全量</td><td>全量 + 过程证据</td></tr></tbody></table></div>
+<hr />
+<h1 id="9-未覆盖与未知">9. 未覆盖与未知</h1>
+<div class="table-wrap"><table><thead><tr><th>编号</th><th>项</th><th>说明</th><th>后续</th></tr></thead><tbody><tr><td>U-01</td><td>跨节点 localhost 可达性</td><td>沙箱网络策略未知</td><td>节点 4/5 以同一 revision 重现；失败记 BLOCKED</td></tr><tr><td>U-02</td><td>平台端口暴露 409</td><td>无公开预览 URL</td><td>沙箱内预览 + 截图/报告</td></tr><tr><td>U-03</td><td>Firefox/Safari 实机</td><td>本轮仅 Chromium 自动化</td><td>人工抽检并记录未覆盖</td></tr><tr><td>U-04</td><td>屏幕阅读器</td><td>仅语义/焦点/键盘自动化</td><td>人工走查列为未覆盖</td></tr><tr><td>U-05</td><td>多标签页同步</td><td>明确不做</td><td>文档记录“最后写入获胜”</td></tr><tr><td>U-06</td><td>离线字体</td><td>既有 Google Fonts</td><td>记录网络噪声，不误判</td></tr><tr><td>U-07</td><td>真实 PR/CI 链接</td><td>节点 6 才有</td><td>证据快照届时回填</td></tr><tr><td>U-08</td><td>覆盖率百分比</td><td>不设全局门槛</td><td>以用例矩阵覆盖为准</td></tr></tbody></table></div>
+<hr />
+<h1 id="10-版本">10. 版本</h1>
+<div class="table-wrap"><table><thead><tr><th>项目</th><th>值</th></tr></thead><tbody><tr><td>Design 版本</td><td>v1.0（revision 1）</td></tr><tr><td>生成时间</td><td>2026-11-27</td></tr><tr><td>关联 Spec</td><td><code>SDLC-BOARD-SPEC-001</code> v1.0</td></tr><tr><td>基线</td><td><code>main</code> @ <code>1f47ad8</code>；分支 <code>demo/sam-sdlc-capability</code> @ <code>2ca14e0</code></td></tr><tr><td>原型</td><td><code>docs/prototype/requirements-board/</code> @ <code>2ca14e0</code></td></tr><tr><td>测试计划</td><td><code>requirements-defect-board.test-plan.md</code></td></tr><tr><td>需求打标</td><td><code>requirements-defect-board.tagging.md</code></td></tr></tbody></table></div>
+<h2 id="101-变更记录">10.1 变更记录</h2>
+<div class="table-wrap"><table><thead><tr><th>版本</th><th>日期</th><th>变更</th><th>作者</th></tr></thead><tbody><tr><td>v1.0</td><td>2026-11-27</td><td>首次技术设计：路由、模块、存储、状态机、证据快照、测试接入</td><td>产品经理 Agent</td></tr></tbody></table></div>
+<footer class="doc-footer">本文件由 SDLC 能力演示“产品与技术 Spec”节点生成。所有工作项、人员与示例证据均为合成数据；未执行项不得标记为成功。分支、PR 与发布状态以仓库和平台记录为准。</footer>
+</main>
+</div>
+<a class="backtop" href="#top">回到顶部</a>
+</body>
+</html>
