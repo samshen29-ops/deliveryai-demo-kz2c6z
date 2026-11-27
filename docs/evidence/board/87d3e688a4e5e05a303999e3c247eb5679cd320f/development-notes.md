@@ -55,3 +55,7 @@
 - 代码：回退 `demo/sam-sdlc-capability` 上的看板提交或关闭后续 PR；不触碰 `main`。
 - 数据：使用页面内两步演示复位恢复 12 条种子；损坏数据先导出再显式覆盖；不调用 `localStorage.clear()`。
 - 若默认入口影响火锅演示：将 `createInitialState` 默认值改回 `home`，保留 `#/board` 入口即可最小回滚。
+
+## Rebase 历史说明
+
+本分支在推送前先集成了远程已有的前序节点提交（`b25035f`），因此执行了本地 rebase。过程中曾生成临时 revision `821926c8077b71173d59b881bd74f779c0f99cd8`；该对象未推送、已不在最终分支历史中。最终验证 revision 为 `87d3e688a4e5e05a303999e3c247eb5679cd320f`，`test-report.json` 与本目录截图均对应该 revision。
