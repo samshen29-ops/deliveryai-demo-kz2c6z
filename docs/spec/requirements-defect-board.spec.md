@@ -1,7 +1,7 @@
 ---
 spec_id: SDLC-BOARD-SPEC-001
 title: 研发需求与缺陷看板
-status: in_review
+status: approved
 template_id: 需求Spec模板
 schema_version: 1
 product_area: Sam 空间-SDLC / 演示应用
@@ -17,7 +17,7 @@ source_documents:
   - artifacts/需求澄清与原型/研发需求与缺陷看板 PRD/PRD.md
 created_at: 2026-11-27
 updated_at: 2026-11-27
-revision: 1
+revision: 2
 ---
 
 # 产品 Spec: 研发需求与缺陷看板
@@ -34,10 +34,10 @@ revision: 1
 | 需求类型 | 演示应用 / 前端单页应用 / 产品体验 |
 | 基线 | `main` @ `1f47ad864fb9b97835cb8a453e6ed41d132f56e1`；工作分支 `demo/sam-sdlc-capability` @ `2ca14e0bcfb9e8273e75e31d67db71c0aacc6d7d` |
 | 上游 | PRD v2 与交互原型已在“需求澄清与原型”节点通过用户评审（2026-11-27，无修改意见） |
-| 本轮范围 | 产品 Spec、技术 Design、测试计划、AC 追溯；不实现、不跑真实 E2E、不建 PR |
+| 本轮范围 | 产品 Spec、技术 Design、测试计划、AC 追溯；已完成并获用户确认；实现、真实 E2E、PR 由节点 3-6 执行 |
 | 关键决策 | 根地址默认进入看板 `#/board`；保留火锅演示 `#/home`；纯函数拆分；新增 Vitest 作为唯一新增开发依赖 |
-| 阻塞项 | 无；待用户评审本 Spec 与 Design/Test Plan |
-| AC-12 口径 | 仍为部分覆盖：PRD/原型/分支提交已完成；Spec/Design/Test Plan 本轮生成；实现、单测、构建、冒烟、真实 E2E、PR、审查未执行 |
+| 阻塞项 | 无；用户已确认通过（2026-11-27） |
+| AC-12 口径 | 仍为部分覆盖：PRD/原型/分支提交已完成；Spec/Design/Test Plan 已生成并通过评审；实现、单测、构建、冒烟、真实 E2E、PR、审查未执行 |
 
 ### 0.1 与 PRD 的差异
 
@@ -625,7 +625,7 @@ interface SaveResult {
 
 | 项目 | 值 |
 | --- | --- |
-| Spec 版本 | v1.0（revision 1） |
+| Spec 版本 | v1.1（revision 2，已评审通过） |
 | 生成时间 | 2026-11-27 |
 | 基线 main | `1f47ad864fb9b97835cb8a453e6ed41d132f56e1` |
 | 工作分支 | `demo/sam-sdlc-capability` |
@@ -641,15 +641,16 @@ interface SaveResult {
 | 版本 | 日期 | 变更 | 作者 |
 | --- | --- | --- | --- |
 | v1.0 | 2026-11-27 | 首次将已评审 PRD 转为 Spec；补充默认入口、状态目标下拉、统计/校验口径、存储契约与追溯 | 产品经理 Agent |
+| v1.1 | 2026-11-27 | 记录用户评审通过；确认默认入口、非法流转下拉、Vitest、静态证据快照；补充下游执行约束 | 产品经理 Agent |
 
 ## 10.2 本轮交付状态
 
 | 交付物 | 状态 | 说明 |
 | --- | --- | --- |
-| 产品 Spec Markdown | 已生成 | 本文件；待用户评审 |
-| 产品 Spec HTML | 已生成 | `requirements-defect-board.spec.html` |
-| 技术 Design | 已生成 | `requirements-defect-board.design.md`；待用户评审 |
-| 测试计划 | 已生成 | `requirements-defect-board.test-plan.md`；待用户评审 |
+| 产品 Spec Markdown | 已通过评审 | 本文件；2026-11-27 用户确认 |
+| 产品 Spec HTML | 已通过评审 | `requirements-defect-board.spec.html` |
+| 技术 Design | 已通过评审 | `requirements-defect-board.design.md` |
+| 测试计划 | 已通过评审 | `requirements-defect-board.test-plan.md` |
 | 实现代码 | 未执行 | 节点 3 |
 | 单元测试/构建/静态检查 | 未执行 | 节点 3 |
 | 沙箱预览与冒烟 | 未执行 | 节点 4；原型预览不计为正式冒烟 |
@@ -659,14 +660,31 @@ interface SaveResult {
 
 ---
 
-# 11. 评审请求
+# 11. 评审结果
 
-请评审并确认以下内容；确认后本 Spec 作为节点 3 的实现与测试基线：
+## 11.1 结论
 
-1. AC-01..AC-12 的编号、判定口径与反例是否完整、无歧义。
-2. 默认入口 `#/board`、火锅演示保留 `#/home` 及既有 E2E 调整方案是否可接受。
-3. 状态目标下拉列出全部非当前状态（允许尝试非法流转）是否满足 AC-05 演示需要。
-4. 新增 Vitest 作为唯一开发依赖、纯函数拆分与存储适配方案是否可接受。
-5. 证据页使用构建期静态快照、不联网、不预填 PR 的口径是否可接受。
+- **评审日期**：2026-11-27
+- **结论**：**确认通过，进入实现**
+- **评审对象**：本 Spec、技术 Design、测试计划、需求打标、Spec HTML。
+- **用户补充意见**：用户已明确确认通过 Spec 并按该方案持续推进到真实测试与 open/unmerged PR。保留现有火锅入口，不合并、不公开发布、不创建收费资源、不改空间默认配置。所有实际节点使用 ark1；真实证据、失败与未覆盖项如实记录。
+- **生效范围**：本 Spec 作为节点 3 的实现与测试基线；AC-12 仍按节点 3-6 逐步补齐，不在本节点标记通过。
 
-未确认前，不进入实现；如评审提出修改，Spec 以同一文件名更新并递增 revision。
+## 11.2 决策确认
+
+| 决策 | 用户选择 | 对实现的影响 |
+| --- | --- | --- |
+| 整体结论 | 确认通过，进入实现 | 节点 3 按本 Spec/Design/Test Plan 实施 |
+| 默认入口 | `#/board` 默认，`#/home` 保留火锅 | 调整 `ViewName`、`useViewRoute`、`App` 与既有 E2E helper |
+| 非法流转演示 | 下拉列出全部非当前状态，允许尝试并拒绝 | 详情侧栏保留非法目标；拒绝写历史 |
+| 单测与逻辑拆分 | 新增 Vitest，纯函数拆分 | 新增 devDependency 与 `test:unit`；领域逻辑放 `src/board/` |
+| 能力证据口径 | 静态快照，不预填 PR | 证据页不联网、不伪造 PR/PASS；节点 6 后回填真实链接 |
+
+## 11.3 下游执行约束
+
+- 使用独立分支 `demo/sam-sdlc-capability`；不推送 `main`、不合并、不启用 auto-merge、不公开发布、不更新 GitHub Pages。
+- 保留既有火锅演示与 `#/home` 入口；不删除既有业务代码或既有 E2E 断言。
+- 不创建收费资源，不接入生产/真实用户/客户数据，不修改空间默认流程、Agent、权限、集成与自动化。
+- 用户要求所有实际节点使用 `ark1`；本 Spec 不修改平台模型配置，由平台执行侧遵循并记录。
+- 真实证据、失败、BLOCKED 与未覆盖项必须如实记录；0 测试、全跳过、超时不记 PASS。
+- PR 后停在人工发布决策，不代用户审批、不设置超时自动决策。

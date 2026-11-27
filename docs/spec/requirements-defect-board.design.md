@@ -1,7 +1,7 @@
 ---
 spec_id: SDLC-BOARD-SPEC-001
 title: 研发需求与缺陷看板
-status: in_review
+status: approved
 template_id: 技术设计模板
 schema_version: 1
 linked_spec: SDLC-BOARD-SPEC-001
@@ -10,7 +10,7 @@ depends_on_designs: []
 supersedes_designs: []
 created_at: 2026-11-27
 updated_at: 2026-11-27
-revision: 1
+revision: 2
 ---
 
 # Design: 研发需求与缺陷看板
@@ -477,11 +477,19 @@ interface ItemFormDialogProps {
 
 ---
 
+## 9.1 评审记录
+
+| 日期 | 结论 | 确认内容 |
+| --- | --- | --- |
+| 2026-11-27 | 确认通过 | `#/board` 默认、`#/home` 保留火锅；非法流转下拉列出全部非当前状态；新增 Vitest 与纯函数拆分；证据页静态快照、不预填 PR |
+
+> 用户同时要求下游实际节点使用 `ark1`，并如实记录真实证据、失败与未覆盖项；本 Design 不修改平台模型配置。
+
 # 10. 版本
 
 | 项目 | 值 |
 | --- | --- |
-| Design 版本 | v1.0（revision 1） |
+| Design 版本 | v1.1（revision 2，已评审通过） |
 | 生成时间 | 2026-11-27 |
 | 关联 Spec | `SDLC-BOARD-SPEC-001` v1.0 |
 | 基线 | `main` @ `1f47ad8`；分支 `demo/sam-sdlc-capability` @ `2ca14e0` |
@@ -494,3 +502,4 @@ interface ItemFormDialogProps {
 | 版本 | 日期 | 变更 | 作者 |
 | --- | --- | --- | --- |
 | v1.0 | 2026-11-27 | 首次技术设计：路由、模块、存储、状态机、证据快照、测试接入 | 产品经理 Agent |
+| v1.1 | 2026-11-27 | 记录用户评审通过；确认默认入口、状态目标下拉、Vitest、静态证据快照 | 产品经理 Agent |

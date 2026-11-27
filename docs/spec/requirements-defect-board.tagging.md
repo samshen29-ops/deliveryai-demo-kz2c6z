@@ -1,12 +1,12 @@
 ---
 spec_id: SDLC-BOARD-SPEC-001
 title: 研发需求与缺陷看板 · 需求分级打标
-status: in_review
+status: approved
 template_id: 需求打标规范
 schema_version: 1
 created_at: 2026-11-27
 updated_at: 2026-11-27
-revision: 1
+revision: 2
 ---
 
 # 需求分级打标: 研发需求与缺陷看板
@@ -78,7 +78,7 @@ revision: 1
 
 | 项目 | 值 |
 | --- | --- |
-| 版本 | v1.0 |
+| 版本 | v1.1（评审通过） |
 | 日期 | 2026-11-27 |
 | 依据 | PRD v2、Spec v1.0、Design v1.0、仓库 `main` @ `1f47ad8`、分支 @ `2ca14e0` |
-| 结论 | B（6 PASS / 1 WARN / 0 FAIL） |
+| 结论 | B（6 PASS / 1 WARN / 0 FAIL）；用户已确认按 B 类推进 |

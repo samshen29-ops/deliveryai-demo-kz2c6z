@@ -4,10 +4,10 @@
 
 | 文档 | 内容 | 状态 |
 | --- | --- | --- |
-| [产品 Spec](./requirements-defect-board.spec.md)（[HTML](./requirements-defect-board.spec.html)） | 目标、范围、REQ-001..REQ-013、AC-01..AC-12 判定口径、数据/状态/存储契约、边界与反例 | 已生成 · 待评审 |
-| [技术 Design](./requirements-defect-board.design.md)（[HTML](./requirements-defect-board.design.html)） | 路由接入、模块与文件清单、函数签名、存储状态机、证据快照、实施顺序、回滚 | 已生成 · 待评审 |
-| [测试计划](./requirements-defect-board.test-plan.md)（[HTML](./requirements-defect-board.test-plan.html)） | AC→单测/E2E 映射、UT-*/E2E-* 用例、命令、报告格式、PASS/FAIL/BLOCKED 判定 | 已生成 · 待评审 |
-| [需求打标](./requirements-defect-board.tagging.md)（[HTML](./requirements-defect-board.tagging.html)） | 七维评估、B 类结论、人工决策点、复评条件 | 已生成 · 待评审 |
+| [产品 Spec](./requirements-defect-board.spec.md)（[HTML](./requirements-defect-board.spec.html)） | 目标、范围、REQ-001..REQ-013、AC-01..AC-12 判定口径、数据/状态/存储契约、边界与反例 | 已通过评审（2026-11-27） |
+| [技术 Design](./requirements-defect-board.design.md)（[HTML](./requirements-defect-board.design.html)） | 路由接入、模块与文件清单、函数签名、存储状态机、证据快照、实施顺序、回滚 | 已通过评审（2026-11-27） |
+| [测试计划](./requirements-defect-board.test-plan.md)（[HTML](./requirements-defect-board.test-plan.html)） | AC→单测/E2E 映射、UT-*/E2E-* 用例、命令、报告格式、PASS/FAIL/BLOCKED 判定 | 已通过评审（2026-11-27） |
+| [需求打标](./requirements-defect-board.tagging.md)（[HTML](./requirements-defect-board.tagging.html)） | 七维评估、B 类结论、人工决策点、复评条件 | 已通过评审（2026-11-27） |
 
 ## 基线
 
@@ -16,6 +16,14 @@
 - 工作分支：`demo/sam-sdlc-capability`
 - 本节点起点：`2ca14e0bcfb9e8273e75e31d67db71c0aacc6d7d`
 - 上游：`docs/prd/requirements-defect-board.md`、`docs/prototype/requirements-board/`（均已评审通过）
+
+## 评审记录
+
+| 日期 | 结论 | 确认内容 |
+| --- | --- | --- |
+| 2026-11-27 | 确认通过，进入实现 | `#/board` 默认、`#/home` 保留火锅；非法流转下拉列出全部非当前状态；新增 Vitest 与纯函数拆分；证据页静态快照、不预填 PR |
+
+> 用户要求继续推进到真实测试与 open/unmerged PR；不合并、不公开发布、不创建收费资源、不改空间默认配置；所有实际节点使用 `ark1`；真实证据、失败与未覆盖项如实记录。
 
 ## 边界
 

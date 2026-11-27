@@ -1,14 +1,14 @@
 ---
 spec_id: SDLC-BOARD-SPEC-001
 title: 研发需求与缺陷看板 · 测试计划
-status: in_review
+status: approved
 template_id: 测试计划
 schema_version: 1
 linked_spec: SDLC-BOARD-SPEC-001
 linked_design: SDLC-BOARD-SPEC-001
 created_at: 2026-11-27
 updated_at: 2026-11-27
-revision: 1
+revision: 2
 ---
 
 # 测试计划: 研发需求与缺陷看板
@@ -527,10 +527,18 @@ PR 正文模板：
 | 关联 Spec | `SDLC-BOARD-SPEC-001` v1.0 |
 | 关联 Design | `requirements-defect-board.design.md` v1.0 |
 | 基线 | `main` @ `1f47ad8`；分支 `demo/sam-sdlc-capability` @ `2ca14e0` |
-| 本轮状态 | 计划已生成；未执行任何实现测试；AC-12 仍为部分覆盖 |
+| 本轮状态 | 计划已生成并获评审通过；未执行任何实现测试；AC-12 仍为部分覆盖 |
+
+## 13.2 评审记录
+
+| 日期 | 结论 | 说明 |
+| --- | --- | --- |
+| 2026-11-27 | 确认通过 | 按本计划执行节点 3-6；使用 Vitest + Playwright；真实证据、失败与未覆盖项如实记录；所有实际节点使用 `ark1` |
+
 
 ## 13.1 变更记录
 
 | 版本 | 日期 | 变更 | 作者 |
 | --- | --- | --- | --- |
 | v1.0 | 2026-11-27 | 首次测试计划：AC 映射、单测/E2E 用例、命令、报告格式、PASS 判定 | 产品经理 Agent |
+| v1.1 | 2026-11-27 | 记录用户评审通过；确认测试口径与下游执行约束 | 产品经理 Agent |
