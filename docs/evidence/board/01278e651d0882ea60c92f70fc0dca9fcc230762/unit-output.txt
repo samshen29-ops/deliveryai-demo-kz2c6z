@@ -1,0 +1,17 @@
+
+> hdl-order-demo@1.0.0 test:unit
+> vitest run
+
+
+ RUN  v3.2.7 /home/gem/.agentnative/sessions/agent-session-yf0evixmv44ajtahfgg3/work/e2e-01278e6
+
+ ✓ src/board/__tests__/query.test.ts (11 tests) 10ms
+ ✓ src/board/__tests__/storage.test.ts (11 tests) 15ms
+ ✓ src/board/__tests__/rules.test.ts (19 tests) 18ms
+ ✓ src/board/__tests__/model.test.ts (6 tests) 10ms
+
+ Test Files  4 passed (4)
+      Tests  47 passed (47)
+   Start at  10:05:19
+   Duration  601ms (transform 167ms, setup 0ms, collect 284ms, tests 53ms, environment 1ms, prepare 553ms)
+
