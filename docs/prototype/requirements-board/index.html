@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#211f1c" />
+    <meta name="description" content="SDLC 能力演示：使用合成数据的研发需求与缺陷看板原型" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'" />
+    <title>研发需求与缺陷看板 · SDLC 能力演示</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e13b2b'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial' font-size='26' font-weight='700' fill='white'%3ESD%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <div class="app">
+      <aside class="sidebar" aria-label="演示导航">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">SD</span>
+          <span class="brand-copy"><strong>SDLC 演示</strong><small>需求与缺陷看板</small></span>
+        </div>
+        <nav class="side-nav" aria-label="主导航">
+          <button class="nav-item" type="button" data-view="board" aria-current="page">
+            <span class="nav-icon" data-icon="board" aria-hidden="true"></span>
+            <span><strong>看板</strong><small>工作项与统计</small></span>
+          </button>
+          <button class="nav-item" type="button" data-view="evidence">
+            <span class="nav-icon" data-icon="evidence" aria-hidden="true"></span>
+            <span><strong>能力证据</strong><small>真实产物与未执行项</small></span>
+          </button>
+          <button class="nav-item" type="button" data-view="guide">
+            <span class="nav-icon" data-icon="compass" aria-hidden="true"></span>
+            <span><strong>如何演示</strong><small>5 分钟脚本</small></span>
+          </button>
+        </nav>
+        <div class="side-note">
+          <span class="status-dot" aria-hidden="true"></span>
+          <p class="side-note-label">当前节点</p>
+          <p class="side-note-value">需求澄清与原型 · 已通过</p>
+          <p class="side-note-desc">所有工作项、人员和示例证据均为合成数据。本页不是平台流程运行结果。</p>
+        </div>
+        <div class="side-foot">
+          <button class="btn btn-side" type="button" data-action="open-reset">
+            <span data-icon="reset" aria-hidden="true"></span>演示复位
+          </button>
+          <p>只重置本应用数据，不触发平台 reset。</p>
+        </div>
+      </aside>
+
+      <div class="main">
+        <div class="demo-strip" role="note">
+          <span class="strip-badge">演示合成数据</span>
+          <span>本页状态来自工作区实际产物，不是平台运行结果；未执行项不会标记为成功。</span>
+        </div>
+
+        <header class="mobile-topbar">
+          <div class="mobile-brand">
+            <span class="brand-mark small" aria-hidden="true">SD</span>
+            <span><strong>SDLC 演示</strong><small>需求与缺陷看板</small></span>
+          </div>
+          <div class="mobile-actions">
+            <button class="icon-btn" type="button" data-action="open-new" aria-label="新增工作项">
+              <span data-icon="plus" aria-hidden="true"></span>
+            </button>
+            <button class="icon-btn" type="button" data-action="open-reset" aria-label="演示复位">
+              <span data-icon="reset" aria-hidden="true"></span>
+            </button>
+          </div>
+          <nav class="mobile-nav" aria-label="移动端主导航">
+            <button class="mobile-nav-item" type="button" data-view="board" aria-current="page">看板</button>
+            <button class="mobile-nav-item" type="button" data-view="evidence">能力证据</button>
+            <button class="mobile-nav-item" type="button" data-view="guide">如何演示</button>
+          </nav>
+        </header>
+
+        <main id="main-content" class="main-inner">
+          <section id="view-board" class="view" aria-labelledby="board-title">
+            <div class="hero">
+              <div class="hero-copy">
+                <p class="eyebrow">SDLC 能力演示 · 需求澄清与原型</p>
+                <h1 id="board-title" tabindex="-1">研发需求与缺陷看板</h1>
+                <p class="lede">在同一个看板里新增、筛选、流转和核对证据。用来演示从需求澄清到人工发布决策的交付链，而不是模拟平台已经执行成功。</p>
+                <div class="hero-meta">
+                  <span class="badge badge-synthetic"><span class="pulse-dot" aria-hidden="true"></span>演示合成数据</span>
+                  <span class="badge badge-neutral">12 条种子工作项</span>
+                  <span class="badge badge-neutral">浏览器本地持久化</span>
+                </div>
+              </div>
+              <div class="hero-actions">
+                <button class="btn btn-primary" type="button" data-action="open-new">
+                  <span data-icon="plus" aria-hidden="true"></span>新增工作项
+                </button>
+                <button class="btn btn-outline" type="button" data-action="open-reset">
+                  <span data-icon="reset" aria-hidden="true"></span>演示复位
+                </button>
+              </div>
+            </div>
+
+            <div id="storage-banner" class="storage-banner" role="status" data-testid="storage-banner" hidden></div>
+
+            <section class="stats-wrap" aria-labelledby="stats-title">
+              <div class="section-kicker"><h2 id="stats-title">当前筛选总览</h2><span>统计与卡片使用同一集合</span></div>
+              <div id="stats-grid" class="stats-grid"></div>
+            </section>
+
+            <section class="filter-card" aria-labelledby="filter-title">
+              <div class="filter-top">
+                <h2 id="filter-title">搜索与筛选</h2>
+                <button id="clear-filters" class="btn btn-ghost btn-small" type="button" data-action="clear-filters" data-testid="clear-filters">
+                  <span data-icon="x" aria-hidden="true"></span>清空筛选
+                </button>
+              </div>
+              <div class="filter-grid">
+                <label class="search-field">
+                  <span class="sr-only">按标题或描述搜索</span>
+                  <span class="search-icon" data-icon="search" aria-hidden="true"></span>
+                  <input id="search-input" data-testid="search-input" type="search" placeholder="搜索标题或描述，例如：筛选、存储" autocomplete="off" />
+                </label>
+                <label class="select-field">
+                  <span>类型</span>
+                  <select id="filter-type" data-testid="filter-type">
+                    <option value="all">全部类型</option>
+                    <option value="requirement">需求</option>
+                    <option value="defect">缺陷</option>
+                  </select>
+                </label>
+                <label class="select-field">
+                  <span>优先级</span>
+                  <select id="filter-priority" data-testid="filter-priority">
+                    <option value="all">全部优先级</option>
+                    <option value="P0">P0</option>
+                    <option value="P1">P1</option>
+                    <option value="P2">P2</option>
+                    <option value="P3">P3</option>
+                  </select>
+                </label>
+                <label class="select-field">
+                  <span>状态</span>
+                  <select id="filter-status" data-testid="filter-status">
+                    <option value="all">全部状态</option>
+                    <option value="待规划">待规划</option>
+                    <option value="进行中">进行中</option>
+                    <option value="审核中">审核中</option>
+                    <option value="阻塞中">阻塞中</option>
+                    <option value="已完成">已完成</option>
+                  </select>
+                </label>
+              </div>
+              <p id="filter-summary" class="filter-summary" aria-live="polite"></p>
+            </section>
+
+            <div class="board-head">
+              <div>
+                <div class="section-kicker"><h2>工作项</h2><span>点击卡片查看详情、历史与证据</span></div>
+              </div>
+              <div class="board-legend" aria-hidden="true">
+                <span><i class="dot dot-plan"></i>待规划</span>
+                <span><i class="dot dot-progress"></i>进行中</span>
+                <span><i class="dot dot-review"></i>审核中</span>
+                <span><i class="dot dot-blocked"></i>阻塞中</span>
+                <span><i class="dot dot-done"></i>已完成</span>
+              </div>
+            </div>
+
+            <div id="empty-state" class="empty-state" hidden>
+              <span class="empty-icon" data-icon="search" aria-hidden="true"></span>
+              <div>
+                <h3>没有符合条件的工作项</h3>
+                <p>当前关键词和筛选条件组合没有命中。可以调整条件，或清空筛选恢复全部工作项。</p>
+              </div>
+              <button class="btn btn-secondary" type="button" data-action="clear-filters">清空筛选</button>
+            </div>
+
+            <div id="board" class="board" role="list" aria-label="按状态分组的工作项看板"></div>
+
+            <p class="board-foot">演示复位只重置本应用 key <code>sdlc-demo-board:v1</code>，不会清空其他 localStorage，也不是产品空间或平台任务的 reset。</p>
+          </section>
+
+          <section id="view-evidence" class="view" aria-labelledby="evidence-title" hidden>
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">能力证据</p>
+                <h1 id="evidence-title" tabindex="-1">本需求各节点实际交付物</h1>
+                <p class="lede">这里只展示工作区实际产物与状态。未执行项明确标注“未执行/待确认”，不把原型动画或模拟流程冒充平台结果。</p>
+              </div>
+              <button class="btn btn-outline" type="button" data-view="board">返回看板</button>
+            </div>
+            <div class="notice notice-amber">
+              <span data-icon="alert" aria-hidden="true"></span>
+              <p><strong>口径说明：</strong>“已生成/已执行”只代表本工作区里的文件或浏览器检查；本页不是平台运行结果。“平台流程状态”需要以 DeliveryAI 节点记录为准。PR、合并与发布均未在本节点发生。</p>
+            </div>
+            <div id="evidence-content"></div>
+          </section>
+
+          <section id="view-guide" class="view" aria-labelledby="guide-title" hidden>
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">如何演示</p>
+                <h1 id="guide-title" tabindex="-1">5 分钟演示脚本</h1>
+                <p class="lede">从需求、PRD、原型到证据和授权边界。每一步都对应可检查的产物，不依赖模拟成功动画。</p>
+              </div>
+              <button class="btn btn-outline" type="button" data-view="board">返回看板</button>
+            </div>
+            <div id="guide-content"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="overlay-root"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

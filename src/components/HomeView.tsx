@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Check, ChevronRight, MapPin, QrCode, Sparkles, Users } from 'lucide-react'
+import { ArrowRight, Check, ChevronRight, LayoutDashboard, MapPin, QrCode, Sparkles, Users } from 'lucide-react'
 import hotpot from '@/assets/hotpot.jpg'
 import { Button } from '@/components/ui/button'
 
@@ -20,8 +20,13 @@ export function HomeView({ onBind }: HomeViewProps) {
       <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-amber-100 blur-3xl" />
       <div className="relative mx-auto grid min-h-screen max-w-6xl items-center gap-10 px-5 py-10 lg:grid-cols-2 lg:px-10">
         <section className="animate-rise">
-          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-chili-500/20 bg-white/80 px-3 py-2 text-xs font-bold text-chili-600 shadow-sm">
-            <Sparkles size={14} /> {t('common.concept_badge')}
+          <div className="mb-7 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-chili-500/20 bg-white/80 px-3 py-2 text-xs font-bold text-chili-600 shadow-sm">
+              <Sparkles size={14} /> {t('common.concept_badge')}
+            </span>
+            <a href="#/board" data-testid="home-board-link" className="inline-flex items-center gap-1.5 rounded-full border border-charcoal-900/10 bg-white px-3 py-2 text-xs font-bold text-charcoal-700 shadow-sm transition hover:border-chili-500/40 hover:text-chili-600">
+              <LayoutDashboard size={14} />SDLC 需求与缺陷看板<ArrowRight size={13} />
+            </a>
           </div>
           <p className="mb-3 text-sm font-bold tracking-widest text-chili-500">{t('common.concept_en')}</p>
           <h1 className="max-w-xl text-4xl font-extrabold leading-tight text-charcoal-900 sm:text-5xl lg:text-6xl">

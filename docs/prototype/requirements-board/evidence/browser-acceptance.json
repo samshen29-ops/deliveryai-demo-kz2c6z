@@ -1,0 +1,122 @@
+{
+  "title": "研发需求与缺陷看板原型浏览器验收",
+  "generated_at": "2026-11-27T08:54:48.719Z",
+  "base_url": "http://127.0.0.1:4173",
+  "tested_revision": "b10ccbe3f4c9e8edf452c75b2cbe53cff193a62b",
+  "base_revision": "1f47ad864fb9b97835cb8a453e6ed41d132f56e1",
+  "branch": "demo/sam-sdlc-capability",
+  "prototype_revision": "b10ccbe3f4c9e8edf452c75b2cbe53cff193a62b",
+  "browser": "Chromium via Playwright, executable /opt/chromium.org/chromium/chrome",
+  "viewports": [
+    "1440x1000",
+    "390x844"
+  ],
+  "commands": [
+    "node .agentnative/design/sdlc-requirements-board/acceptance.js"
+  ],
+  "checks": [
+    {
+      "ac": "AC-01",
+      "name": "首次展示 12 条合成工作项、5 个状态分组与合成标识",
+      "status": "PASS",
+      "detail": "cards=12, counts=2/3/2/2/3, completion=25%"
+    },
+    {
+      "ac": "AC-02",
+      "name": "新增合法工作项、编辑保存、取消无修改、标题去空格",
+      "status": "PASS",
+      "detail": "cards=14; add/edit/cancel/edit-cancel/trim checked; DEMO-113"
+    },
+    {
+      "ac": "AC-03",
+      "name": "空白/超长标题与超长描述被拒绝，错误定位且保留输入",
+      "status": "PASS",
+      "detail": "blank, 81-char title, 2001-char description; inputs preserved"
+    },
+    {
+      "ac": "AC-04",
+      "name": "关键词与类型/优先级/状态组合筛选准确，清空恢复",
+      "status": "PASS",
+      "detail": "search=筛选 cards=4; combined=1; completed=3; empty=0"
+    },
+    {
+      "ac": "AC-07",
+      "name": "筛选集合统计与卡片一致，完成率正确，零结果无 NaN",
+      "status": "PASS",
+      "detail": "total/count/completion checked across search, combined, completed and empty sets"
+    },
+    {
+      "ac": "AC-05",
+      "name": "合法流转成功且有历史；非法跨级拒绝；已完成只读",
+      "status": "PASS",
+      "detail": "DEMO-103 illegal → rejected+history; legal → 审核中; DEMO-110 read-only; DEMO-101 legal"
+    },
+    {
+      "ac": "AC-06a",
+      "name": "刷新保留新增、编辑与合法状态变更",
+      "status": "PASS",
+      "detail": "add/edit/待规划→进行中 all survived reload; localStorage key sdlc-demo-board:v1"
+    },
+    {
+      "ac": "AC-06b",
+      "name": "损坏数据保留原始内容、受控提示、显式覆盖",
+      "status": "PASS",
+      "detail": "raw unchanged before explicit overwrite; then valid version 1 with 12 items"
+    },
+    {
+      "ac": "AC-06c",
+      "name": "localStorage 不可用时内存态运行并提示，不白屏",
+      "status": "PASS",
+      "detail": "banner visible; in-memory add works; reload returns seeds; no pageerror"
+    },
+    {
+      "ac": "AC-08",
+      "name": "详情区分示例记录/本轮真实产物/未执行，示例不冒充真实",
+      "status": "PASS",
+      "detail": "sample tags>=2; real evidence box; pending evidence; no PASS"
+    },
+    {
+      "ac": "AC-09",
+      "name": "复位取消无变化，确认只重置本 Demo 数据，其他存储不受影响",
+      "status": "PASS",
+      "detail": "cancel kept 13; step2 confirm restored 12; other-demo-key=keep-me"
+    },
+    {
+      "ac": "AC-10",
+      "name": "HTML/脚本输入按文本显示、不执行；无真实凭据/身份/客户数据",
+      "status": "PASS",
+      "detail": "window.__xss undefined; no injected img; literal tags visible; no credential patterns"
+    },
+    {
+      "ac": "AC-11",
+      "name": "键盘核心操作可用、390px 无核心内容遮挡",
+      "status": "PASS",
+      "detail": "docScrollWidth=390; drawer=390; modal=340.80999755859375; focus restored"
+    },
+    {
+      "ac": "AC-11b",
+      "name": "核心操作无本次引入的 console error",
+      "status": "PASS",
+      "detail": "0 console/page errors"
+    }
+  ],
+  "console_errors": [],
+  "screenshots": [
+    "evidence/desktop-board.png",
+    "evidence/validation-error.png",
+    "evidence/filters-empty.png",
+    "evidence/detail-drawer.png",
+    "evidence/storage-recovery.png",
+    "evidence/evidence-view.png",
+    "evidence/reset-confirm.png",
+    "evidence/xss-safe.png",
+    "evidence/mobile-board.png",
+    "evidence/mobile-detail.png",
+    "evidence/mobile-form.png"
+  ],
+  "limitations": [
+    "本报告只验证静态原型，不代表最终 React 实现、真实 E2E 或平台流程已通过。",
+    "沙箱端口暴露返回 409（平台不支持端口暴露），预览仅在沙箱内通过 127.0.0.1:4173 和浏览器工具访问，不是公开发布。",
+    "AC-12 仅部分覆盖：PRD/原型/分支提交由本节点产出；Spec、单元测试、构建、沙箱冒烟、真实 E2E、代码审查、PR、合并与发布未执行。"
+  ]
+}

@@ -1,0 +1,254 @@
+{
+  "title": "研发需求与缺陷看板测试报告",
+  "scope": "节点 3 开发、自测与用例：lint/单测/构建 + 本地 E2E 自测；沙箱预览、正式 E2E、代码审查与 PR 属后续节点",
+  "generated_at": "2026-11-27T09:56:32Z",
+  "revision": "87d3e688a4e5e05a303999e3c247eb5679cd320f",
+  "base_revision": "1f47ad864fb9b97835cb8a453e6ed41d132f56e1",
+  "branch": "demo/sam-sdlc-capability",
+  "worktree_clean": true,
+  "commits": [
+    "8490e2042e4c0968d1167f958874487684a7cd46",
+    "87d3e688a4e5e05a303999e3c247eb5679cd320f"
+  ],
+  "environment": {
+    "node": "v22.21.0",
+    "npm": "10.9.4",
+    "browser": "/opt/chromium.org/chromium/chrome",
+    "playwright_workers": 1
+  },
+  "commands": [
+    {
+      "command": "npm run lint",
+      "exit_code": 0,
+      "duration_s": 2,
+      "result": "PASS",
+      "note": "0 error / 0 warning"
+    },
+    {
+      "command": "npm run test:unit",
+      "exit_code": 0,
+      "duration_s": 1,
+      "result": "PASS",
+      "tests": {
+        "files": 4,
+        "total": 47,
+        "passed": 47,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": "npm run build",
+      "exit_code": 0,
+      "duration_s": 5,
+      "result": "PASS",
+      "note": "tsc -b && vite build；产物 dist/"
+    },
+    {
+      "command": "PLAYWRIGHT_CHROMIUM_PATH=/opt/chromium.org/chromium/chrome npx playwright test e2e/board.spec.ts e2e/view-routing.spec.ts e2e/super-spicy.spec.ts",
+      "exit_code": 0,
+      "duration_s": 79,
+      "result": "PASS (local self-test)",
+      "tests": {
+        "total": 33,
+        "passed": 33,
+        "failed": 0,
+        "skipped": 0
+      },
+      "note": "board 15 + hotpot 12 + routing 6；正式节点 5 证据待重跑回填"
+    }
+  ],
+  "static_checks": [
+    {
+      "command": "rg -n \"dangerouslySetInnerHTML|innerHTML|eval\\(\" src",
+      "hits": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "rg -n \"(ghp_|github_pat_|AKIA|BEGIN [A-Z ]*PRIVATE KEY|password\\s*=|secret\\s*=)\" src docs/spec",
+      "hits": 1,
+      "result": "PASS_WITH_NOTE",
+      "note": "唯一命中为测试计划自身记录的扫描正则，不含真实凭据"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS"
+    }
+  ],
+  "summary": {
+    "total": 80,
+    "passed": 80,
+    "failed": 0,
+    "skipped": 0,
+    "ac_pass": 11,
+    "ac_blocked": 1
+  },
+  "ac": [
+    {
+      "id": "AC-01",
+      "status": "PASS",
+      "tests": [
+        "UT-SEED-01",
+        "UT-SEED-02",
+        "E2E-AC-01"
+      ],
+      "evidence": [
+        "board-desktop.png"
+      ]
+    },
+    {
+      "id": "AC-02",
+      "status": "PASS",
+      "tests": [
+        "UT-VALID-01",
+        "UT-VALID-02",
+        "UT-VALID-03",
+        "E2E-AC-02"
+      ],
+      "evidence": [
+        "create-success.png",
+        "edit-cancel.png"
+      ]
+    },
+    {
+      "id": "AC-03",
+      "status": "PASS",
+      "tests": [
+        "UT-VALID-04..12",
+        "E2E-AC-03"
+      ],
+      "evidence": [
+        "validation-error.png"
+      ]
+    },
+    {
+      "id": "AC-04",
+      "status": "PASS",
+      "tests": [
+        "UT-FILTER-01..08",
+        "E2E-AC-04"
+      ],
+      "evidence": [
+        "filters-empty.png"
+      ]
+    },
+    {
+      "id": "AC-05",
+      "status": "PASS",
+      "tests": [
+        "UT-SM-01..12",
+        "E2E-AC-05"
+      ],
+      "evidence": [
+        "transition-rejected.png",
+        "completed-readonly.png"
+      ]
+    },
+    {
+      "id": "AC-06",
+      "status": "PASS",
+      "tests": [
+        "UT-STORAGE-01..12",
+        "E2E-AC-06a",
+        "E2E-AC-06b",
+        "E2E-AC-06c"
+      ],
+      "evidence": [
+        "persist-reload.png",
+        "storage-corrupt.png",
+        "storage-unavailable.png"
+      ]
+    },
+    {
+      "id": "AC-07",
+      "status": "PASS",
+      "tests": [
+        "UT-STATS-01..06",
+        "E2E-AC-07"
+      ],
+      "evidence": [
+        "stats-filtered.png"
+      ]
+    },
+    {
+      "id": "AC-08",
+      "status": "PASS",
+      "tests": [
+        "UT-EVID-01..03",
+        "E2E-AC-08"
+      ],
+      "evidence": [
+        "detail-evidence.png"
+      ]
+    },
+    {
+      "id": "AC-09",
+      "status": "PASS",
+      "tests": [
+        "UT-STORAGE-10",
+        "E2E-AC-09"
+      ],
+      "evidence": [
+        "reset-step1.png",
+        "reset-step2.png"
+      ]
+    },
+    {
+      "id": "AC-10",
+      "status": "PASS",
+      "tests": [
+        "static scan",
+        "E2E-AC-10"
+      ],
+      "evidence": [
+        "xss-safe.png"
+      ]
+    },
+    {
+      "id": "AC-11",
+      "status": "PASS",
+      "tests": [
+        "E2E-AC-11a",
+        "E2E-AC-11b",
+        "E2E-AC-11c"
+      ],
+      "evidence": [
+        "mobile-board.png",
+        "mobile-detail.png"
+      ]
+    },
+    {
+      "id": "AC-12",
+      "status": "BLOCKED",
+      "tests": [
+        "全量"
+      ],
+      "evidence": [
+        "实现提交 8490e2042e4c0968d1167f958874487684a7cd46",
+        "本报告 revision 87d3e688a4e5e05a303999e3c247eb5679cd320f"
+      ],
+      "note": "PRD/Spec/Design/Test Plan、独立分支与实现/单测/构建/本地 E2E 已存在；沙箱预览（节点4）、正式 E2E（节点5）、代码审查与 open/unmerged PR（节点6）、人工发布决策（节点7）未执行"
+    }
+  ],
+  "failures": [],
+  "uncovered": [
+    "沙箱预览与冒烟（节点 4）",
+    "正式真实 E2E HTML 报告与截图（节点 5；本报告中的 33/33 为节点 3 本地自测）",
+    "代码审查记录与 open/unmerged PR（节点 6）",
+    "人工发布决策（节点 7）",
+    "Firefox/Safari 实机与屏幕阅读器人工走查",
+    "多标签页并发写入（设计上明确不支持，最后写入获胜）"
+  ],
+  "boundaries": {
+    "main_modified": false,
+    "merged": false,
+    "auto_merge": false,
+    "published": false,
+    "pages_workflow_triggers": [
+      "push: branches: [main]",
+      "workflow_dispatch"
+    ],
+    "branch_push_triggers_pages": false
+  }
+}

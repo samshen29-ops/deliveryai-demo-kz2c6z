@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="研发需求与缺陷看板 PRD · SDLC 能力演示" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'" />
+<title>研发需求与缺陷看板 PRD · SDLC 能力演示</title>
+<style>
+:root{--rice-50:#fffdf8;--rice-100:#fbf5ea;--rice-200:#f3e6d0;--chili-50:#fff1ef;--chili-100:#ffddd8;--chili-500:#e13b2b;--chili-700:#a9231a;--amber-100:#fff2c7;--amber-400:#f5b83f;--charcoal-500:#5f5b55;--charcoal-700:#34312d;--charcoal-900:#211f1c;--line:rgba(33,31,28,.09);--font:"Inter","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;color:var(--charcoal-900);background-color:var(--rice-100);background-image:radial-gradient(rgba(170,110,60,.075) .7px,transparent .7px);background-size:12px 12px;font-family:var(--font);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased} ::selection{background:var(--chili-100);color:var(--chili-700)} a{color:var(--chili-700);text-decoration-thickness:1px;text-underline-offset:3px} a:hover{color:var(--chili-500)} .top{background:var(--charcoal-900);color:var(--rice-100);padding:10px 28px;font-size:11.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap} .top strong{color:var(--amber-400)} .shell{max-width:1220px;margin:0 auto;padding:30px 24px 70px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:34px;align-items:start} .toc{position:sticky;top:20px;background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 8px 26px rgba(70,45,25,.05)} .toc h2{margin:0 0 9px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--charcoal-500)} .toc ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:3px} .toc a{display:block;padding:4px 6px;border-radius:7px;color:var(--charcoal-700);font-size:11.5px;text-decoration:none;line-height:1.45} .toc a:hover{background:var(--chili-50);color:var(--chili-700)} .doc{min-width:0;background:rgba(255,253,248,.82);border:1px solid var(--line);border-radius:24px;padding:38px 42px 52px;box-shadow:0 12px 38px rgba(70,45,25,.07)} .doc-head{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:26px} .eyebrow{margin:0 0 7px;color:var(--chili-600);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase} .doc h1{margin:0;font-size:clamp(30px,4vw,44px);line-height:1.12;letter-spacing:-.035em} .doc-head p{margin:12px 0 0;color:var(--charcoal-500);font-size:13px;line-height:1.75;max-width:780px} .badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px} .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:10.5px;font-weight:800} .badge-amber{background:var(--amber-100);color:#6d4a00;border:1px solid rgba(230,155,24,.22)} .badge-neutral{background:white;color:var(--charcoal-700);border:1px solid var(--line)} .doc h1:not(:first-child){font-size:25px;letter-spacing:-.025em;margin:44px 0 14px;padding-top:8px;border-top:1px solid rgba(33,31,28,.06)} .doc h1:first-of-type{font-size:clamp(28px,3.5vw,38px);border-top:0;padding-top:0;margin:0 0 8px} .doc h2{font-size:19px;line-height:1.35;letter-spacing:-.015em;margin:30px 0 10px} .doc h3{font-size:15px;margin:22px 0 8px} .doc p{margin:10px 0;color:var(--charcoal-700);font-size:13.5px} .doc ul,.doc ol{margin:10px 0;padding-left:21px;color:var(--charcoal-700);font-size:13.5px} .doc li{margin:4px 0} .doc li::marker{color:var(--chili-500)} .doc strong{color:var(--charcoal-900)} .doc code{padding:1px 5px;border-radius:5px;background:rgba(33,31,28,.065);font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace} .doc pre{margin:14px 0;padding:14px 16px;overflow:auto;border-radius:13px;background:var(--charcoal-900);color:var(--rice-100);font-size:12px;line-height:1.65} .doc pre code{padding:0;background:transparent;color:inherit;font-size:inherit} .doc blockquote{margin:14px 0;padding:11px 14px;border-left:3px solid var(--chili-500);border-radius:0 10px 10px 0;background:var(--chili-50);color:var(--charcoal-700);font-size:13px} .doc hr{border:0;border-top:1px solid var(--line);margin:28px 0} .table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:13px;background:white} table{width:100%;border-collapse:collapse;min-width:560px;font-size:12px} th,td{padding:9px 11px;border-bottom:1px solid rgba(33,31,28,.06);text-align:left;vertical-align:top} th{background:var(--rice-100);color:var(--charcoal-500);font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap} tr:last-child td{border-bottom:0} td{color:var(--charcoal-700);line-height:1.6} .doc-footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:#918a82;font-size:11px;line-height:1.65} .backtop{position:fixed;right:22px;bottom:22px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:white;color:var(--charcoal-700);font-size:11px;font-weight:700;text-decoration:none;box-shadow:0 6px 20px rgba(70,45,25,.08)} @media(max-width:900px){.shell{grid-template-columns:1fr;padding:18px 14px 50px;gap:14px} .toc{position:static} .toc ol{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px} .doc{padding:24px 20px 38px;border-radius:18px} .top{padding:9px 16px} .backtop{display:none}} @media print{body{background:white} .top,.toc,.backtop{display:none} .shell{display:block;max-width:none;padding:0} .doc{border:0;box-shadow:none;padding:0;background:white} .table-wrap{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="top" id="top"><span><strong>SDLC 能力演示</strong> · 需求澄清与原型节点产物</span><span>演示合成数据 · 不合并 / 不公开发布</span></div>
+<div class="shell">
+<nav class="toc" aria-label="文档目录"><h2>目录</h2><ol><li><a href="#scope-note">Scope Note</a></li><li><a href="#11-背景">1.1 背景</a></li><li><a href="#12-目标">1.2 目标</a></li><li><a href="#13-不做什么">1.3 不做什么</a></li><li><a href="#31-产品形态">3.1 产品形态</a></li><li><a href="#32-页面与入口">3.2 页面与入口</a></li><li><a href="#33-全局标识">3.3 全局标识</a></li><li><a href="#req-001-合成种子数据与状态覆盖">REQ-001: 合成种子数据与状态覆盖</a></li><li><a href="#req-002-新增工作项">REQ-002: 新增工作项</a></li><li><a href="#req-003-编辑工作项与取消">REQ-003: 编辑工作项与取消</a></li><li><a href="#req-004-标题与描述校验">REQ-004: 标题与描述校验</a></li><li><a href="#req-005-关键词搜索与组合筛选">REQ-005: 关键词搜索与组合筛选</a></li><li><a href="#req-006-状态机与历史">REQ-006: 状态机与历史</a></li><li><a href="#req-007-总览统计">REQ-007: 总览统计</a></li><li><a href="#req-008-详情抽屉与证据类型">REQ-008: 详情抽屉与证据类型</a></li><li><a href="#req-009-持久化损坏与不可用降级">REQ-009: 持久化、损坏与不可用降级</a></li><li><a href="#req-010-演示复位">REQ-010: 演示复位</a></li><li><a href="#req-011-能力证据与演示指南">REQ-011: 能力证据与演示指南</a></li><li><a href="#req-012-安全键盘与窄屏">REQ-012: 安全、键盘与窄屏</a></li><li><a href="#51-字段与校验">5.1 字段与校验</a></li><li><a href="#52-状态与反馈">5.2 状态与反馈</a></li><li><a href="#53-统计规则">5.3 统计规则</a></li><li><a href="#54-证据规则">5.4 证据规则</a></li><li><a href="#61-逻辑数据模型">6.1 逻辑数据模型</a></li><li><a href="#62-状态机">6.2 状态机</a></li><li><a href="#101-仓库事实">10.1 仓库事实</a></li><li><a href="#102-基线验证本轮已执行">10.2 基线验证（本轮已执行）</a></li><li><a href="#103-实现建议下一节点确认">10.3 实现建议（下一节点确认）</a></li><li><a href="#104-回滚">10.4 回滚</a></li></ol></nav>
+<main class="doc">
+<header class="doc-head">
+<p class="eyebrow">PRD · 已通过评审</p>
+<h1>研发需求与缺陷看板</h1>
+<p>本文件是 SDLC 能力演示“需求澄清与原型”节点的产品需求文档，约束用户可见行为、状态规则、数据与验收。原型是行为参考；下游 Spec、实现、真实 E2E、PR 与人工发布决策尚未执行。</p>
+<div class="badges"><span class="badge badge-amber">演示合成数据</span><span class="badge badge-neutral">AC-01..AC-12</span><span class="badge badge-neutral">浏览器本地持久化</span><span class="badge badge-neutral">不合并 / 不发布</span></div>
+</header>
+<h1 id="review-summary">Review Summary</h1>
+<ul><li>本次需求: 在 Sam 空间-SDLC 的现有 GitHub 演示仓库中，交付一个使用合成数据、可实际交互的中文研发需求与缺陷看板，并作为 SDLC 能力演示的需求澄清与原型节点产物。</li><li>需求类型: 新产品 / 演示应用 / 前端单页应用 / 产品体验</li><li>变更面: 看板信息架构、工作项 CRUD、校验、搜索筛选、状态机、详情抽屉、统计、localStorage 持久化与降级、演示复位、能力证据与演示指南；不涉及: 后端 API、数据库、登录、权限、外部业务系统、GitHub Pages 发布、main 分支、平台默认流程或 Agent 配置；待确认: 无阻塞项。</li><li>变更面判断依据: 本轮用户需求；仓库 <code>samshen29-ops/deliveryai-demo-kz2c6z</code>（main <code>1f47ad864fb9b97835cb8a453e6ed41d132f56e1</code>）的 AGENTS.md、README、package.json、src、e2e、Playwright 配置与 <code>.github/workflows/deploy-pages.yml</code>；工作区 <code>knowledge/template/需求Spec模板.md</code>、<code>需求澄清规范.md</code>、<code>需求质量卡点模板.md</code>；<code>knowledge/design-system/</code> 为空，故视觉基线采用仓库既有 Tailwind 色板、字体、圆角与组件风格。</li><li>差异判断: 产品形态差异 涉及（从火锅点单演示转为研发看板演示）；站点差异 不涉及（不发布、不更新 GitHub Pages）；环境差异 涉及（原型仅在沙箱内 detached 服务与浏览器工具中预览，平台端口暴露返回 409；生产/公开发布未授权）；版本差异 不涉及（无已有看板版本）。依据: 用户授权边界、仓库现有单页应用事实、<code>.github/workflows/deploy-pages.yml</code> 仅 <code>main</code> 触发。</li><li>评审结论: 用户于 2026-11-27 通过，进入产品与技术 Spec；修改意见为空；最终实现入口建议为“保留火锅演示，新增默认看板入口”；确认 AC-12 在本节点保持部分覆盖，不标记为通过。</li><li>本次变更关键信息:</li><li>新增中文单页看板，默认展示 12 条合成工作项，覆盖 5 种状态，明确标识“演示合成数据”。</li><li>新增新增/编辑工作项、标题与描述校验、关键词搜索、类型/优先级/状态组合筛选、实时统计与空态。</li><li>新增严格状态机、拒绝非法流转并记录原因、完成后只读；详情抽屉区分“示例记录”与“本轮真实产物”。</li><li>新增仅针对本应用 key 的 localStorage 持久化、损坏/不可用降级、两步演示复位。</li><li>新增“如何演示”和“能力证据”入口，明确下游节点未执行，不把原型或模拟状态冒充平台结果。</li><li>Review 重点:</li><li>AC-01..AC-12 是否在 PRD、原型、测试与最终报告中使用同一编号。</li><li>状态机拒绝语义与已完成只读是否一致。</li><li>损坏存储是否保留原始数据、不静默覆盖。</li><li>示例证据是否可能被误读为真实 PR、执行日志或 PASS。</li><li>独立分支与未合并/未发布边界是否在后续节点持续成立。</li></ul>
+<h2 id="scope-note">Scope Note</h2>
+<ul><li>Implemented sections: 背景与目标、用户与场景、范围与信息架构、功能需求、字段与校验、状态机、筛选与统计、详情与证据、持久化与降级、演示复位、非功能要求、验收追溯、演示脚本、技术基线与交付边界。</li><li>Not involved: 后端服务、数据库、登录/权限、多人协作、外部缺陷系统同步、通知、真实项目管理数据、GitHub Pages 公开发布、main 分支修改、平台流程/Agent/Skill 配置变更。</li><li>Needs confirmation: 无阻塞项。原型转 React 实现的具体路由挂载方式在下一节点技术 Spec 中确认；本 PRD 只约束用户可见行为和验收。</li><li>Reason: 用户已明确演示目标、授权边界、12 条合成数据、状态规则与 AC-01..AC-12；仓库证据表明现有应用为无后端 React SPA，适合用浏览器本地持久化完成最小闭环。</li></ul>
+<hr />
+<h1 id="1-背景与目标">1. 背景与目标</h1>
+<h2 id="11-背景">1.1 背景</h2>
+<p>Sam 空间-SDLC 需要用一个真实可交互的演示，串起 DeliveryAI 从需求澄清与原型、产品/技术 Spec、开发与自测、沙箱预览与冒烟、真实 E2E、代码评审与 PR，到人工发布决策的完整交付链。现有演示仓库是一个火锅点单 SPA，技术栈完整、无后端，但业务场景与 SDLC 无关。</p>
+<p>本需求把该仓库复用于“研发需求与缺陷看板”演示：让评审者在一个中文单页应用里实际完成新增、校验、搜索筛选、状态流转、刷新持久化和证据查看，并能清楚区分合成演示数据、本轮真实产物与尚未执行的下游节点。</p>
+<h2 id="12-目标">1.2 目标</h2>
+<div class="table-wrap"><table><thead><tr><th>目标</th><th>衡量方式</th><th>目标值 / 判断标准</th></tr></thead><tbody><tr><td>可演示的需求/缺陷闭环</td><td>AC-01..AC-11 在真实浏览器中可操作</td><td>关键成功与失败路径均有可见结果</td></tr><tr><td>数据与统计可信</td><td>卡片、计数、完成率、筛选结果一致</td><td>每个筛选集合计数与卡片数一致；空集合不出现 NaN</td></tr><tr><td>状态规则可信</td><td>合法流转成功、非法流转拒绝、完成后只读</td><td>拒绝原因可解释并进入历史记录</td></tr><tr><td>持久化可信</td><td>刷新后新增/编辑/合法流转保留</td><td>损坏或不可用时给出受控提示，不静默删数据</td></tr><tr><td>证据不冒充</td><td>示例记录、本轮真实产物、未执行项三类状态清晰</td><td>不硬编码不存在的 PR、日志或 PASS</td></tr><tr><td>演示可复现</td><td>一条命令启动、一份指南、一个复位入口</td><td>评审者可在 5 分钟内按脚本完成演示</td></tr></tbody></table></div>
+<h2 id="13-不做什么">1.3 不做什么</h2>
+<ul><li>不接入后端 API、数据库、登录、权限、组织架构或真实用户体系。</li><li>不做多人实时协作、评论、通知、附件上传、拖拽排序、批量导入导出。</li><li>不接入 Jira、Meego、GitHub Issues 或其他外部缺陷/需求系统。</li><li>不读取、写入或展示真实客户、员工、凭据、生产系统数据。</li><li>不修改 <code>main</code>、不合并 PR、不启用 auto-merge、不公开发布、不更新既有 GitHub Pages 站点。</li><li>不把原型预览、模拟流程动画或静态文案标记为“平台已执行成功”。</li><li>不改变 Sam 空间-SDLC 的默认流程、默认 Agent、权限、集成与自动化。</li></ul>
+<hr />
+<h1 id="2-用户与场景">2. 用户与场景</h1>
+<div class="table-wrap"><table><thead><tr><th>用户 / 角色</th><th>使用场景</th><th>当前痛点</th><th>期望结果</th></tr></thead><tbody><tr><td>演示评审者（产品/研发/测试负责人）</td><td>在 5 分钟演示中检查从需求到 PR 的交付证据</td><td>平台外观容易让人误以为所有节点已执行；缺少可操作的业务载体</td><td>能亲手操作看板，并看到每条 AC 对应的真实产物与未执行项</td></tr><tr><td>示例产品经理</td><td>新增需求、补充验收说明、把工作项推进到审核</td><td>需求信息散落，状态规则靠口头约定</td><td>表单校验清晰，状态流转有规则和历史</td></tr><tr><td>示例研发</td><td>处理进行中/阻塞中的需求或缺陷，查看详情与证据</td><td>看不清哪些证据是真实执行、哪些只是示例</td><td>详情抽屉明确区分证据类型，完成后只读</td></tr><tr><td>示例测试</td><td>搜索、筛选、核对统计与空态，验证异常路径</td><td>统计与卡片不一致时难以定位</td><td>筛选、计数、完成率与卡片同源计算</td></tr></tbody></table></div>
+<hr />
+<h1 id="3-范围与信息架构">3. 范围与信息架构</h1>
+<h2 id="31-产品形态">3.1 产品形态</h2>
+<ul><li>中文单页看板，桌面与窄屏均可使用；优先复用仓库现有 React 18 + TypeScript + Vite + Tailwind CSS 技术栈与视觉语言。</li><li>本轮原型为独立静态包（HTML/CSS/JS），用于行为与视觉评审；下一节点技术 Spec 决定在 React SPA 中的挂载方式。原型不是最终生产实现，但必须可预览、可操作、可验收。</li><li>若最终实现为静态应用，使用浏览器 localStorage；不引入数据库、登录或后台云服务。</li></ul>
+<h2 id="32-页面与入口">3.2 页面与入口</h2>
+<div class="table-wrap"><table><thead><tr><th>页面 / 区域</th><th>内容</th><th>主要操作</th></tr></thead><tbody><tr><td>看板主页</td><td>标题、合成数据标识、统计、筛选、5 列状态看板、空态</td><td>新增、搜索、筛选、清空、打开详情、复位</td></tr><tr><td>工作项详情抽屉</td><td>业务说明、验收清单、状态历史、证据清单、状态流转</td><td>编辑、合法流转、查看拒绝原因、关闭</td></tr><tr><td>新增/编辑对话框</td><td>类型、标题、描述、优先级、示例负责人、验收说明</td><td>保存、取消</td></tr><tr><td>能力证据</td><td>本需求各节点实际交付物与状态、AC 追溯</td><td>查看产物状态、打开 PRD/原型说明</td></tr><tr><td>如何演示</td><td>5 分钟脚本、AC 对照、边界说明</td><td>按步骤演示</td></tr><tr><td>演示复位</td><td>两步确认、作用范围说明</td><td>取消、确认复位</td></tr></tbody></table></div>
+<h2 id="33-全局标识">3.3 全局标识</h2>
+<ul><li>页面固定展示 <code>演示合成数据</code> 标识，说明人员为“示例产品/研发/测试/设计”，不代表真实身份。</li><li>能力证据页固定说明“本页状态来自工作区实际产物；不是平台流程运行结果；未执行项不标记为成功”。</li><li>任何示例证据必须带 <code>示例记录</code> 标签；任何本轮真实产物带 <code>本轮真实产物</code> 标签；未执行项带 <code>未执行</code> 或 <code>待确认</code> 标签。</li></ul>
+<hr />
+<h1 id="4-功能需求">4. 功能需求</h1>
+<h2 id="req-001-合成种子数据与状态覆盖">REQ-001: 合成种子数据与状态覆盖</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 评审者首次打开即可看到完整、可信的演示样本。</li><li><strong>需求描述</strong>: 系统首次打开或复位后展示 12 条合成工作项，覆盖待规划、进行中、审核中、阻塞中、已完成五种状态；每列至少 2 条，已完成 3 条；页面明确显示“演示合成数据”。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户首次打开应用且本地无本应用数据时，系统应展示 12 条合成工作项、5 个状态分组和合成数据标识。</li><li>当用户查看任意种子工作项时，系统应展示示例负责人名称（示例产品/示例研发/示例测试/示例设计），不得出现真实身份信息。</li><li>当种子数据被筛选或搜索时，系统应只基于当前集合计算统计，不得改变种子数据本身。</li><li><strong>Gherkin</strong>:</li></ul>
+<pre><code class="language-gherkin">  Given 用户首次打开看板
+  When 页面加载完成
+  Then 应看到 12 张工作项卡片
+  And 应看到待规划、进行中、审核中、阻塞中、已完成 5 个分组
+  And 应看到“演示合成数据”标识</code></pre>
+<h2 id="req-002-新增工作项">REQ-002: 新增工作项</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 评审者能验证录入、校验与持久化的完整成功路径。</li><li><strong>需求描述</strong>: 用户可从主页打开新增对话框，填写类型、标题、描述、优先级、示例负责人、验收说明并保存；新工作项初始状态为待规划，创建后出现在看板与统计中。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户提交合法表单时，系统应创建一条待规划工作项，关闭对话框，显示成功提示，并更新看板与统计。</li><li>当用户点击取消、关闭按钮、按 Esc 或点击遮罩时，系统应关闭对话框且不创建、不修改任何数据。</li><li>当用户再次打开新增对话框时，系统应展示空白表单或明确的默认值，不得残留上一次未保存内容。</li><li><strong>Gherkin</strong>:</li></ul>
+<pre><code class="language-gherkin">  Given 用户在新增工作项对话框
+  When 填写合法标题并保存
+  Then 看板应新增一张待规划卡片
+  And 总数和待规划计数应各增加 1</code></pre>
+<h2 id="req-003-编辑工作项与取消">REQ-003: 编辑工作项与取消</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 评审者能验证修改保存与取消不产生副作用的差异。</li><li><strong>需求描述</strong>: 非已完成工作项可从详情抽屉进入编辑；保存后更新卡片、详情、统计与持久化；取消不保存任何改动。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户编辑非已完成工作项并保存合法内容时，系统应更新对应字段并保留原状态、历史与证据。</li><li>当用户取消编辑时，系统应丢弃本次表单改动，原数据保持不变。</li><li>当工作项状态为已完成时，系统应隐藏或禁用编辑入口，并显示只读说明。</li><li><strong>反例</strong>: 已完成工作项不得因编辑而自动回到进行中；不得通过编辑绕过状态机。</li></ul>
+<h2 id="req-004-标题与描述校验">REQ-004: 标题与描述校验</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 防止空标题、超长内容和输入丢失。</li><li><strong>需求描述</strong>: 标题必填，保存前去除前后空格，按 Unicode 字符计长度 1-80；描述最多 2000 字符；错误应定位到字段并保留用户已输入内容。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当标题去除前后空格后为空时，系统应拒绝保存，聚焦标题字段，并显示“标题不能为空”。</li><li>当标题去除前后空格后超过 80 个字符时，系统应拒绝保存，显示当前字符数与上限，并保留输入。</li><li>当描述超过 2000 个字符时，系统应拒绝保存，显示当前字符数与上限，并保留输入。</li><li>当用户修正字段后，系统应清除对应错误并允许再次提交。</li><li><strong>边界</strong>: 仅空格标题视为空；标题前后空格不保存；描述可空；不把用户输入作为 HTML 执行。</li></ul>
+<h2 id="req-005-关键词搜索与组合筛选">REQ-005: 关键词搜索与组合筛选</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 快速定位工作项并验证统计与卡片同源。</li><li><strong>需求描述</strong>: 支持标题/描述关键词搜索，以及类型、优先级、状态三个维度的组合筛选；维度内单选，维度间 AND；一键清空恢复全部数据。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户输入关键词时，系统应只显示标题或描述包含该关键词的工作项；拉丁字符大小写不敏感，中文按子串匹配。</li><li>当用户同时设置类型、优先级、状态时，系统应显示同时满足全部条件的工作项。</li><li>当用户点击“清空筛选”时，系统应清空关键词与三个筛选器，恢复全部 12 条（或当前数据全集）。</li><li>当筛选结果为空时，系统应显示解释性空态与“清空筛选”入口，不得只显示空白区域。</li><li><strong>反例</strong>: 不得把被筛掉的工作项计入当前统计；不得在清空筛选时删除数据。</li></ul>
+<h2 id="req-006-状态机与历史">REQ-006: 状态机与历史</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 让状态规则可解释、可验证、不可静默越级。</li><li><strong>需求描述</strong>: 状态流转严格遵循：待规划→进行中；进行中→审核中或阻塞中；阻塞中→进行中；审核中→已完成或进行中；已完成无出边。非法流转拒绝，状态不变，并记录一条带原因的拒绝历史。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户执行合法流转时，系统应更新状态、写入成功历史、刷新统计与卡片，并持久化。</li><li>当用户尝试非法流转（跨级、逆向不允许、目标等于当前状态、从已完成流出）时，系统应拒绝，保持原状态，显示可解释原因，并写入拒绝历史。</li><li>当工作项为已完成时，系统应只读展示，不提供可执行的状态流转或编辑入口，且不得自动重开。</li><li><strong>状态表</strong>:</li></ul>
+<div class="table-wrap"><table><thead><tr><th>当前状态</th><th>允许目标</th><th>拒绝示例</th></tr></thead><tbody><tr><td>待规划</td><td>进行中</td><td>直接到审核中/阻塞中/已完成</td></tr><tr><td>进行中</td><td>审核中、阻塞中</td><td>直接到已完成、回到待规划</td></tr><tr><td>阻塞中</td><td>进行中</td><td>直接到审核中/已完成</td></tr><tr><td>审核中</td><td>已完成、进行中</td><td>直接到阻塞中、回到待规划</td></tr><tr><td>已完成</td><td>无</td><td>任何流转</td></tr></tbody></table></div>
+<h2 id="req-007-总览统计">REQ-007: 总览统计</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 让评审者一眼看到当前筛选集合的规模与完成度。</li><li><strong>需求描述</strong>: 统计区展示当前筛选集合总数、五种状态数与完成率；完成率 = 已完成数 / 筛选集合总数；空集合显示“无数据”而不是 NaN 或 0%。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当筛选集合非空时，系统应展示总数、各状态数和完成率，且与卡片数量一致。</li><li>当筛选集合为空时，系统应展示总数 0、各状态 0、完成率“无数据”，不得出现 NaN、Infinity 或负数。</li><li>当新增、编辑、流转或复位后，系统应立即重算统计。</li></ul>
+<h2 id="req-008-详情抽屉与证据类型">REQ-008: 详情抽屉与证据类型</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 让业务说明、验收、历史和证据在同一处可审。</li><li><strong>需求描述</strong>: 点击卡片打开详情抽屉，展示业务说明、验收清单、状态历史、证据清单和元数据；证据必须区分“示例记录”“本轮真实产物”“未执行/待确认”。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户打开种子工作项详情时，系统应展示其业务说明、验收清单、状态历史和带“示例记录”标签的证据。</li><li>当系统展示本轮真实产物时，应带“本轮真实产物”标签，并只展示实际存在的 PRD、原型或验收记录。</li><li>当某项能力尚未执行时，系统应显示“未执行”或“待确认”，不得显示 PASS、成功日志、PR 链接或截图。</li><li>当用户按 Esc 或点击关闭时，系统应关闭抽屉并把焦点返回触发卡片。</li></ul>
+<h2 id="req-009-持久化损坏与不可用降级">REQ-009: 持久化、损坏与不可用降级</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 刷新不丢改动，异常时不静默损坏数据。</li><li><strong>需求描述</strong>: 新增、编辑、合法流转与复位写入本应用专属 localStorage key；加载时校验结构。数据损坏时保留原始内容并提示；localStorage 不可用或写入失败时降级为内存态。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户完成新增、编辑或合法流转后刷新页面时，系统应恢复相同数据与状态。</li><li>当本地数据无法解析或结构非法时，系统应展示受控提示，保留原始 key 内容不自动覆盖，并提供导出原始数据与显式覆盖入口。</li><li>当 localStorage 不可用或写入失败时，系统应继续以内存态运行，显示“改动仅在本次页面保留”，不得抛出未处理错误或白屏。</li><li>当用户未确认覆盖时，系统不得删除或改写未知/损坏数据。</li><li><strong>存储 key</strong>: <code>sdlc-demo-board:v1</code>。不得清空 <code>i18nextLng</code>、<code>elderly-mode</code> 或其他应用 key。</li></ul>
+<h2 id="req-010-演示复位">REQ-010: 演示复位</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 让演示可重复，同时不误伤其他数据。</li><li><strong>需求描述</strong>: 演示复位仅重置本应用的合成数据，必须两步确认；取消不产生变化；复位不是产品空间、平台任务或 Git 的 reset。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户点击复位并在第一步取消时，系统应不改变任何数据。</li><li>当用户完成第二步确认时，系统应只重置本应用数据为 12 条种子，并保留其他 localStorage key。</li><li>当 localStorage 不可用时，系统应仅重置内存态并提示刷新后可能丢失。</li><li><strong>反例</strong>: 不得调用 <code>localStorage.clear()</code>；不得删除工作区 <code>artifacts/</code>；不得触发平台 reset。</li></ul>
+<h2 id="req-011-能力证据与演示指南">REQ-011: 能力证据与演示指南</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 让评审者看到真实交付链，而不是模拟动画。</li><li><strong>需求描述</strong>: 提供“能力证据”和“如何演示”入口，按工作流节点展示实际产物与状态；本节点产物标记为已生成/待评审，下游未执行项标记为未执行/待确认。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当用户打开能力证据时，系统应展示 7 个节点的名称、状态和可见产物说明。</li><li>当某节点尚未执行时，系统应显示“未执行”或“待确认”，不得显示成功、PASS 或伪造链接。</li><li>当用户打开如何演示时，系统应展示 5 分钟脚本，并说明授权边界与“原型不是公开发布”。</li></ul>
+<h2 id="req-012-安全键盘与窄屏">REQ-012: 安全、键盘与窄屏</h2>
+<ul><li><strong>优先级</strong>: P0</li><li><strong>用户价值</strong>: 保证演示在评审环境可用且不引入安全风险。</li><li><strong>需求描述</strong>: 所有用户文本作为纯文本渲染；不执行 HTML/脚本；核心操作可键盘完成；390px 窄屏无核心内容遮挡；无本次引入的 console error；不包含真实凭据、身份或客户数据。</li><li><strong>验收标准 (EARS)</strong>:</li><li>当标题或描述包含 HTML/脚本片段时，系统应原样显示文本，不创建可执行元素、不触发脚本。</li><li>当用户仅使用键盘时，系统应能打开新增、填写、保存、筛选、打开详情、执行流转、关闭弹层。</li><li>当视口宽度为 390px 时，系统应保持核心内容可访问，不出现不可恢复的横向溢出或遮挡。</li><li>当用户完成核心操作时，浏览器 console 不应出现本次引入的 error。</li></ul>
+<hr />
+<h1 id="5-产品规则">5. 产品规则</h1>
+<h2 id="51-字段与校验">5.1 字段与校验</h2>
+<div class="table-wrap"><table><thead><tr><th>字段</th><th>类型</th><th>是否必填</th><th>默认值</th><th>校验规则</th><th>展示 / 使用位置</th></tr></thead><tbody><tr><td>类型</td><td>枚举</td><td>是</td><td>需求</td><td><code>需求</code> / <code>缺陷</code></td><td>表单、卡片、详情</td></tr><tr><td>标题</td><td>文本</td><td>是</td><td>空</td><td>去前后空格后 Unicode 字符 1-80</td><td>表单、卡片、详情、搜索</td></tr><tr><td>描述</td><td>多行文本</td><td>否</td><td>空</td><td>最多 2000 字符；作为纯文本</td><td>表单、卡片摘要、详情</td></tr><tr><td>优先级</td><td>枚举</td><td>是</td><td>P2</td><td>P0 / P1 / P2 / P3</td><td>表单、卡片、筛选</td></tr><tr><td>示例负责人</td><td>枚举</td><td>是</td><td>示例产品</td><td>示例产品 / 示例研发 / 示例测试 / 示例设计</td><td>表单、卡片、详情</td></tr><tr><td>验收说明</td><td>多行文本</td><td>否</td><td>空</td><td>最多 2000 字符；每行作为一条验收清单</td><td>表单、详情</td></tr><tr><td>状态</td><td>枚举</td><td>是</td><td>待规划</td><td>五种状态；受状态机约束</td><td>看板列、详情、筛选</td></tr><tr><td>证据</td><td>列表</td><td>否</td><td>示例记录</td><td>每条含 kind、label、status、detail</td><td>详情、能力证据</td></tr></tbody></table></div>
+<h2 id="52-状态与反馈">5.2 状态与反馈</h2>
+<div class="table-wrap"><table><thead><tr><th>场景</th><th>用户可见反馈</th><th>数据影响</th></tr></thead><tbody><tr><td>新增成功</td><td>Toast“已新增工作项”+ 新卡片</td><td>新增一条待规划</td></tr><tr><td>编辑成功</td><td>Toast“已保存修改”+ 详情更新</td><td>更新字段，保留状态/历史</td></tr><tr><td>取消编辑</td><td>对话框关闭，无提示或轻提示</td><td>无变化</td></tr><tr><td>合法流转</td><td>Toast“已流转到 X”+ 历史新增成功记录</td><td>状态更新</td></tr><tr><td>非法流转</td><td>红色内联提示 + 历史新增拒绝记录</td><td>状态不变</td></tr><tr><td>空筛选</td><td>空态说明 + 清空按钮</td><td>无变化</td></tr><tr><td>存储损坏</td><td>顶部/侧栏警告 + 导出原始数据 + 显式覆盖</td><td>原始 key 保留</td></tr><tr><td>存储不可用</td><td>警告“仅在本次页面保留”</td><td>内存态</td></tr><tr><td>复位取消</td><td>关闭第二步，无变化</td><td>无变化</td></tr><tr><td>复位确认</td><td>Toast“已恢复演示数据”</td><td>仅本应用 key 重置</td></tr></tbody></table></div>
+<h2 id="53-统计规则">5.3 统计规则</h2>
+<ul><li>统计集合 = 当前搜索 + 类型 + 优先级 + 状态筛选后的集合。</li><li>总数 = 集合长度；各状态数 = 集合内该状态卡片数；完成率 = 已完成数 / 总数。</li><li>总数为 0 时，完成率显示“无数据”，不显示 0%、NaN 或 Infinity。</li><li>卡片列计数、顶部统计、筛选结果摘要必须使用同一集合计算结果。</li></ul>
+<h2 id="54-证据规则">5.4 证据规则</h2>
+<div class="table-wrap"><table><thead><tr><th>证据类型</th><th>标签</th><th>允许内容</th><th>禁止内容</th></tr></thead><tbody><tr><td>示例记录</td><td>示例记录</td><td>合成需求说明、示例设计稿、示例测试备注</td><td>真实 PR、真实执行日志、真实 PASS</td></tr><tr><td>本轮真实产物</td><td>本轮真实产物</td><td>本轮实际生成的 PRD、HTML、原型、浏览器验收截图</td><td>未生成却声称存在</td></tr><tr><td>未执行/待确认</td><td>未执行 / 待确认</td><td>下游节点、未运行测试、未创建 PR、未决策发布</td><td>伪造成功状态</td></tr></tbody></table></div>
+<hr />
+<h1 id="6-数据结构与状态机">6. 数据结构与状态机</h1>
+<h2 id="61-逻辑数据模型">6.1 逻辑数据模型</h2>
+<pre><code class="language-ts">type WorkItemType = &#x27;requirement&#x27; | &#x27;defect&#x27;
+type Priority = &#x27;P0&#x27; | &#x27;P1&#x27; | &#x27;P2&#x27; | &#x27;P3&#x27;
+type Status = &#x27;待规划&#x27; | &#x27;进行中&#x27; | &#x27;审核中&#x27; | &#x27;阻塞中&#x27; | &#x27;已完成&#x27;
+
+interface WorkItem {
+  id: string
+  type: WorkItemType
+  title: string
+  description: string
+  priority: Priority
+  assignee: string
+  acceptance: string
+  status: Status
+  createdAt: string
+  updatedAt: string
+  history: HistoryEvent[]
+  evidence: Evidence[]
+}
+
+interface HistoryEvent {
+  id: string
+  at: string
+  from: Status | null
+  to: Status
+  result: &#x27;success&#x27; | &#x27;rejected&#x27;
+  reason: string
+  actor: string
+}
+
+interface Evidence {
+  id: string
+  title: string
+  kind: &#x27;sample&#x27; | &#x27;real&#x27; | &#x27;pending&#x27;
+  type: &#x27;note&#x27; | &#x27;doc&#x27; | &#x27;test&#x27; | &#x27;pr&#x27; | &#x27;screenshot&#x27;
+  status: string
+  detail: string
+}
+
+interface BoardState {
+  version: 1
+  items: WorkItem[]
+  updatedAt: string
+}</code></pre>
+<ul><li><code>version</code> 不匹配、JSON 解析失败、<code>items</code> 非数组、必填字段缺失或枚举非法，均视为损坏数据。</li><li>未知字段在可能的情况下保留，不因一次编辑静默丢弃整个对象。</li><li>时间使用 ISO 8601 字符串，展示时按浏览器本地时区格式化。</li></ul>
+<h2 id="62-状态机">6.2 状态机</h2>
+<pre><code class="language-text">待规划 --进行中--&gt; 进行中
+进行中 --审核中--&gt; 审核中
+进行中 --阻塞中--&gt; 阻塞中
+阻塞中 --进行中--&gt; 进行中
+审核中 --已完成--&gt; 已完成
+审核中 --进行中--&gt; 进行中
+已完成 --无--&gt; 只读</code></pre>
+<ul><li>合法流转写入 <code>result: success</code> 历史。</li><li>非法流转写入 <code>result: rejected</code> 历史，<code>reason</code> 必须包含当前状态、目标状态和允许目标；状态不变。</li><li>新建工作项只能从待规划开始，表单不提供初始状态选择。</li></ul>
+<hr />
+<h1 id="7-非功能要求">7. 非功能要求</h1>
+<div class="table-wrap"><table><thead><tr><th>类别</th><th>要求</th><th>验收方法</th></tr></thead><tbody><tr><td>安全</td><td>不执行用户 HTML/脚本；无真实凭据、身份、客户数据；原型 CSP 禁止外部连接</td><td>XSS 输入测试、静态检查、CSP</td></tr><tr><td>可访问性</td><td>核心操作可键盘完成；可见焦点；表单 label/错误关联；对话框焦点管理；Toast <code>aria-live</code></td><td>键盘走查、语义 locator</td></tr><tr><td>响应式</td><td>1440px 桌面与 390px 窄屏可用；窄屏核心内容不遮挡；看板可横向滚动</td><td>两档视口截图与检查</td></tr><tr><td>兼容性</td><td>现代 Chromium/Firefox/Safari 最新两个大版本；不承诺 IE</td><td>浏览器验收记录</td></tr><tr><td>性能</td><td>12 条种子数据的搜索、筛选、统计、持久化在主线程即时完成</td><td>浏览器操作无明显卡顿</td></tr><tr><td>可观测性</td><td>页面不输出敏感信息；console 无本次引入 error</td><td>浏览器 console 捕获</td></tr><tr><td>可维护性</td><td>原型与最终实现共用 AC 编号、数据模型与设计 token</td><td>PRD/原型/测试追溯</td></tr></tbody></table></div>
+<hr />
+<h1 id="8-验收追溯">8. 验收追溯</h1>
+<div class="table-wrap"><table><thead><tr><th>AC</th><th>验收点</th><th>对应 REQ</th><th>本节点验证方式</th><th>下游验证</th></tr></thead><tbody><tr><td>AC-01</td><td>12 条合成工作项、状态分组、合成标识</td><td>REQ-001</td><td>浏览器检查</td><td>单元/E2E 复核</td></tr><tr><td>AC-02</td><td>新增合法、编辑保存、取消无修改</td><td>REQ-002/003</td><td>浏览器检查</td><td>单元/E2E</td></tr><tr><td>AC-03</td><td>空/超长标题、超长描述拒绝且反馈清晰</td><td>REQ-004</td><td>浏览器检查</td><td>单元/E2E</td></tr><tr><td>AC-04</td><td>关键词、类型、优先级、状态组合筛选与清空</td><td>REQ-005</td><td>浏览器检查</td><td>单元/E2E</td></tr><tr><td>AC-05</td><td>合法流转、历史、非法拒绝、已完成只读</td><td>REQ-006</td><td>浏览器检查</td><td>单元/E2E</td></tr><tr><td>AC-06</td><td>刷新保留、损坏/不可用受控反馈</td><td>REQ-009</td><td>浏览器检查</td><td>单元/E2E</td></tr><tr><td>AC-07</td><td>计数与卡片一致、完成率正确、零结果无 NaN</td><td>REQ-007</td><td>浏览器检查</td><td>单元/E2E</td></tr><tr><td>AC-08</td><td>详情记录与证据类型正确，示例不冒充真实</td><td>REQ-008</td><td>浏览器检查</td><td>单元/E2E</td></tr><tr><td>AC-09</td><td>复位取消无变化，确认只重置本 Demo</td><td>REQ-010</td><td>浏览器检查</td><td>单元/E2E</td></tr><tr><td>AC-10</td><td>HTML/脚本安全显示，无真实凭据/身份/客户数据</td><td>REQ-012</td><td>浏览器检查 + 静态检查</td><td>E2E</td></tr><tr><td>AC-11</td><td>键盘可用、窄屏无遮挡、无 console error</td><td>REQ-012</td><td>浏览器检查</td><td>E2E</td></tr><tr><td>AC-12</td><td>PRD、Spec、独立分支 commit、单元/构建、沙箱预览、E2E 报告与截图、代码审查、open/unmerged PR</td><td>全流程</td><td>本节点仅完成 PRD、HTML、原型、浏览器验收与分支提交；其余未执行</td><td>节点 2-6</td></tr></tbody></table></div>
+<blockquote>本节点不得把 AC-12 标记为通过。最终报告需要分别记录每个交付物的实际状态、命令、退出码和证据路径。</blockquote>
+<hr />
+<h1 id="9-演示脚本5-分钟">9. 演示脚本（5 分钟）</h1>
+<ol><li>展示需求、专用流程与四角色分工，说明授权边界：不合并、不发布、不改 main。</li><li>打开 PRD、HTML 与交互原型，说明两次人工评审与当前节点状态。</li><li>在原型中新增工作项、触发校验失败、搜索筛选、合法/非法流转、刷新持久化。</li><li>打开能力证据，对照 AC 编号查看 PRD、原型、浏览器验收、分支提交；明确单元测试、E2E、PR、发布未执行/待确认。</li><li>打开详情抽屉，指出“示例记录”与“本轮真实产物”的区别；执行两步复位并说明只影响本应用 key。</li></ol>
+<hr />
+<h1 id="10-技术基线与交付边界">10. 技术基线与交付边界</h1>
+<h2 id="101-仓库事实">10.1 仓库事实</h2>
+<ul><li>仓库: <code>samshen29-ops/deliveryai-demo-kz2c6z</code></li><li>main revision: <code>1f47ad864fb9b97835cb8a453e6ed41d132f56e1</code></li><li>既有产品: 沸点火锅点单与门店履约概念演示，React 18 + TypeScript 5.6 + Vite 6 + Tailwind 3.4 + Playwright。</li><li>既有持久化: <code>i18nextLng</code>、<code>elderly-mode</code>；本需求新增 <code>sdlc-demo-board:v1</code>，不得影响既有 key。</li><li>既有路由: hash 路由（<code>#/home</code>、<code>#/menu</code> 等）；本需求原型为独立静态入口，不改变既有路由行为。</li><li>既有 CI: <code>.github/workflows/deploy-pages.yml</code> 仅在 push 到 <code>main</code> 或手动触发时部署 GitHub Pages。独立分支推送与 PR 不触发公开部署。</li><li>设计系统: <code>knowledge/design-system/</code> 为空；使用仓库 <code>tailwind.config.js</code> 的 rice/chili/amber/charcoal 色板、Inter/Noto Sans SC 字体栈、圆角与阴影。</li></ul>
+<h2 id="102-基线验证本轮已执行">10.2 基线验证（本轮已执行）</h2>
+<div class="table-wrap"><table><thead><tr><th>命令</th><th>退出码</th><th>结果</th></tr></thead><tbody><tr><td><code>npm ci</code></td><td>0</td><td>281 packages，依赖安装成功</td></tr><tr><td><code>npm run build</code></td><td>0</td><td>tsc -b + vite build 成功，产物到 <code>dist/</code></td></tr><tr><td><code>npm run lint</code></td><td>0</td><td>ESLint 零警告</td></tr><tr><td><code>PLAYWRIGHT_CHROMIUM_PATH=/opt/chromium.org/chromium/chrome npx playwright test</code></td><td>0</td><td>17 passed，37.5s</td></tr><tr><td><code>node .agentnative/design/sdlc-requirements-board/acceptance.js</code></td><td>0</td><td>原型浏览器验收 14/14 checks PASS；0 console/page error；桌面 1440×1000、窄屏 390×844</td></tr></tbody></table></div>
+<p>原型浏览器验收报告：<code>prototype/evidence/browser-acceptance.json</code>。截图：<code>desktop-board.png</code>、<code>validation-error.png</code>、<code>filters-empty.png</code>、<code>detail-drawer.png</code>、<code>storage-recovery.png</code>、<code>reset-confirm.png</code>、<code>xss-safe.png</code>、<code>mobile-board.png</code>、<code>mobile-detail.png</code>、<code>mobile-form.png</code>。沙箱端口暴露命令返回 409（当前平台不支持端口暴露），因此没有公开预览 URL；预览仅通过沙箱内 <code>127.0.0.1:4173</code> 与浏览器工具完成，不标记为公开发布。</p>
+<h2 id="103-实现建议下一节点确认">10.3 实现建议（下一节点确认）</h2>
+<ul><li>用户已确认：在现有 React SPA 中新增独立的看板入口并默认进入；保留既有哈希路由与火锅演示代码，避免无关删除。下一节点 Spec 负责细化路由挂载与纯函数拆分。</li><li>复用 <code>src/components/ui/button.tsx</code>、<code>dialog.tsx</code> 的交互模式与 Tailwind token；不引入新的 UI 库。</li><li>将本 PRD 的数据模型、状态机、校验、筛选、统计、持久化逻辑拆为可单测的纯函数；UI 只消费纯函数结果。</li><li>原型静态包作为视觉与行为参考，最终实现以 Spec 和单测/E2E 为准；两者不一致时以 PRD 的 AC 为准并记录差异。</li></ul>
+<h2 id="104-回滚">10.4 回滚</h2>
+<ul><li>代码回滚：回退独立分支提交或关闭 PR，不触碰 main。</li><li>数据回滚：演示复位恢复本应用 12 条种子；损坏数据不被静默覆盖，可先导出。</li><li>发布回滚：本需求不发布、不合并，因此无生产回滚动作；如未来发布，需另行走人工发布决策。</li></ul>
+<hr />
+<h1 id="11-风险与待确认">11. 风险与待确认</h1>
+<div class="table-wrap"><table><thead><tr><th>类型</th><th>描述</th><th>影响</th><th>处理方式</th></tr></thead><tbody><tr><td>风险</td><td>原型静态包与最终 React 实现可能产生行为差异</td><td>评审结论与最终实现不一致</td><td>共用 AC 编号、数据模型与纯函数测试；最终以 E2E 为准</td></tr><tr><td>风险</td><td>复用火锅演示仓库可能误删既有功能</td><td>现有演示回归</td><td>独立分支、默认入口新增、保留既有路由；提交前检查 diff</td></tr><tr><td>风险</td><td>localStorage 损坏或配额不足</td><td>数据丢失或白屏</td><td>保留原始 key、显式覆盖、内存态降级、写入异常捕获</td></tr><tr><td>风险</td><td>证据页被误读为平台执行结果</td><td>演示可信度受损</td><td>固定文案、三类证据标签、未执行项不显示 PASS</td></tr><tr><td>风险</td><td>独立分支推送误触发公开发布</td><td>违反授权边界</td><td>推送前检查 Actions 触发器；仅 main 触发 Pages，本分支不触发</td></tr><tr><td>风险</td><td>窄屏看板横向滚动难以发现</td><td>核心内容看似缺失</td><td>显示滚动提示、列宽适配、390px 截图验收</td></tr><tr><td>风险</td><td>沙箱平台不支持端口暴露（409）</td><td>评审者无法通过公开 URL 访问原型</td><td>保留沙箱内 detached 服务与浏览器验收证据；不拼接访问地址、不声称公开发布</td></tr><tr><td>已确认</td><td>最终实现是否保留火锅演示入口</td><td>影响路由与代码组织</td><td>用户评审确认：保留既有代码、新增默认看板入口；下一节点 Spec 细化路由挂载</td></tr><tr><td>待确认</td><td>真实 E2E 跨节点 localhost 可达性</td><td>影响 AC-12 证据</td><td>下游节点在测试沙箱重现同一 revision，不改测旧 Pages/main</td></tr></tbody></table></div>
+<hr />
+<h1 id="12-合成种子数据">12. 合成种子数据</h1>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>类型</th><th>标题</th><th>优先级</th><th>示例负责人</th><th>状态</th></tr></thead><tbody><tr><td>DEMO-101</td><td>需求</td><td>工作项批量导出</td><td>P1</td><td>示例产品</td><td>待规划</td></tr><tr><td>DEMO-102</td><td>缺陷</td><td>窄屏筛选栏溢出</td><td>P2</td><td>示例测试</td><td>待规划</td></tr><tr><td>DEMO-103</td><td>需求</td><td>验收清单模板化</td><td>P1</td><td>示例产品</td><td>进行中</td></tr><tr><td>DEMO-104</td><td>缺陷</td><td>状态历史时间显示错误</td><td>P0</td><td>示例研发</td><td>进行中</td></tr><tr><td>DEMO-105</td><td>需求</td><td>筛选条件记忆</td><td>P2</td><td>示例研发</td><td>进行中</td></tr><tr><td>DEMO-106</td><td>需求</td><td>详情证据抽屉分级展示</td><td>P1</td><td>示例产品</td><td>审核中</td></tr><tr><td>DEMO-107</td><td>缺陷</td><td>空集合完成率显示 NaN</td><td>P1</td><td>示例测试</td><td>审核中</td></tr><tr><td>DEMO-108</td><td>需求</td><td>接入外部缺陷同步</td><td>P1</td><td>示例研发</td><td>阻塞中</td></tr><tr><td>DEMO-109</td><td>缺陷</td><td>本地存储损坏时白屏</td><td>P0</td><td>示例研发</td><td>阻塞中</td></tr><tr><td>DEMO-110</td><td>需求</td><td>关键词搜索覆盖描述</td><td>P2</td><td>示例产品</td><td>已完成</td></tr><tr><td>DEMO-111</td><td>缺陷</td><td>卡片点击区域不一致</td><td>P1</td><td>示例测试</td><td>已完成</td></tr><tr><td>DEMO-112</td><td>需求</td><td>合成数据标识与演示说明</td><td>P1</td><td>示例产品</td><td>已完成</td></tr></tbody></table></div>
+<blockquote>12 条均为合成数据；名称、描述、验收、历史和证据均为演示用途，不代表真实人员或真实项目记录。</blockquote>
+<hr />
+<h1 id="13-本轮交付状态">13. 本轮交付状态</h1>
+<div class="table-wrap"><table><thead><tr><th>交付物</th><th>状态</th><th>说明</th></tr></thead><tbody><tr><td>PRD Markdown</td><td>已生成</td><td>本文件</td></tr><tr><td>PRD HTML</td><td>已生成</td><td>由本文件转换的静态可读版本</td></tr><tr><td>交互原型</td><td>已生成</td><td>独立静态包；沙箱内 <code>127.0.0.1:4173</code> detached 服务；桌面/窄屏浏览器验收 14/14</td></tr><tr><td>浏览器验收报告</td><td>已生成</td><td><code>prototype/evidence/browser-acceptance.json</code> 与 10 张截图；0 console/page error</td></tr><tr><td>独立分支提交</td><td>已提交并推送</td><td>分支 <code>demo/sam-sdlc-capability</code>，不触碰 main</td></tr><tr><td>用户评审</td><td>已通过</td><td>2026-11-27；备注为空；确认保留火锅演示并新增默认看板入口；确认 AC-12 保持部分覆盖</td></tr><tr><td>产品与技术 Spec</td><td>未执行</td><td>节点 2</td></tr><tr><td>开发、自测与用例</td><td>未执行</td><td>节点 3</td></tr><tr><td>沙箱预览与冒烟</td><td>未执行</td><td>节点 4；本节点原型预览不计为正式冒烟</td></tr><tr><td>真实 E2E 与证据</td><td>未执行</td><td>节点 5</td></tr><tr><td>代码评审与 PR</td><td>未创建</td><td>节点 6</td></tr><tr><td>人工发布决策</td><td>待确认</td><td>节点 7；不代用户审批</td></tr></tbody></table></div>
+<hr />
+<h1 id="14-评审记录">14. 评审记录</h1>
+<div class="table-wrap"><table><thead><tr><th>日期</th><th>结论</th><th>备注</th><th>实现入口建议</th><th>AC-12 口径</th></tr></thead><tbody><tr><td>2026-11-27</td><td>通过，进入产品与技术 Spec</td><td>无修改意见</td><td>保留火锅演示，新增默认看板入口</td><td>保持部分覆盖，不标记为通过</td></tr></tbody></table></div>
+<ul><li>评审对象: 本 PRD、PRD HTML、交互原型、浏览器验收报告。</li><li>评审依据: 用户对评审交互卡片的返回结果。</li><li>下游动作: 进入“产品与技术 Spec”节点；本节点不落地实现代码、不创建 PR、不合并、不发布。</li></ul>
+<footer class="doc-footer">PRD 由 SDLC 能力演示节点“需求澄清与原型”生成。所有工作项、人员与示例证据均为合成数据；未执行项以正文和原型能力证据页为准。分支、PR 与发布状态必须来自仓库和平台记录，不得伪造。</footer>
+</main>
+</div>
+<a class="backtop" href="#top">回到顶部</a>
+</body>
+</html>

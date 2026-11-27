@@ -1,0 +1,17 @@
+
+> hdl-order-demo@1.0.0 build
+> tsc -b && vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 1699 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                        0.92 kB │ gzip:   0.59 kB
+dist/assets/beef-JwhdoQH_.jpg        171.39 kB
+dist/assets/vegetables-BMyoik1m.jpg  186.14 kB
+dist/assets/hotpot-cH36QnsD.jpg      266.58 kB
+dist/assets/broth-D2amQ5iW.jpg       407.71 kB
+dist/assets/index-isnOROXF.css        31.57 kB │ gzip:   6.25 kB
+dist/assets/index-DqRoluxp.js        419.48 kB │ gzip: 129.88 kB
+✓ built in 2.27s

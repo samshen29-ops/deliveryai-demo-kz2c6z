@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test'
 
 /** Navigate from app start to the menu view and open a broth product spec dialog. */
 async function goToBrothSpec(page: Page, productIndex = 0) {
-  await page.goto('/')
+  await page.goto('/#/home')
   // Bind table
   await page.getByRole('button', { name: /A08/ }).first().click()
   // Welcome page - enter menu

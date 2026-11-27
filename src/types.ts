@@ -1,5 +1,5 @@
 export type OrderStage = 'submitted' | 'accepted' | 'cooking' | 'served'
-export type ViewName = 'home' | 'welcome' | 'menu' | 'order' | 'checkout'
+export type ViewName = 'board' | 'home' | 'welcome' | 'menu' | 'order' | 'checkout'
 
 export interface Product {
   id: string
