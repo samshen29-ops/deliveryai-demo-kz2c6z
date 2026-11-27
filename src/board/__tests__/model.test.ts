@@ -43,7 +43,7 @@ describe('UT-EVID 证据快照', () => {
     expect(EVIDENCE_SNAPSHOT.stages).toHaveLength(7)
     expect(EVIDENCE_SNAPSHOT.stages[0].statusLabel).toBe('已通过')
     expect(EVIDENCE_SNAPSHOT.stages[1].statusLabel).toBe('已生成 · 待评审')
-    expect(EVIDENCE_SNAPSHOT.stages[2].statusLabel).toBe('未执行')
+    expect(EVIDENCE_SNAPSHOT.stages[2].statusLabel).toBe('已执行')
     expect(EVIDENCE_SNAPSHOT.stages[3].statusLabel).toBe('未执行')
     expect(EVIDENCE_SNAPSHOT.stages[4].statusLabel).toBe('未执行')
     expect(EVIDENCE_SNAPSHOT.stages[5].statusLabel).toBe('未创建')
