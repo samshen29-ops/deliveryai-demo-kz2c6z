@@ -1,9 +1,11 @@
 {
   "title": "研发需求与缺陷看板原型浏览器验收",
-  "generated_at": "2026-11-27T08:23:59.056Z",
+  "generated_at": "2026-11-27T08:25:26.859Z",
   "base_url": "http://127.0.0.1:4173",
-  "repo_revision": "1f47ad864fb9b97835cb8a453e6ed41d132f56e1",
-  "prototype_revision": "working tree prototype (uncommitted at test time)",
+  "tested_revision": "e19e7d6b0f7d8ecd0201cdabb193078b026902ce",
+  "base_revision": "1f47ad864fb9b97835cb8a453e6ed41d132f56e1",
+  "branch": "demo/sam-sdlc-capability",
+  "prototype_revision": "e19e7d6b0f7d8ecd0201cdabb193078b026902ce",
   "browser": "Chromium via Playwright, executable /opt/chromium.org/chromium/chrome",
   "viewports": [
     "1440x1000",

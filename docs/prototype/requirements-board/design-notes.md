@@ -4,7 +4,9 @@
 
 - 需求: SDLC 能力演示｜研发需求与缺陷看板（节点：需求澄清与原型）。
 - 仓库: `samshen29-ops/deliveryai-demo-kz2c6z`。
-- 基线 revision: `1f47ad864fb9b97835cb8a453e6ed41d132f56e1`。
+- 基线 revision: `1f47ad864fb9b97835cb8a453e6ed41d132f56e1`（main）。
+- 分支: `demo/sam-sdlc-capability`。
+- 测试 revision: `e19e7d6b0f7d8ecd0201cdabb193078b026902ce`（本节点首个提交）。
 - 设计系统: 产品空间 `knowledge/design-system/` 为空，未同步设计系统；采用仓库 `tailwind.config.js` 的 rice/chili/amber/charcoal 色板、Inter/Noto Sans SC 字体栈、圆角/阴影与 `src/components/ui/` 的按钮/弹层模式。
 - 原型形态: 独立静态 HTML/CSS/JS 包，用于行为与视觉评审；不是最终 React 实现。
 - 预览方式: 沙箱内 detached `python3 -m http.server 4173 --bind 127.0.0.1`；浏览器工具访问 `http://127.0.0.1:4173/`。`agentnative sandbox port expose` 返回 409（平台不支持端口暴露），因此没有公开 URL，也没有公开发布。
@@ -31,6 +33,7 @@
 - 命令: `node .agentnative/design/sdlc-requirements-board/acceptance.js`
 - 退出码: 0
 - 结果: 14/14 checks PASS；0 console/page error。
+- 报告记录: tested_revision=`e19e7d6b0f7d8ecd0201cdabb193078b026902ce`，base_revision=`1f47ad864fb9b97835cb8a453e6ed41d132f56e1`。
 - 视口: 1440×1000、390×844。
 - 检查覆盖:
   - AC-01 12 条种子、5 列、合成标识、统计 2/3/2/2/3、完成率 25%。
