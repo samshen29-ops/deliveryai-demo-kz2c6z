@@ -5,6 +5,7 @@ import { ClipboardList, ConciergeBell, LayoutDashboard, Menu as MenuIcon, Shoppi
 import { HomeView } from '@/components/HomeView'
 import { WelcomeView } from '@/components/WelcomeView'
 import { CartPanel } from '@/components/CartPanel'
+import { BoardView } from '@/components/board/BoardView'
 import { CheckoutView } from '@/components/CheckoutView'
 import { DemoConsole } from '@/components/DemoConsole'
 import { MenuView } from '@/components/MenuView'
@@ -37,13 +38,16 @@ function createInitialState(): AppState {
     }
   }
 
-  // 深链接：直接以 #/welcome 等地址打开时，先绑定示例桌台再进入对应视图；
-  // home 无需桌台，其余流程视图（welcome/menu/order/checkout）需要桌台上下文。
-  if (requestedView && requestedView !== 'home') {
+  // 看板与火锅首页无需桌台；根地址与非法 hash 默认进入看板。
+  if (requestedView === 'board') return { ...initialState, view: 'board' }
+  if (requestedView === 'home') return { ...initialState, view: 'home' }
+
+  // 深链接：直接以 #/welcome 等地址打开时，先绑定示例桌台再进入对应视图。
+  if (requestedView) {
     return { ...initialState, table: 'A08', view: requestedView }
   }
 
-  return initialState
+  return { ...initialState, view: 'board' }
 }
 
 export default function App() {
@@ -56,14 +60,14 @@ export default function App() {
   const cartTotal = state.cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const waitingServices = state.services.filter((service) => service.status === 'waiting').length
 
-  // 视图 ↔ URL hash 双向同步；未绑定桌台时只有 home 可达，其余地址回落到 home
-  const canView = useCallback((view: ViewName) => view === 'home' || !!state.table, [state.table])
+  // 视图 ↔ URL hash 双向同步；看板与火锅首页始终可达，点餐流程需要桌台。
+  const canView = useCallback((view: ViewName) => view === 'board' || view === 'home' || !!state.table, [state.table])
   const navigate = useCallback((view: ViewName) => dispatch({ type: 'SET_VIEW', view }), [])
   useViewRoute(state.view, { onNavigate: navigate, canView })
 
   useEffect(() => {
     document.documentElement.lang = i18n.language === 'zh' ? 'zh-CN' : 'en'
-    document.title = t('common.title')
+    document.title = state.view === 'board' ? '研发需求与缺陷看板 · SDLC 能力演示' : t('common.title')
     const metaDesc = document.querySelector('meta[name="description"]')
     if (metaDesc) metaDesc.setAttribute('content', t('common.meta_desc'))
     try {
@@ -71,7 +75,7 @@ export default function App() {
     } catch {
       // localStorage 不可用时降级为内存态，不报错不阻塞
     }
-  }, [i18n.language, t])
+  }, [i18n.language, t, state.view])
 
   const changeView = (view: ViewName) => dispatch({ type: 'SET_VIEW', view })
   const submitOrder = () => {
@@ -84,6 +88,10 @@ export default function App() {
   const handleToggleElderly = () => {
     toggleElderly()
     dispatch({ type: 'SET_MESSAGE', message: elderly ? '已切换为常规模式' : '已切换为老人模式' })
+  }
+
+  if (state.view === 'board') {
+    return <BoardView onExit={() => dispatch({ type: 'SET_VIEW', view: 'home' })} />
   }
 
   if (state.view === 'home' || !state.table) {
