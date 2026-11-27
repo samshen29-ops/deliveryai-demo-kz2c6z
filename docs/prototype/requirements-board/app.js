@@ -43,16 +43,18 @@ const ICONS = {
 const DELIVERY_STATE = {
   browserAcceptance: '已执行',
   browserDetail: '桌面 1440×1000 / 窄屏 390×844；14/14 检查；截图见 evidence/；沙箱端口暴露返回 409，仅 127.0.0.1:4173',
+  review: '已通过（2026-11-27）',
 };
 
 const CAPABILITY_STAGES = [
   {
-    index: '01', name: '需求澄清与原型', status: 'current', statusLabel: '待评审', current: true,
+    index: '01', name: '需求澄清与原型', status: 'current', statusLabel: '已通过', current: true,
     items: [
       { label: 'PRD Markdown', status: '已生成', tag: 'real', detail: '本轮 PRD 正文', href: 'evidence/PRD.md' },
       { label: 'PRD HTML', status: '已生成', tag: 'real', detail: '静态可读版本', href: 'evidence/PRD.html' },
       { label: '交互原型', status: '已生成', tag: 'real', detail: '本页；含浏览器验收截图' },
       { label: '浏览器验收', status: DELIVERY_STATE.browserAcceptance, tag: 'real', detail: DELIVERY_STATE.browserDetail },
+      { label: '用户评审', status: '通过', tag: 'real', detail: '2026-11-27；备注为空；入口建议：保留火锅演示，新增默认看板入口' },
     ],
   },
   {
@@ -93,7 +95,7 @@ const AC_ROWS = [
   { id: 'AC-09', name: '复位取消无变化，确认只重置本 Demo', status: 'covered', note: '本轮原型浏览器验收通过；报告 evidence/browser-acceptance.json' },
   { id: 'AC-10', name: 'HTML/脚本安全显示，无真实凭据/身份/客户数据', status: 'covered', note: '本轮原型浏览器验收通过；报告 evidence/browser-acceptance.json' },
   { id: 'AC-11', name: '键盘可用、窄屏无遮挡、无 console error', status: 'covered', note: '本轮原型浏览器验收通过；报告 evidence/browser-acceptance.json' },
-  { id: 'AC-12', name: 'PRD、Spec、分支 commit、测试、预览、E2E、审查、PR', status: 'partial', note: '本节点仅 PRD/原型/分支；其余未执行' },
+  { id: 'AC-12', name: 'PRD、Spec、分支 commit、测试、预览、E2E、审查、PR', status: 'partial', note: '本节点评审已通过；仅 PRD/原型/分支，其余未执行' },
 ];
 
 let boardState = null;
@@ -664,10 +666,10 @@ function renderGuide() {
   if (!content) return;
   const steps = [
     ['展示需求与授权边界', '说明本次使用专用流程“SDLC Demo｜测试与 PR”，不合并、不发布、不改 main、不操作真实数据。'],
-    ['查看 PRD 与原型', '打开 PRD Markdown/HTML 与本页原型，说明当前节点为“需求澄清与原型”，下游节点尚未执行。'],
+    ['查看 PRD 与原型', '打开 PRD Markdown/HTML 与本页原型，说明本节点评审已通过；下游 Spec 与实现节点尚未执行。'],
     ['操作成功与失败路径', '新增工作项、触发空白/超长校验、搜索筛选、合法与非法流转、刷新持久化。'],
     ['对照 AC 与证据', '在能力证据页按 AC-01..AC-12 查看本轮已覆盖项和下游未执行项；示例证据带“示例记录”标签。'],
-    ['停在人工评审', '演示复位只重置本应用数据；PR 与人工发布决策在后续节点，不代用户审批。'],
+    ['停在人工发布决策', '本节点评审已通过；后续 PR 完成后仍停在人工发布决策，不代用户审批。演示复位只重置本应用数据。'],
   ].map(([title, desc], index) => `
     <div class="guide-step"><span class="step-num">${index + 1}</span><div><h3>${esc(title)}</h3><p>${esc(desc)}</p></div></div>`).join('');
   content.innerHTML = `
@@ -747,6 +749,7 @@ function renderDetail() {
     ['PRD HTML', '已生成', 'real'],
     ['交互原型', '已生成', 'real'],
     ['浏览器验收', DELIVERY_STATE.browserAcceptance, 'real'],
+    ['用户评审', DELIVERY_STATE.review, 'real'],
     ['单元测试 / 真实 E2E / PR', '未执行 / 未创建', 'pending'],
   ];
   const transitionBox = done ? `
